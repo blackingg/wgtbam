@@ -2,7 +2,7 @@
 import { DefaultButton, DefaultInput, DefaultModal } from "@/components";
 import { useRouter } from "next/navigation";
 import { InputsArr, Required, User } from "@/utils";
-import React from "react";
+import { Fragment, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const page = () => {
@@ -14,10 +14,10 @@ const page = () => {
 
   const router = useRouter();
 
-  const [successful, setSuccessful] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isError, setIsError] = React.useState("");
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [successful, setSuccessful] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [isError, setIsError] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const onSubmit: SubmitHandler<User> = (data: any) => {
     // setIsLoading(true);
@@ -46,7 +46,7 @@ const page = () => {
         <form className="mt-[24px] w-full" onSubmit={handleSubmit(onSubmit)}>
           <div className=" flex flex-col gap-3">
             {InputsArr.map((input, index) => (
-              <React.Fragment key={index}>
+              <Fragment key={index}>
                 <DefaultInput
                   label={input.label}
                   label2={input.label2}
@@ -56,7 +56,7 @@ const page = () => {
                   Icon={input.Icon}
                   {...register(input.name, { required: true })}
                 />
-              </React.Fragment>
+              </Fragment>
             ))}
             <div className=" mt-6">
               <DefaultButton text="Register" />

@@ -1,11 +1,11 @@
 "use client";
-import React from "react";
+import { ReactNode } from "react";
 import { DefaultButton } from "..";
 
 type ModalWImageProps = {
-  Image: React.ReactNode;
-  Text: React.ReactNode;
-  anythingelse?: React.ReactNode;
+  Image: ReactNode;
+  Text: ReactNode;
+  anythingelse?: ReactNode;
   ButtonLabel?: string;
   label: string;
   isOpen: boolean;

@@ -1,9 +1,9 @@
 "use client";
-import React, { forwardRef } from "react";
+import { ReactNode, forwardRef } from "react";
 type InputProps = {
-  label: string | React.ReactNode;
-  Errorlabel: string | React.ReactNode;
-  Icon?: React.ReactNode;
+  label: string | ReactNode;
+  Errorlabel: string | ReactNode;
+  Icon?: ReactNode;
   label2?: string;
 };
 

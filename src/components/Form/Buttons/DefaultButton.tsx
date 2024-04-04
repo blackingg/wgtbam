@@ -1,6 +1,6 @@
-import React from "react";
+import { ReactNode } from "react";
 type DefaultButtonProps = {
-  text: React.ReactNode;
+  text: ReactNode;
   onclick?: () => void;
 };
 
