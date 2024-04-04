@@ -1,0 +1,97 @@
+"use client";
+import { DefaultButton, DefaultInput, DefaultModal } from "@/components";
+import { useRouter } from "next/navigation";
+import { InputsArr, Required, User } from "@/utils";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+const page = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<User>();
+
+  const router = useRouter();
+
+  const [successful, setSuccessful] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isError, setIsError] = React.useState("");
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const onSubmit: SubmitHandler<User> = (data: any) => {
+    // setIsLoading(true);
+    setSuccessful(true);
+    setIsOpen(true);
+    console.log(data);
+  };
+
+  return (
+    <div className="purplebg  min-h-screen flex justify-center items-center text-white pb-[25px] px-[20px]">
+      <div className=" mt-[80px] border border-white rounded-3xl w-full max-w-[558px] z-10 pt-[55px] pb-[30px] px-[15px] tablet:px-[30px] flex flex-col items-center justify-center relative bg-gradient-to-br from-white/10 to-white/0 bg-opacity-[0.15] backdrop-blur-sm shadow-md">
+        <div className="absolute w-full max-w-[150px] tablet:max-w-[200px] top-[0%] translate-y-[-50%] left-[50%] translate-x-[-50%]">
+          <img src="/Images/logo.svg" alt="Logo" className="" />
+        </div>
+        <h1 className=" w-full font-montserrat font-medium text-2xl tablet:text-4xl">
+          Welcome to
+        </h1>
+        <h2 className=" w-full text-base tablet:text-xl font-montserrat font-medium">
+          OAU Who Gets To Be A Millionare
+        </h2>
+
+        <p className=" w-full font-poppins text-sm tablet:text-base font-normal text-opacity-90">
+          Register Now! And stand a chance to be a millionaire!!!!
+        </p>
+
+        <form className="mt-[24px] w-full" onSubmit={handleSubmit(onSubmit)}>
+          <div className=" flex flex-col gap-3">
+            {InputsArr.map((input, index) => (
+              <React.Fragment key={index}>
+                <DefaultInput
+                  label={input.label}
+                  label2={input.label2}
+                  Errorlabel={
+                    errors[input.name] && <Required thisField={input.label} />
+                  }
+                  Icon={input.Icon}
+                  {...register(input.name, { required: true })}
+                />
+              </React.Fragment>
+            ))}
+            <div className=" mt-6">
+              <DefaultButton text="Register" />
+            </div>
+          </div>
+        </form>
+      </div>
+      {successful && (
+        <DefaultModal
+          closeAction={() => router.push("/registration")}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          Image={
+            <div className=" max-w-[150px] w-full">
+              <img
+                src="/Images/succestick.svg"
+                className=" cursor-not-allowed"
+                draggable={false}
+              />
+            </div>
+          }
+          label="Registration successful!"
+          Text={
+            <div className=" flex flex-col gap-6">
+              <p className=" text-center font-normal text-base font-poppins">
+                You have successfully registered for this event, watch out for
+                more updates
+              </p>
+            </div>
+          }
+          ButtonLabel="Done"
+        />
+      )}
+    </div>
+  );
+};
+
+export default page;
