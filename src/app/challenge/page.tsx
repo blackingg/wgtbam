@@ -99,11 +99,11 @@ export default function Home() {
   // console.log("******************Prize Level", prizeLevel);
 
   return (
-    <section className="relative w-full min-h-screen flex flex-col justify-between purplebg">
+    <section className=" pt-4 relative w-full min-h-screen flex flex-col justify-center gap-20 purplebg">
       <div className=" w-full h-full relative">
         <div className=" max-w-[150px] tablet:max-w-[250px] max-h-[150px] tablet:max-h-[250px] w-full h-full flex justify-center items-center mx-auto">
           <img src="/Images/logo2.svg" alt="Logo" className="" />
-          <div className=" absolute right-[3rem] top-[50%] translate-y-[-50%] flex flex-col tablet:flex-row gap-6 items-center">
+          <div className=" absolute right-[3rem] top-[50%] translate-y-[-50%] flex flex-col ipad:flex-row gap-6 items-center">
             <button
               onClick={() => {
                 if (usedFifty === false && isAnswered === false) {

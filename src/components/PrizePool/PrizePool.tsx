@@ -17,7 +17,7 @@ export const PrizePool = ({
   return (
     <>
       {/* <section className="w-full min-h-screen flex justify-center items-center purplebg relative overflow-y-hidden"> */}
-      <div className=" bg-gradient-to-br from-[#121F3B] to-[#070E1D] bg-opacity-50 px-8 tablet:px-[70px] py-4 tablet:py-[34px] relative rounded-2xl border border-white font-montserrat font-normal text-sm tablet:font-bold tablet:text-3xl space-y-2">
+      <div className=" bg-gradient-to-br from-[#121F3B] to-[#070E1D] bg-opacity-50 px-8 ipad:px-[70px] py-4 ipad:py-[34px] relative rounded-2xl border border-white font-montserrat font-normal text-sm ipad:font-bold ipad:text-3xl space-y-2">
         {values.map((value) => (
           <div
             className={`flex items-center w-full h-full ${
@@ -34,7 +34,7 @@ export const PrizePool = ({
                 value.value === prizeLevel ? "flex" : "hidden"
               }`}
             />
-            <span className=" flex justify-start tablet:justify-center max-w-[43px] w-full">
+            <span className=" flex justify-start ipad:justify-center max-w-[43px] w-full">
               {value.value}.
             </span>
             <span className=" flex justify-start pl-8">{value.amount}</span>
@@ -54,12 +54,12 @@ export const PrizePool = ({
         </div>
       </div> */}
 
-      <div className=" absolute right-[50px] bottom-[50px] flex flex-col gap-6 items-center">
+      <div className=" absolute right-[30px] tablet:right-[50px] bottom-[50px] flex flex-col gap-6 items-center">
         <button
           disabled
           className={`${
             usedFifty ? "bg-[#EB1212]" : "bg-white/90"
-          } max-w-[50px] tablet:max-w-[100px]  max-h-[25px] tablet:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-xs tablet:text-xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
+          } max-w-[50px] ipad:max-w-[100px]  max-h-[25px] ipad:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-xs ipad:text-xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
         >
           50/50
         </button>
@@ -67,24 +67,24 @@ export const PrizePool = ({
           disabled
           className={`${
             usedPhone ? "bg-[#EB1212]" : "bg-white/90"
-          }  max-w-[50px] tablet:max-w-[100px]  max-h-[25px] tablet:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
+          }  max-w-[50px] ipad:max-w-[100px]  max-h-[25px] ipad:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
         >
           <img
             src="/Images/phoneIcon.png"
             alt=""
-            className=" max-w-[20px] tablet:max-w-[30px] max-h-[20px] tablet:max-h-[30px]"
+            className=" max-w-[20px] ipad:max-w-[30px] max-h-[20px] ipad:max-h-[30px]"
           />
         </button>
         <button
           disabled
           className={`${
             usedAudience ? "bg-[#EB1212]" : "bg-white/90"
-          } max-w-[50px] tablet:max-w-[100px]  max-h-[25px] tablet:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
+          } max-w-[50px] ipad:max-w-[100px]  max-h-[25px] ipad:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
         >
           <img
             src="/Images/userGroupIcon.png"
             alt=""
-            className=" max-w-[20px] tablet:max-w-[30px] max-h-[20px] tablet:max-h-[30px]"
+            className=" max-w-[20px] ipad:max-w-[30px] max-h-[20px] ipad:max-h-[30px]"
           />
         </button>
       </div>

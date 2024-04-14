@@ -35,8 +35,8 @@ export const AnswerBox = ({
         } ${
           !selected && "bg-[#8A0089]"
         } angle shadow-inner w-full h-full text-white flex justify-center items-center py-2 ${
-          isBig ? " tablet:py-6" : " tablet:py-4"
-        } rounded-full min-h-[4rem]`}
+          isBig ? " ipad:py-6" : " ipad:py-4"
+        } rounded-full min-h-[2rem] ipad:min-h-[4rem]`}
       >
         <div className=" max-w-[60%] flex justify-center items-center">
           {option}

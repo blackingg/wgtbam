@@ -19,3 +19,11 @@
   /* clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%); */
   clip-path: polygon(10% 0, 90% 0, 96% 50%, 90% 100%, 10% 100%, 4% 50%);
 }
+
+
+.Confetti {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
