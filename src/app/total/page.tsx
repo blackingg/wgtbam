@@ -11,7 +11,7 @@ export default function Home({
 }: {
   searchParams: { prizeLevel: string };
 }) {
-  console.log("Search paramsssss", searchParams);
+  // console.log("Search paramsssss", searchParams);
 
   const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
 

@@ -120,12 +120,12 @@ export const handleFiftyFifty = (
     1
   );
 
-  console.log("First Removed", firstOptionToRemoveIndex);
-  console.log("Second Removed", secondOptionToRemoveIndex);
+  // console.log("First Removed", firstOptionToRemoveIndex);
+  // console.log("Second Removed", secondOptionToRemoveIndex);
 
-  console.log("Remaining Indices: ", remainingIndices);
+  // console.log("Remaining Indices: ", remainingIndices);
 
-  console.log("Options: ", options);
+  // console.log("Options: ", options);
 
   // Update options array by removing options at selected indices
   const updatedOptions = options.reduce((acc, option, index) => {
@@ -138,7 +138,7 @@ export const handleFiftyFifty = (
     return [...acc, option];
   }, [] as (string | undefined)[]);
 
-  console.log("Updated Options: ", updatedOptions);
+  // console.log("Updated Options: ", updatedOptions);
 
   setQuestions((prevQuestions) => {
     const updatedQuestions = [...prevQuestions];
@@ -149,7 +149,7 @@ export const handleFiftyFifty = (
       option3: updatedOptions[2] || "",
       option4: updatedOptions[3] || "",
     };
-    console.log("Updated Questions: ", updatedQuestions);
+    // console.log("Updated Questions: ", updatedQuestions);
 
     return updatedQuestions;
   });

@@ -1,9 +1,21 @@
 "use client";
-import { ChallengeSkeleton, PrizeModal } from "@/components";
+import {
+  AnswerButton,
+  ChallengeSkeleton,
+  ConfirmationBtn,
+  PrizeModal,
+} from "@/components";
 import { handleFiftyFifty } from "@/helpers";
 import { QuestionArr } from "@/utils";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 export default function Home() {
   const [allQuestions, setAllQuestions] = useState(QuestionArr);
@@ -17,6 +29,14 @@ export default function Home() {
   const [prizeLevel, setPrizeLevel] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [openPrize, setOpenPrize] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+
+  const [finallyIsCorrectAns, setFinallyIsCorrectAns] = useState(false);
+  const [finallyUserLevel, setFinallyUserLevel] = useState(prizeLevel);
+  const [revealCorrectAnswer, setRevealCorrectAnswer] = useState(false);
+
+  const [showRevealCorrect, setShowRevealCorrect] = useState("");
+  const [goToNextQuestion, setGoToNextQuestion] = useState(false);
 
   const prizeLevelRef = useRef(prizeLevel);
 
@@ -46,6 +66,7 @@ export default function Home() {
     if (selectedAnswer === null) {
       if (selectedOption === allQuestions[currentChallengeIndex].answer) {
         setIsCorrect(true);
+        setShowRevealCorrect(selectedOption);
         // setPrizeLevel((prev) => prev + 1);
         setPrizeLevel((prev) => {
           prizeLevelRef.current = prev + 1; // Update the ref when prizeLevel changes
@@ -54,21 +75,7 @@ export default function Home() {
         setIsAnswered(true);
         setSelectedAnswer(selectedOption);
 
-        setTimeout(() => {
-          setOpenPrize(true);
-          setTimeout(() => {
-            setOpenPrize(false);
-            if (currentChallengeIndex >= 14) {
-              router.push(
-                "/total" +
-                  "?" +
-                  createQueryString("prizeLevel", `${prizeLevelRef.current}`)
-              );
-            } else {
-              nextQuestion();
-            }
-          }, 3000);
-        }, 300);
+        setFinallyIsCorrectAns(true);
       } else {
         let currentuserlevel = prizeLevelRef.current;
         if (currentuserlevel >= 15) {
@@ -78,14 +85,12 @@ export default function Home() {
         } else if (currentuserlevel >= 5) {
           currentuserlevel = 5;
         }
-        console.log("Current Prize Level", currentuserlevel);
+        // console.log("Current Prize Level", currentuserlevel);
         setIsAnswered(true);
         setSelectedAnswer(selectedOption);
-        router.push(
-          "/total" +
-            "?" +
-            createQueryString("prizeLevel", `${currentuserlevel}`)
-        );
+        setFinallyUserLevel(currentuserlevel);
+        setFinallyIsCorrectAns(false);
+        setShowRevealCorrect(allQuestions[currentChallengeIndex].answer);
       }
     }
   };
@@ -93,10 +98,61 @@ export default function Home() {
   const nextQuestion = () => {
     setCurrentChallengeIndex(currentChallengeIndex + 1);
     setSelectedAnswer(null);
+    setRevealCorrectAnswer(false);
+    setIsConfirmed(false);
     setIsAnswered(false);
+    setGoToNextQuestion(false);
   };
 
-  // console.log("******************Prize Level", prizeLevel);
+  useEffect(() => {
+    if (
+      revealCorrectAnswer &&
+      isConfirmed &&
+      selectedAnswer !== null &&
+      selectedAnswer === allQuestions[currentChallengeIndex].answer
+    ) {
+      setTimeout(() => {
+        setOpenPrize(true);
+        setTimeout(() => {
+          setOpenPrize(false);
+          if (currentChallengeIndex >= 14) {
+            router.push(
+              "/total" +
+                "?" +
+                createQueryString("prizeLevel", `${prizeLevelRef.current}`)
+            );
+          }
+        }, 3000);
+      }, 300);
+    }
+
+    if (
+      revealCorrectAnswer === true &&
+      isConfirmed === true &&
+      selectedAnswer !== null &&
+      selectedAnswer !== allQuestions[currentChallengeIndex].answer
+    ) {
+      setTimeout(() => {
+        router.push(
+          "/total" +
+            "?" +
+            createQueryString("prizeLevel", `${finallyUserLevel}`)
+        );
+      }, 500);
+    }
+
+    if (
+      finallyIsCorrectAns === true &&
+      showRevealCorrect === allQuestions[currentChallengeIndex].answer &&
+      isConfirmed === true
+    ) {
+      setRevealCorrectAnswer(true);
+      setIsConfirmed(true);
+    }
+  }, [isConfirmed, finallyIsCorrectAns, revealCorrectAnswer, goToNextQuestion]);
+
+  // console.log("Correct answer", allQuestions[currentChallengeIndex].answer);
+  // console.log("Correct answer SRC", showRevealCorrect);
 
   return (
     <section className=" pt-4 relative w-full min-h-screen flex flex-col justify-center gap-20 purplebg">
@@ -162,7 +218,92 @@ export default function Home() {
         // setIsAnswered={setIsAnswered}
         handleAnswerClick={handleAnswerClick}
         selectedAnswer={selectedAnswer}
+        isConfirm={isConfirmed}
+        revealedCorrect={revealCorrectAnswer}
+        actualCorrectAns={finallyIsCorrectAns}
+        showRevealCorrect={showRevealCorrect}
       />
+
+      <div
+        className={` pb-4 -mt-20 flex flex-col tablet:flex-row gap-4 tablet:gap-0 ${
+          revealCorrectAnswer === true ? "justify-center" : "justify-between"
+        } items-center px-12`}
+      >
+        {revealCorrectAnswer === false && (
+          <>
+            <ConfirmationBtn
+              btntext="Reveal Correct Answer"
+              onClick={() => {
+                // console.log("Reveal Correct Answer");
+
+                if (revealCorrectAnswer === false) {
+                  // console.log("Reveal Correct Inside");
+                  setRevealCorrectAnswer(true);
+                }
+              }}
+              disabled={(() => {
+                if (isAnswered === false) {
+                  return true;
+                }
+                return false;
+              })()}
+            />
+
+            <ConfirmationBtn
+              onClick={() => {
+                // console.log("Confirm Participant Answer");
+
+                if (isConfirmed === false) {
+                  // console.log("Confirm Inside");
+                  setIsConfirmed(true);
+                }
+              }}
+              disabled={(() => {
+                if (isAnswered === false) {
+                  return true;
+                }
+                return false;
+              })()}
+              btntext="Confirm Participant Answer"
+              className=" bg-[#E07000]"
+            />
+          </>
+        )}
+
+        {revealCorrectAnswer && isConfirmed && (
+          <ConfirmationBtn
+            onClick={() => {
+              // console.log("Go to Next Question");
+
+              if (
+                goToNextQuestion === false &&
+                selectedAnswer !== null &&
+                selectedAnswer === allQuestions[currentChallengeIndex].answer
+              ) {
+                // console.log("Next Inside");
+                setGoToNextQuestion(true);
+                nextQuestion();
+              } else {
+              }
+            }}
+            disabled={(() => {
+              if (goToNextQuestion === true) {
+                return true;
+              } else if (isAnswered === false) {
+                return true;
+              } else if (
+                selectedAnswer !== null &&
+                selectedAnswer !== allQuestions[currentChallengeIndex].answer
+              ) {
+                return true;
+              }
+              return false;
+            })()}
+            btntext="Go to Next Question"
+            className=" bg-[#FFFFFF] text-[#8A0089]"
+          />
+        )}
+      </div>
 
       {openPrize && (
         <PrizeModal

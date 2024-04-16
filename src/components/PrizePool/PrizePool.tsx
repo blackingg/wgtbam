@@ -42,18 +42,6 @@ export const PrizePool = ({
         ))}
       </div>
 
-      {/* <div className=" absolute right-[50px] bottom-[50px] space-y-8">
-        <div className=" font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] bg-white/90 shadow-md px-6 py-4">
-          50/50
-        </div>
-        <div className=" flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] bg-white/90 shadow-md px-6 py-4">
-          <TelIcon />
-        </div>
-        <div className="flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] bg-white/90 shadow-md px-6 py-4">
-          <UsergroupIcon />
-        </div>
-      </div> */}
-
       <div className=" absolute right-[30px] tablet:right-[50px] bottom-[50px] flex flex-col gap-6 items-center">
         <button
           disabled

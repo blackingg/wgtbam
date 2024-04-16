@@ -2,7 +2,7 @@
 import { ReactNode } from "react";
 import { DefaultButton } from "..";
 
-type ModalWImageProps = {
+interface ModalWImageProps {
   Image: ReactNode;
   Text: ReactNode;
   anythingelse?: ReactNode;
@@ -11,7 +11,7 @@ type ModalWImageProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   closeAction?: () => void;
-};
+}
 
 export const DefaultModal = ({
   Image,
