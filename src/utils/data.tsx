@@ -1,3 +1,5 @@
+import { Question } from "@/types";
+
 export const values = [
   { value: 15, amount: "₦1,000,000" },
   { value: 14, amount: "₦500,000" },
@@ -16,7 +18,7 @@ export const values = [
   { value: 1, amount: "₦500" },
 ];
 
-export const QuestionArr = [
+export const QuestionArr: Question[] = [
   {
     question:
       "Which of the following is not a part of the seven wonder of the ancient world?",

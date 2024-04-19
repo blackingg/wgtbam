@@ -1,62 +1,127 @@
 "use client";
 import {
-  AnswerButton,
   ChallengeSkeleton,
   ConfirmationBtn,
   PrizeModal,
+  RingLoader,
 } from "@/components";
+import { database } from "@/firebase";
 import { handleFiftyFifty } from "@/helpers";
-import { QuestionArr } from "@/utils";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
+import { Question } from "@/types";
+import { useQuestionStore } from "@/zustand/store";
+import { DataSnapshot, off, onValue, ref, set } from "firebase/database";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, {
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function Home() {
-  const [allQuestions, setAllQuestions] = useState(QuestionArr);
-  const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
-  const [usedFifty, setUsedFifty] = useState(false);
-  const [usedPhone, setUsedPhone] = useState(false);
-  const [usedAudience, setUsedAudience] = useState(false);
+  const setQuestArr = useQuestionStore((state) => state.setQuestionArr);
+  const allQuestions = useQuestionStore((state) => state.allQuestions);
+  const setAllQuestions = useQuestionStore((state) => state.setAllQuestions);
+  const currentChallengeIndex = useQuestionStore(
+    (state) => state.currentChallengeIndex
+  );
+  const setCurrentChallengeIndex = useQuestionStore(
+    (state) => state.setCurrentChallengeIndex
+  );
+  const usedFifty = useQuestionStore((state) => state.usedFifty);
+  const setUsedFifty = useQuestionStore((state) => state.setUsedFifty);
+  const usedPhone = useQuestionStore((state) => state.usedPhone);
+  const setUsedPhone = useQuestionStore((state) => state.setUsedPhone);
+  const usedAudience = useQuestionStore((state) => state.usedAudience);
+  const setUsedAudience = useQuestionStore((state) => state.setUsedAudience);
+  const isAnswered = useQuestionStore((state) => state.isAnswered);
+  const setIsAnswered = useQuestionStore((state) => state.setIsAnswered);
+  const isCorrect = useQuestionStore((state) => state.isCorrect);
+  const setIsCorrect = useQuestionStore((state) => state.setIsCorrect);
+  const prizeLevel = useQuestionStore((state) => state.prizeLevel);
+  const setPrizeLevel = useQuestionStore((state) => state.setPrizeLevel);
+  const selectedAnswer = useQuestionStore((state) => state.selectedAnswer);
+  const setSelectedAnswer = useQuestionStore(
+    (state) => state.setSelectedAnswer
+  );
+  const openPrize = useQuestionStore((state) => state.openPrize);
+  const setOpenPrize = useQuestionStore((state) => state.setOpenPrize);
+  const isConfirmed = useQuestionStore((state) => state.isConfirmed);
+  const setIsConfirmed = useQuestionStore((state) => state.setIsConfirmed);
+  const finallyIsCorrectAns = useQuestionStore(
+    (state) => state.finallyIsCorrectAns
+  );
+  const setFinallyIsCorrectAns = useQuestionStore(
+    (state) => state.setFinallyIsCorrectAns
+  );
+  const finallyUserLevel = useQuestionStore((state) => state.finallyUserLevel);
+  const setFinallyUserLevel = useQuestionStore(
+    (state) => state.setFinallyUserLevel
+  );
+  const revealCorrectAnswer = useQuestionStore(
+    (state) => state.revealCorrectAnswer
+  );
+  const setRevealCorrectAnswer = useQuestionStore(
+    (state) => state.setRevealCorrectAnswer
+  );
+  const showRevealCorrect = useQuestionStore(
+    (state) => state.showRevealCorrect
+  );
+  const setShowRevealCorrect = useQuestionStore(
+    (state) => state.setShowRevealCorrect
+  );
+  const goToNextQuestion = useQuestionStore((state) => state.goToNextQuestion);
+  const setGoToNextQuestion = useQuestionStore(
+    (state) => state.setGoToNextQuestion
+  );
+  const updateDataInFirebase = useQuestionStore(
+    (state) => state.updateDataInFirebase
+  );
 
-  const [isAnswered, setIsAnswered] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
-  const [prizeLevel, setPrizeLevel] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [openPrize, setOpenPrize] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
-
-  const [finallyIsCorrectAns, setFinallyIsCorrectAns] = useState(false);
-  const [finallyUserLevel, setFinallyUserLevel] = useState(prizeLevel);
-  const [revealCorrectAnswer, setRevealCorrectAnswer] = useState(false);
-
-  const [showRevealCorrect, setShowRevealCorrect] = useState("");
-  const [goToNextQuestion, setGoToNextQuestion] = useState(false);
-
-  const prizeLevelRef = useRef(prizeLevel);
+  const updateDataInStore = useQuestionStore(
+    (state) => state.updateDataInStore
+  );
 
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // **********************************
+  type StateValue = Question[] | number | boolean | string | null;
+  const updateData = (newValue: StateValue) => {
+    const dbRef = ref(database, "questionStore");
+    set(dbRef, newValue);
+    console.log("Update function new values", newValue);
+  };
+  // **********************************
+
   const handleFiftyFiftyClick = () => {
-    handleFiftyFifty(
-      allQuestions[currentChallengeIndex],
-      currentChallengeIndex, // Assuming currentQuestionIndex is always 0 for this component
-      setAllQuestions, // Provide appropriate setQuestions function if needed
-      setUsedFifty // Provide appropriate setUsedFiftyFifty function if needed
+    const { updatedOptions, challengeIndex } = handleFiftyFifty(
+      allQuestions,
+      currentChallengeIndex
     );
+    // setAllQuestions(updatedOptions, challengeIndex);
+    // setUsedFifty(true);
+
+    const newData = {
+      allQuestions: allQuestions.map((question, index) => {
+        if (index === challengeIndex) {
+          return {
+            ...question,
+            option1: updatedOptions[0] || "",
+            option2: updatedOptions[1] || "",
+            option3: updatedOptions[2] || "",
+            option4: updatedOptions[3] || "",
+          };
+        }
+        return question;
+      }),
+      usedFifty: true,
+    };
+
+    updateDataInFirebase(newData);
+
+    console.log("Current Challenge Index:", currentChallengeIndex);
   };
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set(name, value);
-
       return params.toString();
     },
     [searchParams]
@@ -64,20 +129,29 @@ export default function Home() {
 
   const handleAnswerClick = (selectedOption: string) => {
     if (selectedAnswer === null) {
+      // setIsAnswered(true);
+      updateDataInFirebase({
+        isAnswered: true,
+      });
       if (selectedOption === allQuestions[currentChallengeIndex].answer) {
-        setIsCorrect(true);
-        setShowRevealCorrect(selectedOption);
-        // setPrizeLevel((prev) => prev + 1);
-        setPrizeLevel((prev) => {
-          prizeLevelRef.current = prev + 1; // Update the ref when prizeLevel changes
-          return prev + 1;
-        });
-        setIsAnswered(true);
-        setSelectedAnswer(selectedOption);
+        console.log("Prev pricelevel", prizeLevel);
 
-        setFinallyIsCorrectAns(true);
+        let updatedPrizeLvl = prizeLevel + 1;
+        // setIsCorrect(true);
+        // setShowRevealCorrect(selectedOption);
+        // setPrizeLevel(1);
+        // setSelectedAnswer(selectedOption);
+        // setFinallyIsCorrectAns(true);
+        updateDataInFirebase({
+          isCorrect: true,
+          showRevealCorrect: selectedOption,
+          prizeLevel: updatedPrizeLvl,
+          selectedAnswer: selectedOption,
+          finallyIsCorrectAns: true,
+        });
+        console.log("After pricelevel", prizeLevel);
       } else {
-        let currentuserlevel = prizeLevelRef.current;
+        let currentuserlevel = prizeLevel;
         if (currentuserlevel >= 15) {
           currentuserlevel = 15;
         } else if (currentuserlevel >= 10) {
@@ -85,23 +159,37 @@ export default function Home() {
         } else if (currentuserlevel >= 5) {
           currentuserlevel = 5;
         }
-        // console.log("Current Prize Level", currentuserlevel);
-        setIsAnswered(true);
-        setSelectedAnswer(selectedOption);
-        setFinallyUserLevel(currentuserlevel);
-        setFinallyIsCorrectAns(false);
-        setShowRevealCorrect(allQuestions[currentChallengeIndex].answer);
+        // setSelectedAnswer(selectedOption);
+        // setFinallyUserLevel(currentuserlevel);
+        // setFinallyIsCorrectAns(false);
+        // setShowRevealCorrect(allQuestions[currentChallengeIndex].answer);
+        updateDataInFirebase({
+          selectedAnswer: selectedOption,
+          finallyUserLevel: currentuserlevel,
+          finallyIsCorrectAns: false,
+          showRevealCorrect: allQuestions[currentChallengeIndex].answer,
+        });
       }
     }
   };
 
   const nextQuestion = () => {
-    setCurrentChallengeIndex(currentChallengeIndex + 1);
-    setSelectedAnswer(null);
-    setRevealCorrectAnswer(false);
-    setIsConfirmed(false);
-    setIsAnswered(false);
-    setGoToNextQuestion(false);
+    console.log("Challenge index in nextQuestion", currentChallengeIndex);
+
+    let newChallengeIndex = currentChallengeIndex + 1;
+    console.log("nCI", newChallengeIndex);
+
+    // setCurrentChallengeIndex(1);
+
+    updateDataInFirebase({
+      currentChallengeIndex: newChallengeIndex,
+      selectedAnswer: null,
+      revealCorrectAnswer: false,
+      isConfirmed: false,
+      isAnswered: false,
+      goToNextQuestion: false,
+    });
+    console.log("After currrent index nQ", currentChallengeIndex);
   };
 
   useEffect(() => {
@@ -112,14 +200,18 @@ export default function Home() {
       selectedAnswer === allQuestions[currentChallengeIndex].answer
     ) {
       setTimeout(() => {
-        setOpenPrize(true);
+        // setOpenPrize(true);
+        updateDataInFirebase({
+          openPrize: true,
+        });
         setTimeout(() => {
-          setOpenPrize(false);
+          // setOpenPrize(false);
+          updateDataInFirebase({
+            openPrize: false,
+          });
           if (currentChallengeIndex >= 14) {
             router.push(
-              "/total" +
-                "?" +
-                createQueryString("prizeLevel", `${prizeLevelRef.current}`)
+              "/total" + "?" + createQueryString("prizeLevel", `${prizeLevel}`)
             );
           }
         }, 3000);
@@ -146,13 +238,43 @@ export default function Home() {
       showRevealCorrect === allQuestions[currentChallengeIndex].answer &&
       isConfirmed === true
     ) {
-      setRevealCorrectAnswer(true);
-      setIsConfirmed(true);
+      // setRevealCorrectAnswer(true);
+      updateDataInFirebase({
+        revealCorrectAnswer: true,
+        isConfirmed: true,
+      });
+      // setIsConfirmed(true);
     }
-  }, [isConfirmed, finallyIsCorrectAns, revealCorrectAnswer, goToNextQuestion]);
+  }, [revealCorrectAnswer, isConfirmed, selectedAnswer, finallyIsCorrectAns]);
 
-  // console.log("Correct answer", allQuestions[currentChallengeIndex].answer);
-  // console.log("Correct answer SRC", showRevealCorrect);
+  // *************************************
+  useEffect(() => {
+    const dbRef = ref(database, "questionStore");
+
+    const listener = (snapshot: DataSnapshot) => {
+      const newData = snapshot.val();
+      console.log("New values from Firebase??", newData);
+      if (newData && !isEqual(newData, useQuestionStore.getState())) {
+        // updateDataInFirebase(newData);
+        updateDataInStore(newData);
+        console.log(
+          "Current challenge index from FB",
+          newData.currentChallengeIndex
+        );
+      }
+    };
+
+    onValue(dbRef, listener);
+
+    return () => {
+      off(dbRef, "value", listener);
+    };
+  }, []);
+  // *************************************
+
+  // console.log("All instance pricelevel", prizeLevel);
+  console.log("All currrent index", currentChallengeIndex);
+
 
   return (
     <section className=" pt-4 relative w-full min-h-screen flex flex-col justify-center gap-20 purplebg">
@@ -175,7 +297,10 @@ export default function Home() {
             <button
               onClick={() => {
                 if (usedPhone === false && isAnswered === false) {
-                  setUsedPhone(true);
+                  // setUsedPhone(true);
+                  updateDataInFirebase({
+                    usedPhone: true,
+                  });
                 }
               }}
               className={`${
@@ -191,7 +316,10 @@ export default function Home() {
             <button
               onClick={() => {
                 if (usedAudience === false && isAnswered === false) {
-                  setUsedAudience(true);
+                  // setUsedAudience(true);
+                  updateDataInFirebase({
+                    usedAudience: true,
+                  });
                 }
               }}
               className={`${
@@ -215,7 +343,6 @@ export default function Home() {
         option3={allQuestions[currentChallengeIndex].option3}
         option4={allQuestions[currentChallengeIndex].option4}
         answer={allQuestions[currentChallengeIndex].answer}
-        // setIsAnswered={setIsAnswered}
         handleAnswerClick={handleAnswerClick}
         selectedAnswer={selectedAnswer}
         isConfirm={isConfirmed}
@@ -225,55 +352,36 @@ export default function Home() {
       />
 
       <div
-        className={` pb-4 -mt-20 flex flex-col tablet:flex-row gap-4 tablet:gap-0 ${
-          revealCorrectAnswer === true ? "justify-center" : "justify-between"
-        } items-center px-12`}
+        className={` pb-4 -mt-20 flex flex-col tablet:flex-row gap-4 tablet:gap-0 justify-center items-center px-12`}
       >
         {revealCorrectAnswer === false && (
-          <>
-            <ConfirmationBtn
-              btntext="Reveal Correct Answer"
-              onClick={() => {
-                // console.log("Reveal Correct Answer");
-
+          <ConfirmationBtn
+            onClick={() => {
+              if (isConfirmed === false) {
+                // setIsConfirmed(true);
+                updateDataInFirebase({
+                  isConfirmed: true,
+                });
                 if (revealCorrectAnswer === false) {
-                  // console.log("Reveal Correct Inside");
-                  setRevealCorrectAnswer(true);
+                  // setRevealCorrectAnswer(true);
+                  updateDataInFirebase({
+                    revealCorrectAnswer: true,
+                  });
                 }
-              }}
-              disabled={(() => {
-                if (isAnswered === false) {
-                  return true;
-                }
-                return false;
-              })()}
-            />
-
-            <ConfirmationBtn
-              onClick={() => {
-                // console.log("Confirm Participant Answer");
-
-                if (isConfirmed === false) {
-                  // console.log("Confirm Inside");
-                  setIsConfirmed(true);
-                }
-              }}
-              disabled={(() => {
-                if (isAnswered === false) {
-                  return true;
-                }
-                return false;
-              })()}
-              btntext="Confirm Participant Answer"
-              className=" bg-[#E07000]"
-            />
-          </>
+              }
+            }}
+            disabled={isAnswered === false}
+            btntext={
+              revealCorrectAnswer ? "Confirm Answer" : "Reveal Correct Answer"
+            }
+            className={revealCorrectAnswer ? "bg-[#E07000]" : ""}
+          />
         )}
 
         {revealCorrectAnswer && isConfirmed && (
           <ConfirmationBtn
             onClick={() => {
-              // console.log("Go to Next Question");
+              console.log("Go to Next Question");
 
               if (
                 goToNextQuestion === false &&
@@ -281,9 +389,24 @@ export default function Home() {
                 selectedAnswer === allQuestions[currentChallengeIndex].answer
               ) {
                 // console.log("Next Inside");
-                setGoToNextQuestion(true);
-                nextQuestion();
-              } else {
+                // setGoToNextQuestion(true);
+                updateDataInFirebase({
+                  goToNextQuestion: true,
+                });
+                // nextQuestion();
+                const newIndex = currentChallengeIndex + 1;
+                console.log("nCI", newIndex);
+
+                // setCurrentChallengeIndex(1);
+
+                updateDataInFirebase({
+                  currentChallengeIndex: newIndex,
+                  selectedAnswer: null,
+                  revealCorrectAnswer: false,
+                  isConfirmed: false,
+                  isAnswered: false,
+                  goToNextQuestion: false,
+                });
               }
             }}
             disabled={(() => {
@@ -305,16 +428,51 @@ export default function Home() {
         )}
       </div>
 
-      {openPrize && (
-        <PrizeModal
-          isOpen={openPrize}
-          setIsOpen={setOpenPrize}
-          prizeLevel={prizeLevel}
-          usedFifty={usedFifty}
-          usedPhone={usedPhone}
-          usedAudience={usedAudience}
-        />
-      )}
+      {openPrize && <PrizeModal />}
     </section>
   );
+}
+
+export function isEqual(
+  obj1: Record<string, unknown>,
+  obj2: Record<string, unknown>
+) {
+  // If the objects are the same instance, they are equal
+  if (obj1 === obj2) {
+    return true;
+  }
+
+  // If the objects are not both objects, they are not equal
+  if (
+    typeof obj1 !== "object" ||
+    typeof obj2 !== "object" ||
+    obj1 === null ||
+    obj2 === null
+  ) {
+    return false;
+  }
+
+  // Get the keys of the objects
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  // If the number of keys is different, the objects are not equal
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+
+  // Recursively compare the properties of the objects
+  for (const key of keys1) {
+    if (
+      !isEqual(
+        obj1[key] as Record<string, unknown>,
+        obj2[key] as Record<string, unknown>
+      )
+    ) {
+      return false;
+    }
+  }
+
+  // If all properties are equal, the objects are equal
+  return true;
 }

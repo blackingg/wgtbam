@@ -9,8 +9,6 @@ interface ChallengeSkeletonProps {
   option3: string;
   option4: string;
   answer: string;
-  // setIsAnswered: React.Dispatch<React.SetStateAction<boolean>>;
-  // setIsCorrect: React.Dispatch<React.SetStateAction<boolean>>;
   handleAnswerClick: (selectedOption: string) => void;
   selectedAnswer: string | null;
   isConfirm: boolean;
@@ -26,8 +24,6 @@ export const ChallengeSkeleton = ({
   option3,
   option4,
   answer,
-  // setIsAnswered,
-  // setIsCorrect,
   handleAnswerClick,
   selectedAnswer,
   isConfirm,
@@ -35,9 +31,6 @@ export const ChallengeSkeleton = ({
   actualCorrectAns,
   showRevealCorrect,
 }: ChallengeSkeletonProps) => {
-  // console.log("Answer: ", answer);
-
-  // console.log("Parent selected ANswer", selectedAnswer);
 
   return (
     <Fragment>

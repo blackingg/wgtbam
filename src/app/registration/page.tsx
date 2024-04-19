@@ -1,7 +1,7 @@
 "use client";
 import { DefaultButton, DefaultInput, DefaultModal } from "@/components";
 import { useRouter } from "next/navigation";
-import { InputsArr, Required, User } from "@/utils";
+import { InputsArr, QuestionArr, Required, User } from "@/utils";
 import { Fragment, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -28,8 +28,29 @@ const page = () => {
 
   const [isClient, setIsClient] = useState(false);
 
+  // const submitme = () => {
+  //   const url = "https://owgtbam-default-rtdb.firebaseio.com/questions.json";
+  //   const UserData = {
+  //     questions: QuestionArr,
+  //   };
+
+  //   fetch(url, {
+  //     method: "POST",
+  //     body: JSON.stringify(UserData),
+  //     headers: { "Content-Type": "application/json" },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("FireBase Successfully Connected Success:", data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  // };
+
   useEffect(() => {
     setIsClient(true);
+    // submitme();
   }, []);
 
   return (

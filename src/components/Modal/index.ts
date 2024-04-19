@@ -1,2 +1,2 @@
-export * from "./DefaultModal"
 export * from "./PrizeModal"
+export * from "./DefaultModal"

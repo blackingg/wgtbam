@@ -1,5 +1,4 @@
-"use client";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { DefaultButton } from "..";
 
 interface ModalWImageProps {
@@ -9,7 +8,7 @@ interface ModalWImageProps {
   ButtonLabel?: string;
   label: string;
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   closeAction?: () => void;
 }
 
