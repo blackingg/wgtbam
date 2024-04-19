@@ -392,7 +392,7 @@ export default function Home() {
       >
         {revealCorrectAnswer === false &&
           userRole !== "" &&
-          userRole[0].users.admin.userRole === "player" && (
+          userRole[0].users.admin.userRole === "admin" && (
             <ConfirmationBtn
               onClick={() => {
                 if (isConfirmed === false) {
@@ -419,7 +419,7 @@ export default function Home() {
         {revealCorrectAnswer &&
           isConfirmed &&
           userRole !== "" &&
-          userRole[0].users.admin.userRole === "player" && (
+          userRole[0].users.admin.userRole === "admin" && (
             <ConfirmationBtn
               onClick={() => {
                 console.log("Go to Next Question");
