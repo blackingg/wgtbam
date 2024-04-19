@@ -1,4 +1,4 @@
-import { InputName } from ".";
+import { InputName } from "@/types";
 
 export const InputsArr = [
   {

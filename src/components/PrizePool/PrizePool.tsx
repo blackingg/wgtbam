@@ -1,5 +1,5 @@
-import { TelIcon, UsergroupIcon } from "@/components";
 import { values } from "@/utils";
+import { Fragment } from "react";
 
 interface PrizePoolProps {
   prizeLevel: number;
@@ -15,8 +15,7 @@ export const PrizePool = ({
   usedPhone,
 }: PrizePoolProps) => {
   return (
-    <>
-      {/* <section className="w-full min-h-screen flex justify-center items-center purplebg relative overflow-y-hidden"> */}
+    <Fragment>
       <div className=" bg-gradient-to-br from-[#121F3B] to-[#070E1D] bg-opacity-50 px-8 ipad:px-[70px] py-4 ipad:py-[34px] relative rounded-2xl border border-white font-montserrat font-normal text-sm ipad:font-bold ipad:text-3xl space-y-2">
         {values.map((value) => (
           <div
@@ -76,7 +75,6 @@ export const PrizePool = ({
           />
         </button>
       </div>
-      {/* </section> */}
-    </>
+    </Fragment>
   );
 };

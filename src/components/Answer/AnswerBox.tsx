@@ -1,4 +1,4 @@
-import { cn } from "@/utils/util";
+import { cn } from "@/utils";
 
 interface AnswerBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   option: string;

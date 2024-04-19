@@ -1,10 +1,5 @@
-import { cn } from "@/utils/util";
-import React from "react";
-
-interface AnswerButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  btntext: string;
-}
+import { AnswerButtonProps } from "@/types";
+import { cn } from "@/utils";
 
 export const AnswerButton = ({ btntext, className }: AnswerButtonProps) => {
   return (

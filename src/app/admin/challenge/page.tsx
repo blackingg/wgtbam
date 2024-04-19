@@ -3,7 +3,6 @@ import {
   ChallengeSkeleton,
   ConfirmationBtn,
   PrizeModal,
-  RingLoader,
 } from "@/components";
 import { database } from "@/firebase";
 import { handleFiftyFifty } from "@/helpers";
@@ -12,7 +11,7 @@ import { isEqual } from "@/utils";
 import { useQuestionStore } from "@/zustand/store";
 import { DataSnapshot, off, onValue, ref, set } from "firebase/database";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 export default function Home() {
   const [userRole, setUserRole] = useState<any>("");
@@ -87,7 +86,7 @@ export default function Home() {
   const updateData = (newValue: StateValue) => {
     const dbRef = ref(database, "questionStore");
     set(dbRef, newValue);
-    console.log("Update function new values", newValue);
+    // console.log("Update function new values", newValue);
   };
   // **********************************
 
@@ -117,7 +116,7 @@ export default function Home() {
 
     updateDataInFirebase(newData);
 
-    console.log("Current Challenge Index:", currentChallengeIndex);
+    // console.log("Current Challenge Index:", currentChallengeIndex);
   };
 
   const createQueryString = useCallback(
@@ -136,7 +135,7 @@ export default function Home() {
         isAnswered: true,
       });
       if (selectedOption === allQuestions[currentChallengeIndex].answer) {
-        console.log("Prev pricelevel", prizeLevel);
+        // console.log("Prev pricelevel", prizeLevel);
 
         let updatedPrizeLvl = prizeLevel + 1;
         // setIsCorrect(true);
@@ -151,7 +150,7 @@ export default function Home() {
           selectedAnswer: selectedOption,
           finallyIsCorrectAns: true,
         });
-        console.log("After pricelevel", prizeLevel);
+        // console.log("After pricelevel", prizeLevel);
       } else {
         let currentuserlevel = prizeLevel;
         if (currentuserlevel >= 15) {
@@ -176,10 +175,10 @@ export default function Home() {
   };
 
   const nextQuestion = () => {
-    console.log("Challenge index in nextQuestion", currentChallengeIndex);
+    // console.log("Challenge index in nextQuestion", currentChallengeIndex);
 
     let newChallengeIndex = currentChallengeIndex + 1;
-    console.log("nCI", newChallengeIndex);
+    // console.log("nCI", newChallengeIndex);
 
     // setCurrentChallengeIndex(1);
 
@@ -191,7 +190,7 @@ export default function Home() {
       isAnswered: false,
       goToNextQuestion: false,
     });
-    console.log("After currrent index nQ", currentChallengeIndex);
+    // console.log("After currrent index nQ", currentChallengeIndex);
   };
 
   useEffect(() => {
@@ -255,14 +254,14 @@ export default function Home() {
 
     const listener = (snapshot: DataSnapshot) => {
       const newData = snapshot.val();
-      console.log("New values from Firebase??", newData);
+      // console.log("New values from Firebase??", newData);
       if (newData && !isEqual(newData, useQuestionStore.getState())) {
         // updateDataInFirebase(newData);
         updateDataInStore(newData);
-        console.log(
-          "Current challenge index from FB",
-          newData.currentChallengeIndex
-        );
+        // console.log(
+        //   "Current challenge index from FB",
+        //   newData.currentChallengeIndex
+        // );
       }
     };
 
@@ -275,7 +274,7 @@ export default function Home() {
   // *************************************
 
   // console.log("All instance pricelevel", prizeLevel);
-  console.log("All currrent index", currentChallengeIndex);
+  // console.log("All currrent index", currentChallengeIndex);
 
   const url = `https://owgtbam-default-rtdb.firebaseio.com/users.json`;
 
@@ -285,32 +284,14 @@ export default function Home() {
       .then((data) => {
         if (data) {
           const values = Object.values(data);
-          console.log("FireBase Successfully Fetched Success:", data);
+          // console.log("FireBase Successfully Fetched Success:", data);
           setUserRole(values);
         }
       })
       .catch((error) => console.error("Error:", error));
-    const UserData = {
-      users: {
-        player: { userRole: "player" },
-        admin: { userRole: "admin" },
-      },
-    };
-    // fetch(url, {
-    //   method: "POST",
-    //   body: JSON.stringify(UserData),
-    //   headers: { "Content-Type": "application/json" },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("FireBase Successfully Connected Success:", data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    // });
   }, []);
 
-  console.log("User role", userRole);
+  // console.log("User role", userRole);
 
   return (
     <section className=" pt-4 relative w-full min-h-screen flex flex-col justify-center gap-20 purplebg">
@@ -422,7 +403,7 @@ export default function Home() {
           userRole[0].users.admin.userRole === "admin" && (
             <ConfirmationBtn
               onClick={() => {
-                console.log("Go to Next Question");
+                // console.log("Go to Next Question");
 
                 if (
                   goToNextQuestion === false &&
@@ -436,7 +417,7 @@ export default function Home() {
                   });
                   // nextQuestion();
                   const newIndex = currentChallengeIndex + 1;
-                  console.log("nCI", newIndex);
+                  // console.log("nCI", newIndex);
 
                   // setCurrentChallengeIndex(1);
 

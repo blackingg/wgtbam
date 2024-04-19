@@ -1,9 +1,5 @@
+import { AnswerButtonProps } from "@/types";
 import { cn } from "@/utils";
-
-interface AnswerButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  btntext: string;
-}
 
 export const ConfirmationBtn = ({
   btntext,

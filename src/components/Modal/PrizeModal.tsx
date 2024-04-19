@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { PrizePool } from "..";
 import { useQuestionStore } from "@/zustand/store";
 import { checkIsClient, isEqual } from "@/utils";
@@ -8,7 +8,7 @@ import { database } from "@/firebase";
 
 export const PrizeModal = () => {
   const openPrize = useQuestionStore((state) => state.openPrize);
-  const setOpenPrize = useQuestionStore((state) => state.setOpenPrize);
+  // const setOpenPrize = useQuestionStore((state) => state.setOpenPrize);
   const usedFifty = useQuestionStore((state) => state.usedFifty);
   const usedPhone = useQuestionStore((state) => state.usedPhone);
   const usedAudience = useQuestionStore((state) => state.usedAudience);

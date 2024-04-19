@@ -1,7 +1,7 @@
-import { cn } from "@/utils/util";
-import React from "react";
+import { cn } from "@/utils";
+import { HTMLAttributes } from "react";
 
-interface QuestionBoxProps extends React.HTMLAttributes<HTMLDivElement> {
+interface QuestionBoxProps extends HTMLAttributes<HTMLDivElement> {
   question: string;
   isBig?: boolean;
 }

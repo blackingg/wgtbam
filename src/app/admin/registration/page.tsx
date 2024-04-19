@@ -1,9 +1,10 @@
 "use client";
 import { DefaultButton, DefaultInput, DefaultModal } from "@/components";
 import { useRouter } from "next/navigation";
-import { InputsArr, QuestionArr, Required, User } from "@/utils";
+import { InputsArr, QuestionArr, Required } from "@/utils";
 import { Fragment, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { User } from "@/types";
 
 const page = () => {
   const {

@@ -2,35 +2,8 @@
 import { database } from "@/firebase";
 import { Question } from "@/types";
 import { QuestionArr } from "@/utils";
-import { onValue, ref, set as FirebaseSet } from "firebase/database";
-import { StoreApi, create } from "zustand";
-
-export type StateTest ={
-  value: number;
-}
-
-export type ActionTest = {
-increment: (byWhat: number, callback: (newValue: number) => void)=> void;
-  decrement: (byWhat: number, callback: (newValue: number) => void)=> void;
-  setValue: (data: number)=>void;
-}
-
-export const useTestStore = create<StateTest & ActionTest>()((set, get) => ({
-  value: 0,
-  increment: (byWhat, callback) => {
-    const newValue = get().value + byWhat;
-    set({ value: newValue });
-    callback(newValue);
-  },
-  decrement: (byWhat, callback) => {
-    const newValue = get().value - byWhat;
-  set({ value: newValue });
-    callback(newValue)
-  },
-
-  setValue: (data) => set((state) => ({ value: data })),
-}));
-
+import { ref, set as FirebaseSet } from "firebase/database";
+import { create } from "zustand";
 
 export type State = {
   allQuestions: Question[];
@@ -188,12 +161,10 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
    updateDataInFirebase: (data) => {
   const dbRef = ref(database, "questionStore");
 
-  // Get the current data from the store
   const currentState = get();
 
-  // Merge the new data with the current state
   const newData = { ...currentState, ...data };
-  console.log("From zustand", newData);
+  // console.log("From zustand", newData);
   
 
   const { 
@@ -219,19 +190,17 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   ...stateToSave 
 } = newData;
 
-console.log("State to save??", stateToSave);
+// console.log("State to save??", stateToSave);
 
-  // Update the store with the merged data
   set(stateToSave);
 
-  // Update Firebase with the merged data
   FirebaseSet(dbRef, stateToSave); 
 },
    updateDataInStore: (data) => {
   const currentState = get();
 
   const newData = { ...currentState, ...data };
-  console.log("Update in store", newData);
+  // console.log("Update in store", newData);
   
 
   const { 
@@ -256,7 +225,7 @@ console.log("State to save??", stateToSave);
   ...stateToSave 
 } = newData;
 
-console.log("Updated store data", stateToSave);
+// console.log("Updated store data", stateToSave);
 
   set(stateToSave);
 },

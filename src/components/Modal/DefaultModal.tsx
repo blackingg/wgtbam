@@ -1,4 +1,5 @@
-import React, { ReactNode } from "react";
+"use client";
+import { Dispatch, ReactNode } from "react";
 import { DefaultButton } from "..";
 
 interface ModalWImageProps {
@@ -8,7 +9,7 @@ interface ModalWImageProps {
   ButtonLabel?: string;
   label: string;
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: Dispatch<React.SetStateAction<boolean>>;
   closeAction?: () => void;
 }
 
@@ -45,7 +46,7 @@ export const DefaultModal = ({
             {anythingelse}
             <DefaultButton
               text={ButtonLabel ? ButtonLabel : "Close"}
-              onclick={() => {
+              onClick={() => {
                 closeModal();
                 closeAction && closeAction();
               }}
