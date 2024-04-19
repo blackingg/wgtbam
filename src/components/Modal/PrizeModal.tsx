@@ -2,10 +2,9 @@
 import React, { useEffect } from "react";
 import { PrizePool } from "..";
 import { useQuestionStore } from "@/zustand/store";
-import { checkIsClient } from "@/utils";
+import { checkIsClient, isEqual } from "@/utils";
 import { DataSnapshot, off, onValue, ref } from "firebase/database";
 import { database } from "@/firebase";
-import { isEqual } from "@/app/challenge/page";
 
 export const PrizeModal = () => {
   const openPrize = useQuestionStore((state) => state.openPrize);
