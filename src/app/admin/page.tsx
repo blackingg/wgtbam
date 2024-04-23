@@ -36,9 +36,9 @@ export default function Home() {
 
     onValue(dbRef, listener);
 
-    // updateDataInFirebase({
-    //   goToHome: false,
-    // });
+    updateDataInFirebase({
+      goToHome: false,
+    });
 
     return () => {
       off(dbRef, "value", listener);
@@ -57,7 +57,7 @@ export default function Home() {
 
       {showPlay && (
         <section
-          onClick={() => router.push("/challenge")}
+          onClick={() => router.push("/admin/challenge")}
           className=" mt-[6rem]"
         >
           <div className=" relative">

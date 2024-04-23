@@ -1,12 +1,7 @@
 "use client";
-import {
-  ChallengeSkeleton,
-  ConfirmationBtn,
-  PrizeModal,
-} from "@/components";
+import { ChallengeSkeleton, ConfirmationBtn, PrizeModal } from "@/components";
 import { database } from "@/firebase";
 import { handleFiftyFifty } from "@/helpers";
-import { Question } from "@/types";
 import { isEqual } from "@/utils";
 import { useQuestionStore } from "@/zustand/store";
 import { DataSnapshot, off, onValue, ref, set } from "firebase/database";
@@ -81,22 +76,11 @@ export default function Home() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // **********************************
-  type StateValue = Question[] | number | boolean | string | null;
-  const updateData = (newValue: StateValue) => {
-    const dbRef = ref(database, "questionStore");
-    set(dbRef, newValue);
-    // console.log("Update function new values", newValue);
-  };
-  // **********************************
-
   const handleFiftyFiftyClick = () => {
     const { updatedOptions, challengeIndex } = handleFiftyFifty(
       allQuestions,
       currentChallengeIndex
     );
-    // setAllQuestions(updatedOptions, challengeIndex);
-    // setUsedFifty(true);
 
     const newData = {
       allQuestions: allQuestions.map((question, index) => {
@@ -115,8 +99,6 @@ export default function Home() {
     };
 
     updateDataInFirebase(newData);
-
-    // console.log("Current Challenge Index:", currentChallengeIndex);
   };
 
   const createQueryString = useCallback(
@@ -130,19 +112,11 @@ export default function Home() {
 
   const handleAnswerClick = (selectedOption: string) => {
     if (selectedAnswer === null) {
-      // setIsAnswered(true);
       updateDataInFirebase({
         isAnswered: true,
       });
       if (selectedOption === allQuestions[currentChallengeIndex].answer) {
-        // console.log("Prev pricelevel", prizeLevel);
-
         let updatedPrizeLvl = prizeLevel + 1;
-        // setIsCorrect(true);
-        // setShowRevealCorrect(selectedOption);
-        // setPrizeLevel(1);
-        // setSelectedAnswer(selectedOption);
-        // setFinallyIsCorrectAns(true);
         updateDataInFirebase({
           isCorrect: true,
           showRevealCorrect: selectedOption,
@@ -150,7 +124,6 @@ export default function Home() {
           selectedAnswer: selectedOption,
           finallyIsCorrectAns: true,
         });
-        // console.log("After pricelevel", prizeLevel);
       } else {
         let currentuserlevel = prizeLevel;
         if (currentuserlevel >= 15) {
@@ -160,10 +133,6 @@ export default function Home() {
         } else if (currentuserlevel >= 5) {
           currentuserlevel = 5;
         }
-        // setSelectedAnswer(selectedOption);
-        // setFinallyUserLevel(currentuserlevel);
-        // setFinallyIsCorrectAns(false);
-        // setShowRevealCorrect(allQuestions[currentChallengeIndex].answer);
         updateDataInFirebase({
           selectedAnswer: selectedOption,
           finallyUserLevel: currentuserlevel,
@@ -174,24 +143,19 @@ export default function Home() {
     }
   };
 
-  const nextQuestion = () => {
-    // console.log("Challenge index in nextQuestion", currentChallengeIndex);
+  // const nextQuestion = () => {
+  //   let newChallengeIndex = currentChallengeIndex + 1;
+  //   console.log("nCI", newChallengeIndex);
 
-    let newChallengeIndex = currentChallengeIndex + 1;
-    console.log("nCI", newChallengeIndex);
-
-    // setCurrentChallengeIndex(1);
-
-    updateDataInFirebase({
-      currentChallengeIndex: newChallengeIndex,
-      selectedAnswer: null,
-      revealCorrectAnswer: false,
-      isConfirmed: false,
-      isAnswered: false,
-      goToNextQuestion: false,
-    });
-    // console.log("After currrent index nQ", currentChallengeIndex);
-  };
+  //   updateDataInFirebase({
+  //     currentChallengeIndex: newChallengeIndex,
+  //     selectedAnswer: null,
+  //     revealCorrectAnswer: false,
+  //     isConfirmed: false,
+  //     isAnswered: false,
+  //     goToNextQuestion: false,
+  //   });
+  // };
 
   useEffect(() => {
     if (
@@ -201,12 +165,10 @@ export default function Home() {
       selectedAnswer === allQuestions[currentChallengeIndex].answer
     ) {
       setTimeout(() => {
-        // setOpenPrize(true);
         updateDataInFirebase({
           openPrize: true,
         });
         setTimeout(() => {
-          // setOpenPrize(false);
           updateDataInFirebase({
             openPrize: false,
           });
@@ -239,12 +201,10 @@ export default function Home() {
       showRevealCorrect === allQuestions[currentChallengeIndex].answer &&
       isConfirmed === true
     ) {
-      // setRevealCorrectAnswer(true);
       updateDataInFirebase({
         revealCorrectAnswer: true,
         isConfirmed: true,
       });
-      // setIsConfirmed(true);
     }
   }, [revealCorrectAnswer, isConfirmed, selectedAnswer, finallyIsCorrectAns]);
 
@@ -254,14 +214,8 @@ export default function Home() {
 
     const listener = (snapshot: DataSnapshot) => {
       const newData = snapshot.val();
-      // console.log("New values from Firebase??", newData);
       if (newData && !isEqual(newData, useQuestionStore.getState())) {
-        // updateDataInFirebase(newData);
         updateDataInStore(newData);
-        // console.log(
-        //   "Current challenge index from FB",
-        //   newData.currentChallengeIndex
-        // );
       }
     };
 
@@ -273,9 +227,6 @@ export default function Home() {
   }, []);
   // *************************************
 
-  // console.log("All instance pricelevel", prizeLevel);
-  // console.log("All currrent index", currentChallengeIndex);
-
   const url = `https://owgtbam-default-rtdb.firebaseio.com/users.json`;
 
   useEffect(() => {
@@ -284,20 +235,17 @@ export default function Home() {
       .then((data) => {
         if (data) {
           const values = Object.values(data);
-          // console.log("FireBase Successfully Fetched Success:", data);
           setUserRole(values);
         }
       })
       .catch((error) => console.error("Error:", error));
-    const UserData = {
-      users: {
-        player: { userRole: "player" },
-        admin: { userRole: "admin" },
-      },
-    };
+    // const UserData = {
+    //   users: {
+    //     player: { userRole: "player" },
+    //     admin: { userRole: "admin" },
+    //   },
+    // };
   }, []);
-
-  // console.log("User role", userRole);
 
   return (
     <section className=" pt-4 relative w-full min-h-screen flex flex-col justify-center gap-20 purplebg">
@@ -320,7 +268,6 @@ export default function Home() {
             <button
               onClick={() => {
                 if (usedPhone === false && isAnswered === false) {
-                  // setUsedPhone(true);
                   updateDataInFirebase({
                     usedPhone: true,
                   });
@@ -339,7 +286,6 @@ export default function Home() {
             <button
               onClick={() => {
                 if (usedAudience === false && isAnswered === false) {
-                  // setUsedAudience(true);
                   updateDataInFirebase({
                     usedAudience: true,
                   });
@@ -383,12 +329,10 @@ export default function Home() {
             <ConfirmationBtn
               onClick={() => {
                 if (isConfirmed === false) {
-                  // setIsConfirmed(true);
                   updateDataInFirebase({
                     isConfirmed: true,
                   });
                   if (revealCorrectAnswer === false) {
-                    // setRevealCorrectAnswer(true);
                     updateDataInFirebase({
                       revealCorrectAnswer: true,
                     });
@@ -409,23 +353,15 @@ export default function Home() {
           userRole[0].users.admin.userRole === "player" && (
             <ConfirmationBtn
               onClick={() => {
-                // console.log("Go to Next Question");
-
                 if (
                   goToNextQuestion === false &&
                   selectedAnswer !== null &&
                   selectedAnswer === allQuestions[currentChallengeIndex].answer
                 ) {
-                  // console.log("Next Inside");
-                  // setGoToNextQuestion(true);
                   updateDataInFirebase({
                     goToNextQuestion: true,
                   });
-                  // nextQuestion();
                   const newIndex = currentChallengeIndex + 1;
-                  // console.log("nCI", newIndex);
-
-                  // setCurrentChallengeIndex(1);
 
                   updateDataInFirebase({
                     currentChallengeIndex: newIndex,
@@ -435,7 +371,6 @@ export default function Home() {
                     isAnswered: false,
                     goToNextQuestion: false,
                   });
-
                 }
               }}
               disabled={(() => {

@@ -2,7 +2,7 @@
 import { database } from "@/firebase";
 import { Question } from "@/types";
 import { QuestionArr } from "@/utils";
-import { ref, set as FirebaseSet } from "firebase/database";
+import { ref, set as FirebaseSet, set } from 'firebase/database';
 import { create } from "zustand";
 
 export type State = {
@@ -22,6 +22,7 @@ export type State = {
   revealCorrectAnswer: boolean;
   showRevealCorrect: string;
   goToNextQuestion: boolean;
+  goToHome: boolean;
 }
 
 export type Action = {
@@ -44,6 +45,7 @@ export type Action = {
   setGoToNextQuestion: (next: boolean, callback?: (next: boolean) => void) => void;
   updateDataInFirebase: (data: Partial<State>) => void;
   updateDataInStore: (data: Partial<State>) => void;
+  setGoToHome: (home: boolean, callback?: (home: boolean) => void) => void;
 };
 
 
@@ -65,6 +67,11 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   revealCorrectAnswer: false,
   showRevealCorrect: "",
   goToNextQuestion: false,
+  goToHome: false,
+  setGoToHome: (boolValue, callback) => set(() => {
+    callback && callback(boolValue);
+    return { goToHome: boolValue };
+  }),
   setQuestionArr: (allQuest, callback) => set((state) => {
     const newQuestionsArr = allQuest;
     callback && callback(newQuestionsArr);
@@ -187,6 +194,7 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   setQuestionArr, 
   updateDataInFirebase,
   updateDataInStore,
+  setGoToHome,
   ...stateToSave 
 } = newData;
 
@@ -222,6 +230,7 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   setGoToNextQuestion,
   setQuestionArr, 
   updateDataInFirebase,
+  setGoToHome,
   ...stateToSave 
 } = newData;
 

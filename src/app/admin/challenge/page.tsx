@@ -212,7 +212,7 @@ export default function Home() {
           });
           if (currentChallengeIndex >= 14) {
             router.push(
-              "/total" + "?" + createQueryString("prizeLevel", `${prizeLevel}`)
+              "/admin/total" + "?" + createQueryString("prizeLevel", `${prizeLevel}`)
             );
           }
         }, 3000);
@@ -227,7 +227,7 @@ export default function Home() {
     ) {
       setTimeout(() => {
         router.push(
-          "/total" +
+          "/admin/total" +
             "?" +
             createQueryString("prizeLevel", `${finallyUserLevel}`)
         );
@@ -403,24 +403,15 @@ export default function Home() {
           userRole[0].users.admin.userRole === "admin" && (
             <ConfirmationBtn
               onClick={() => {
-                // console.log("Go to Next Question");
-
                 if (
                   goToNextQuestion === false &&
                   selectedAnswer !== null &&
                   selectedAnswer === allQuestions[currentChallengeIndex].answer
                 ) {
-                  // console.log("Next Inside");
-                  // setGoToNextQuestion(true);
                   updateDataInFirebase({
                     goToNextQuestion: true,
                   });
-                  // nextQuestion();
                   const newIndex = currentChallengeIndex + 1;
-                  // console.log("nCI", newIndex);
-
-                  // setCurrentChallengeIndex(1);
-
                   updateDataInFirebase({
                     currentChallengeIndex: newIndex,
                     selectedAnswer: null,
