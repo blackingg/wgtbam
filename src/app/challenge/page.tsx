@@ -1,5 +1,14 @@
 "use client";
-import { ChallengeSkeleton, ConfirmationBtn, PrizeModal } from "@/components";
+import {
+  AskAudienceBtn,
+  BackgroundImage,
+  ChallengeSkeleton,
+  ConfirmationBtn,
+  FiftyFiftyButton,
+  MillionareLogo,
+  PhoneFriendBtn,
+  PrizeModal,
+} from "@/components";
 import { database } from "@/firebase";
 import { handleFiftyFifty } from "@/helpers";
 import { isEqual } from "@/utils";
@@ -110,6 +119,8 @@ export default function Home() {
     [searchParams]
   );
 
+  let currentuserlevel: number | null = null;
+
   const handleAnswerClick = (selectedOption: string) => {
     if (selectedAnswer === null) {
       updateDataInFirebase({
@@ -125,7 +136,7 @@ export default function Home() {
           finallyIsCorrectAns: true,
         });
       } else {
-        let currentuserlevel = prizeLevel;
+        currentuserlevel = prizeLevel;
         if (currentuserlevel >= 15) {
           currentuserlevel = 15;
         } else if (currentuserlevel >= 10) {
@@ -227,10 +238,10 @@ export default function Home() {
   }, []);
   // *************************************
 
-  const url = `https://owgtbam-default-rtdb.firebaseio.com/users.json`;
+  const url = process.env.NEXT_PUBLIC_FIREBASE_USERS_URL;
 
   useEffect(() => {
-    fetch(url)
+    fetch(url ?? "")
       .then((response) => response.json())
       .then((data) => {
         if (data) {
@@ -248,24 +259,21 @@ export default function Home() {
   }, []);
 
   return (
-    <section className=" pt-4 relative w-full min-h-screen flex flex-col justify-center gap-20 purplebg">
+    <section className=" pt-4 relatve min-w-full min-h-full flex flex-col justify-center gap-20">
+      <BackgroundImage />
       <div className=" w-full h-full relative">
         <div className=" max-w-[150px] tablet:max-w-[250px] max-h-[150px] tablet:max-h-[250px] w-full h-full flex justify-center items-center mx-auto">
-          <img src="/Images/logo2.svg" alt="Logo" className="" />
+          <MillionareLogo />
           <div className=" absolute right-[3rem] top-[50%] translate-y-[-50%] flex flex-col ipad:flex-row gap-6 items-center">
-            <button
+            <FiftyFiftyButton
               onClick={() => {
                 if (usedFifty === false && isAnswered === false) {
                   handleFiftyFiftyClick();
                 }
               }}
-              className={`${
-                usedFifty ? "bg-[#EB1212]" : "bg-white/90"
-              } max-w-[50px] tablet:max-w-[100px]  max-h-[25px] tablet:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-xs tablet:text-xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
-            >
-              50/50
-            </button>
-            <button
+              className={`${usedFifty && `bg-[#EB1212]`}`}
+            />
+            <PhoneFriendBtn
               onClick={() => {
                 if (usedPhone === false && isAnswered === false) {
                   updateDataInFirebase({
@@ -273,17 +281,9 @@ export default function Home() {
                   });
                 }
               }}
-              className={`${
-                usedPhone ? "bg-[#EB1212]" : "bg-white/90"
-              }  max-w-[50px] tablet:max-w-[100px]  max-h-[25px] tablet:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
-            >
-              <img
-                src="/Images/phoneIcon.png"
-                alt=""
-                className=" max-w-[20px] tablet:max-w-[30px] max-h-[20px] tablet:max-h-[30px]"
-              />
-            </button>
-            <button
+              className={`${usedPhone && `bg-[#EB1212]`}`}
+            />
+            <AskAudienceBtn
               onClick={() => {
                 if (usedAudience === false && isAnswered === false) {
                   updateDataInFirebase({
@@ -291,16 +291,8 @@ export default function Home() {
                   });
                 }
               }}
-              className={`${
-                usedAudience ? "bg-[#EB1212]" : "bg-white/90"
-              } max-w-[50px] tablet:max-w-[100px]  max-h-[25px] tablet:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
-            >
-              <img
-                src="/Images/userGroupIcon.png"
-                alt=""
-                className=" max-w-[20px] tablet:max-w-[30px] max-h-[20px] tablet:max-h-[30px]"
-              />
-            </button>
+              className={`${usedAudience && `bg-[#EB1212]`}`}
+            />
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { QuestionBox } from "..";
+import { NonClickableMillionareBox, QuestionBox } from "..";
 import { AnswerBox } from "../Answer";
 
 interface ChallengeSkeletonProps {
@@ -31,19 +31,9 @@ export const ChallengeSkeleton = ({
   actualCorrectAns,
   showRevealCorrect,
 }: ChallengeSkeletonProps) => {
-
   return (
-    <Fragment>
-      <section>
-        <div className=" relative">
-          <div className=" bg-[#EAB95A] w-full h-[4.5px] z-[1] absolute left-[0%] top-[50%] translate-y-[-50%] " />
-          <QuestionBox
-            question={question}
-            className=" text-sm px-[4px] z-50 absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] "
-            isBig={true}
-          />
-        </div>
-      </section>
+    <div className=" w-full flex flex-col gap-3 largerdesktop:gap-10">
+      <NonClickableMillionareBox text={question} />
       <section>
         <div className=" tablet:p-8 flex flex-col tablet:flex-row items-center justify-center gap-4 relative">
           <div className=" bg-[#EAB95A] w-full h-[4.5px] z-[1] absolute left-[0%] top-[50%] translate-y-[-50%] hidden tablet:block " />
@@ -148,6 +138,6 @@ export const ChallengeSkeleton = ({
           />
         </div>
       </section>
-    </Fragment>
+    </div>
   );
 };

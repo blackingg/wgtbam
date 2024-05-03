@@ -1,3 +1,5 @@
+import { HTMLAttributes } from "react";
+
 export type User = {
   faculty: string;
   email: string;
@@ -6,3 +8,9 @@ export type User = {
 };
 
 export type InputName = "faculty" | "email" | "dept" | "phoneNo";
+
+export interface NonClickableMillionareBtnProps
+  extends HTMLAttributes<HTMLDivElement> {
+  text: string;
+  className2?: string;
+}

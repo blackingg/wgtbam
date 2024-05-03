@@ -1,6 +1,6 @@
 import { cn } from "@/utils";
 
-interface AnswerBoxProps extends React.HTMLAttributes<HTMLDivElement> {
+interface AnswerBoxProps extends React.HTMLAttributes<HTMLButtonElement> {
   option: string;
   answer: string;
   isBig?: boolean;
@@ -30,15 +30,6 @@ export const AnswerBox = ({
 }: AnswerBoxProps) => {
   const isCorrect = option === answer;
 
-  // console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-
-  // console.log("Is correct: ", isCorrect);
-  // console.log("reveal clicked ", revealedCorrect);
-
-  const JustShowCorrectAns = isCorrect === true && revealedCorrect === true;
-
-  // console.log("Last last", JustShowCorrectAns);
-  // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
   const isConfirmed =
     selected === true &&
     isConfirm === true &&
@@ -56,18 +47,6 @@ export const AnswerBox = ({
     isConfirm === false &&
     actualCorrectAns === true &&
     isCorrect === true;
-
-  const isRevealed =
-    selected === true &&
-    revealedCorrect === true &&
-    actualCorrectAns === true &&
-    isCorrect === true;
-
-  const RevealedNWrong =
-    selected === true &&
-    revealedCorrect === true &&
-    actualCorrectAns === false &&
-    isCorrect === false;
 
   const NotRevealed =
     selected === true &&
@@ -95,16 +74,17 @@ export const AnswerBox = ({
 
         ${NotRevealed && "bg-[#F9A61D]"} 
         ${
-          !selected && "bg-[#8A0089]"
+          !selected &&
+          "bg-gradient-to-b from-[#6F006E] via-[#8A0089] to-[#6F006E]"
         } angle shadow-inner w-full h-full text-white flex justify-center items-center py-2 ${
             isBig ? " ipad:py-6" : " ipad:py-4"
           } rounded-full min-h-[2rem] ipad:min-h-[4rem]`,
           className2
         )}
       >
-        <div className=" max-w-[60%] flex justify-center items-center">
+        <span className=" max-w-[60%] flex justify-center items-center">
           {option}
-        </div>
+        </span>
       </span>
     </button>
   );

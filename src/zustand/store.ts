@@ -23,6 +23,7 @@ export type State = {
   showRevealCorrect: string;
   goToNextQuestion: boolean;
   goToHome: boolean;
+  showCheckpoint: boolean;
 }
 
 export type Action = {
@@ -46,6 +47,7 @@ export type Action = {
   updateDataInFirebase: (data: Partial<State>) => void;
   updateDataInStore: (data: Partial<State>) => void;
   setGoToHome: (home: boolean, callback?: (home: boolean) => void) => void;
+  setShowCheckpoint: (show: boolean, callback?: (show: boolean) => void) => void;
 };
 
 
@@ -68,6 +70,11 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   showRevealCorrect: "",
   goToNextQuestion: false,
   goToHome: false,
+  showCheckpoint: false,
+  setShowCheckpoint: (show, callback) => set(() => {
+    callback && callback(show);
+    return { showCheckpoint: show };
+  }),
   setGoToHome: (boolValue, callback) => set(() => {
     callback && callback(boolValue);
     return { goToHome: boolValue };
@@ -195,6 +202,7 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   updateDataInFirebase,
   updateDataInStore,
   setGoToHome,
+  setShowCheckpoint,
   ...stateToSave 
 } = newData;
 
@@ -231,6 +239,7 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   setQuestionArr, 
   updateDataInFirebase,
   setGoToHome,
+  setShowCheckpoint,
   ...stateToSave 
 } = newData;
 
@@ -240,6 +249,4 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
 },
 }));
 
-type StateToSave = Omit<State & Action, 'setAllQuestions' | 'setCurrentChallengeIndex' | 
-'setUsedFifty' | 'setUsedPhone' | 'setUsedAudience' | 'setIsAnswered' | 'setIsCorrect' | 'setPrizeLevel' | 'setSelectedAnswer' | 'setOpenPrize' | 'setIsConfirmed' | 'setFinallyIsCorrectAns' | 'setFinallyUserLevel' | 'setRevealCorrectAnswer' | 'setShowRevealCorrect' | 'setGoToNextQuestion'>;
 

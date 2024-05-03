@@ -19,7 +19,7 @@ export const QuestionBox = ({
       )}
     >
       <div
-        className={`angle shadow-inner bg-[#8A0089] w-full h-full text-white flex justify-center items-center py-2 ${
+        className={`angle shadow-inner bg-gradient-to-b from-[#6F006E] via-[#8A0089] to-[#6F006E] w-full h-full text-white flex justify-center items-center py-2 ${
           isBig ? " tablet:py-6" : " tablet:py-4"
         } rounded-full`}
       >

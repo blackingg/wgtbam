@@ -1,6 +1,7 @@
 "use client";
 import { TelIcon, UsergroupIcon } from "@/components";
 import { values } from "@/utils";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const page = () => {
@@ -22,17 +23,24 @@ const page = () => {
       <div className=" bg-gradient-to-br from-[#121F3B] to-[#070E1D] bg-opacity-50 px-8 tablet:px-[70px] py-4 tablet:py-[34px] relative rounded-2xl border border-white font-montserrat font-normal text-sm tablet:font-bold tablet:text-3xl space-y-2">
         {values.map((value) => (
           <div
-            className={`flex items-center w-full h-full ${
+            className={` relative flex items-center w-full h-full ${
               value.value !== 5 && value.value !== 10 && value.value !== 15
                 ? "text-[#F88008]"
                 : "text-white"
             }`}
             key={value.value}
           >
-            <img
+            <Image
+              fill
+              priority
+              quality={100}
+              placeholder="blur"
+              blurDataURL="/Images/rect.svg"
+              sizes="100%"
               src="/Images/rect.svg"
               alt=""
-              className={` left-0 absolute min-w-full min-h-full ${
+              draggable={false}
+              className={` left-0 absolute min-w-full min-h-full cursor-not-allowed ${
                 value.value === prizeLevel ? "flex" : "hidden"
               }`}
             />
