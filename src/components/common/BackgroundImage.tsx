@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const BackgroundImage = () => {
   return (
-    <div className=" min-w-full min-h-full absolute z-[-1]">
+    // <div className=" min-w-screen min-h-screen absolute z-[-1]">
       <Image
         src="/Images/purplebg.svg"
         fill
@@ -10,11 +10,11 @@ export const BackgroundImage = () => {
         placeholder="blur"
         blurDataURL="/Images/purplebg.svg"
         quality={100}
-        sizes="100%, 100%"
+        sizes="100vw, 100vh"
         priority
-        className=" object-cover bg-no-repeat z-[-1] cursor-not-allowed min-w-full min-h-full"
+        className=" top-0 left-0 object-cover bg-no-repeat cursor-not-allowed min-w-screen min-h-screen"
         draggable={false}
       />
-    </div>
+    // </div>
   );
 };

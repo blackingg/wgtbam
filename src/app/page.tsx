@@ -18,14 +18,13 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-
     checkLetsPlay === true && router.push("/challenge");
   }, [checkLetsPlay]);
 
   useFirebaseListener();
 
   return (
-    <main className="relatve w-screen min-h-screen flex flex-col gap-y-10 justify-center">
+    <main className="relatve top-0 left-0 overflow-hidden w-screen min-h-screen flex flex-col gap-y-10 justify-center items-center">
       <BackgroundImage />
       <MillionareLogo />
       <ClickableMillionareBox
