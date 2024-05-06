@@ -10,7 +10,7 @@ export const ConfirmationBtn = ({
     <button
       {...rest}
       className={cn(
-        " font-bold font-montserrat text-sm tablet:text-xl text-white rounded-[72px] shadow-2xl bg-[#086B35] px-7 py-3",
+        " font-bold font-montserrat text-sm tablet:text-xl text-white rounded-[72px] shadow-2xl bg-[#086B35] px-7 py-3 z-10 ",
         className
       )}
     >
