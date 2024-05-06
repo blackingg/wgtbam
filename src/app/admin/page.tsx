@@ -3,21 +3,43 @@
 import {
   BackgroundImage,
   ClickableMillionareBox,
-  GoToChallenge,
-  GoToHome,
   MillionareLogo,
 } from "@/components";
+import { useFirebaseListener } from "@/hooks";
+import { useQuestionStore } from "@/zustand/store";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-  GoToHome();
+  const { updateDataInFirebase, goToHome } = useQuestionStore();
 
-  const navToChallenge = GoToChallenge();
+  const checkLetsPlay = useQuestionStore((state) => state.letsPlay);
+  const router = useRouter();
+
+  useEffect(() => {
+    checkLetsPlay === true && router.push("/admin/challenge");
+
+    const Run = async () => {
+      goToHome === true && (await updateDataInFirebase({ goToHome: false }));
+    };
+    Run();
+  }, [checkLetsPlay, goToHome]);
+
+  useFirebaseListener();
 
   return (
-    <section className="relatve w-screen min-h-screen flex flex-col gap-y-10 justify-center">
+    <main className="relatve w-screen min-h-screen flex flex-col gap-y-10 justify-center">
       <BackgroundImage />
       <MillionareLogo />
-      <ClickableMillionareBox text="Lets Play!" onClick={navToChallenge} />
-    </section>
+      <ClickableMillionareBox
+        text="Lets Play!"
+        onClick={async () => {
+          router.push("/admin/challenge/");
+          await updateDataInFirebase({
+            letsPlay: true,
+          });
+        }}
+      />
+    </main>
   );
 }

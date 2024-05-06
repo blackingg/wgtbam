@@ -1,16 +1,23 @@
-"use client"
+"use client";
 
-import { useFirebaseListener } from '@/hooks';
-import { useEffect } from 'react'
+import { useFirebaseListener } from "@/hooks";
+import { useQuestionStore } from "@/zustand/store";
+import { useEffect } from "react";
 
 export const GoToHome = () => {
-  const { updateDataInStore, updateDataInFirebase } = useFirebaseListener();
+  const updateDataInFirebase = useQuestionStore(
+    (state) => state.updateDataInFirebase
+  );
+  useFirebaseListener();
 
   useEffect(() => {
-    updateDataInFirebase({
-      goToHome: false,
-    });
-    console.log("Effect called, to go to home");
-    
+    const Run = async () => {
+      await updateDataInFirebase({
+        goToHome: true,
+      });
+      console.log("Effect called, to go to home");
+    };
+
+    Run();
   }, []);
-}
+};

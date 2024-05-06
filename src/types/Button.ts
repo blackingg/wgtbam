@@ -1,7 +1,12 @@
 import { ButtonHTMLAttributes } from "react";
 
-export interface AnswerButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface AnswerButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   btntext: string;
 }
 
-export interface BtnProps extends React.HTMLAttributes<HTMLButtonElement>{}
+export interface BtnProps
+  extends React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {}

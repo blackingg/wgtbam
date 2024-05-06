@@ -20,7 +20,7 @@ export const AskAudienceBtn = ({ className, ...props }: BtnProps) => {
         draggable={false}
         priority
         sizes="20px, 30px"
-        className=" max-w-[20px] tablet:max-w-[30px] max-h-[20px] tablet:max-h-[30px] cursor-not-allowed"
+        className=" max-w-[20px] tablet:max-w-[30px] max-h-[20px] tablet:max-h-[30px] "
       />
     </button>
   );

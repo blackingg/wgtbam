@@ -7,17 +7,24 @@ import {
 } from "@/components";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+//@ts-ignore
 import Confetti from "react-confetti";
 import { useFirebaseListener } from "@/hooks";
 import { getAmount } from "@/helpers";
-import { ResetQuiz } from "@/utils";
+import { resetObj } from "@/utils";
+import { useQuestionStore } from "@/zustand/store";
 
 export default function Home({
   searchParams,
 }: {
   searchParams: { prizeLevel: string };
 }) {
-  const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
+  const updateDataInFirebase = useQuestionStore(
+    (state) => state.updateDataInFirebase
+  );
+
+  // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
+  const numPrizeLevel = useQuestionStore((state) => state.prizeLevel);
 
   const [pieces, setPieces] = useState(200);
 
@@ -27,27 +34,20 @@ export default function Home({
     }, 3000);
   };
 
-  const [isClient, setIsClient] = useState(false);
-
-  const { updateDataInStore, updateDataInFirebase } = useFirebaseListener();
-
-  const resetObj = ResetQuiz();
-
   useEffect(() => {
-    setIsClient(true);
     stopConfetti();
   }, []);
 
+  useFirebaseListener();
+
   return (
-    <section className="relatve w-screen min-h-screen flex flex-col justify-center gap-10">
+    <main className="relatve w-screen min-h-screen flex flex-col justify-center gap-10">
       <BackgroundImage />
-      {isClient && (
-        <Confetti
-          gravity={0.2}
-          numberOfPieces={pieces}
-          className="lConfetti w-screen h-screen grid place-items-center mx-auto"
-        />
-      )}
+      <Confetti
+        gravity={0.2}
+        numberOfPieces={pieces}
+        className="lConfetti w-screen h-screen grid place-items-center mx-auto"
+      />
       <MillionareLogo />
       <h1 className="  font-montserrat font-medium text-xl tablet:text-3xl ipad:text-5xl text-white/90 text-center">
         Total prize money won
@@ -61,8 +61,14 @@ export default function Home({
       <div className=" flex justify-center items-center w-full">
         <Link
           href="/admin"
-          onClick={() => {
-            updateDataInFirebase(resetObj);
+          onClick={async () => {
+            await updateDataInFirebase(resetObj);
+
+            // setTimeout(() => {
+            //   updateDataInFirebase({
+            //     goToHome: false,
+            //   });
+            // }, 3000);
           }}
         >
           <ConfirmationBtn
@@ -71,6 +77,6 @@ export default function Home({
           />
         </Link>
       </div>
-    </section>
+    </main>
   );
 }

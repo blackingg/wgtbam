@@ -1,7 +1,6 @@
 import { QuestionArr } from '.';
 
-export const ResetQuiz = () => {  
-  const resetObj = {
+ export const resetObj = {
       allQuestions: QuestionArr,
       currentChallengeIndex: 0,
       usedFifty: false,
@@ -10,7 +9,7 @@ export const ResetQuiz = () => {
       isAnswered: false,
       isCorrect: false,
       prizeLevel: 0,
-      selectedAnswer: null,
+      selectedAnswer: "",
       openPrize: false,
       isConfirmed: false,
       finallyIsCorrectAns: false,
@@ -19,9 +18,10 @@ export const ResetQuiz = () => {
       showRevealCorrect: "",
       goToNextQuestion: false,
       goToHome: true,
+      letsPlay: false,
+      showCheckpoint: false,
+      goToTotal: false,
+      continueChallenge: false,
   }
 
-  return (
-    resetObj
-  )
-}
+

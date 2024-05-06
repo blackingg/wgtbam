@@ -31,7 +31,8 @@ const page = () => {
             key={value.value}
           >
             <Image
-              fill
+              width={100}
+              height={100}
               priority
               quality={100}
               placeholder="blur"

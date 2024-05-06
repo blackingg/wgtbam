@@ -1,4 +1,5 @@
 "use client";
+
 import {
   BackgroundImage,
   ClickableMillionareBox,
@@ -17,13 +18,13 @@ const page = ({ searchParams }: { searchParams: { prizeLevel: string } }) => {
 
   const { goToTotal, continueChallenge, prizeLevel } = useQuestionStore();
 
-  const GoToQuestion = useGoToQuestion({ route: "/admin/challenge" });
+  const GoToQuestion = useGoToQuestion({ route: "/challenge" });
   const WithdrawMoney = useWithdrawMoney({
     numPrizeLevel: prizeLevel,
-    route: "/admin/total",
+    route: "/total",
   });
 
-  GoToChallengeOrTotal({ goToTotal, continueChallenge, user: "admin" });
+  GoToChallengeOrTotal({ goToTotal, continueChallenge });
 
   useFirebaseListener();
 

@@ -1,5 +1,7 @@
 import { values } from "@/utils";
 import { Fragment } from "react";
+import { AskAudienceBtn, FiftyFiftyButton, PhoneFriendBtn } from "..";
+import Image from "next/image";
 
 interface PrizePoolProps {
   prizeLevel: number;
@@ -26,7 +28,14 @@ export const PrizePool = ({
             }`}
             key={value.value}
           >
-            <img
+            <Image
+              width={100}
+              height={100}
+              priority
+              quality={100}
+              placeholder="blur"
+              blurDataURL="/Images/rect.svg"
+              sizes="100%"
               src="/Images/rect.svg"
               alt=""
               className={` left-0 absolute min-w-full min-h-full ${
@@ -42,38 +51,15 @@ export const PrizePool = ({
       </div>
 
       <div className=" absolute right-[30px] tablet:right-[50px] bottom-[50px] flex flex-col gap-6 items-center">
-        <button
+        <FiftyFiftyButton
           disabled
-          className={`${
-            usedFifty ? "bg-[#EB1212]" : "bg-white/90"
-          } max-w-[50px] ipad:max-w-[100px]  max-h-[25px] ipad:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-xs ipad:text-xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
-        >
-          50/50
-        </button>
-        <button
+          className={`${usedFifty && `bg-[#EB1212]`}`}
+        />
+        <PhoneFriendBtn disabled className={`${usedPhone && `bg-[#EB1212]`}`} />
+        <AskAudienceBtn
           disabled
-          className={`${
-            usedPhone ? "bg-[#EB1212]" : "bg-white/90"
-          }  max-w-[50px] ipad:max-w-[100px]  max-h-[25px] ipad:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
-        >
-          <img
-            src="/Images/phoneIcon.png"
-            alt=""
-            className=" max-w-[20px] ipad:max-w-[30px] max-h-[20px] ipad:max-h-[30px]"
-          />
-        </button>
-        <button
-          disabled
-          className={`${
-            usedAudience ? "bg-[#EB1212]" : "bg-white/90"
-          } max-w-[50px] ipad:max-w-[100px]  max-h-[25px] ipad:max-h-[50px] w-full h-full flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] shadow-md px-6 py-4`}
-        >
-          <img
-            src="/Images/userGroupIcon.png"
-            alt=""
-            className=" max-w-[20px] ipad:max-w-[30px] max-h-[20px] ipad:max-h-[30px]"
-          />
-        </button>
+          className={`${usedAudience && `bg-[#EB1212]`}`}
+        />
       </div>
     </Fragment>
   );
