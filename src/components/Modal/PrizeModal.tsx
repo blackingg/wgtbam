@@ -1,7 +1,6 @@
 "use client";
 import { BackgroundImage, PrizePool } from "..";
 import { useQuestionStore } from "@/zustand/store";
-import { useFirebaseListener } from "@/hooks";
 
 export const PrizeModal = () => {
   const {
@@ -24,7 +23,7 @@ export const PrizeModal = () => {
       {openPrize && (
         <div
           onClick={closeModal}
-          className=" overflow-y-hidden backdrop-blur-lg fixed left-0 top-0 w-screen h-screen grid place-items-center z-[999995]"
+          className=" overflow-hidden min-h-screen backdrop-blur-lg fixed left-0 top-0 w-screen grid place-items-center z-[999995]"
         >
           <BackgroundImage />
           <div

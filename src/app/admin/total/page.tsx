@@ -41,7 +41,7 @@ export default function Home({
   useFirebaseListener();
 
   return (
-    <main className="relatve w-screen min-h-screen flex flex-col justify-center gap-10">
+    <main className="top-0 left-0 overflow-hidden relatve w-screen min-h-screen flex flex-col justify-center gap-10">
       <BackgroundImage />
       <Confetti
         gravity={0.2}

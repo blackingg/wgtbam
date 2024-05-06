@@ -28,7 +28,7 @@ const page = ({ searchParams }: { searchParams: { prizeLevel: string } }) => {
   useFirebaseListener();
 
   return (
-    <main className="relatve w-screen min-h-screen flex flex-col gap-y-10 justify-center ">
+    <main className="top-0 left-0 overflow-hidden relatve w-screen min-h-screen flex flex-col gap-y-10 justify-center ">
       <BackgroundImage />
 
       <MillionareLogo />
