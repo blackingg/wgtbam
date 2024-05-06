@@ -2,7 +2,7 @@
 import { database } from "@/firebase";
 import { Question } from "@/types";
 import { QuestionArr } from "@/utils";
-//@ts-expect-error
+//@ts-ignore
 import { ref, set as FirebaseSet, set } from "firebase/database";
 import { create } from "zustand";
 
