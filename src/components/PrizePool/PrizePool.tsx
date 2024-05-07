@@ -2,20 +2,21 @@ import { values } from "@/utils";
 import { Fragment } from "react";
 import { AskAudienceBtn, FiftyFiftyButton, PhoneFriendBtn } from "..";
 import Image from "next/image";
+import { useQuestionStore } from "@/zustand/store";
 
-interface PrizePoolProps {
-  prizeLevel: number;
-  usedFifty: boolean;
-  usedAudience: boolean;
-  usedPhone: boolean;
-}
+// interface PrizePoolProps {
+//   prizeLevel: number;
+//   usedFifty: boolean;
+//   usedAudience: boolean;
+//   usedPhone: boolean;
+// }
 
-export const PrizePool = ({
-  prizeLevel,
-  usedFifty,
-  usedAudience,
-  usedPhone,
-}: PrizePoolProps) => {
+export const PrizePool = () => {
+  const usedFifty = useQuestionStore((state) => state.usedFifty);
+  const usedPhone = useQuestionStore((state) => state.usedPhone);
+  const usedAudience = useQuestionStore((state) => state.usedAudience);
+  const prizeLevel = useQuestionStore((state) => state.prizeLevel);
+
   return (
     <Fragment>
       <div className=" bg-gradient-to-br from-[#121F3B] to-[#070E1D] bg-opacity-50 px-8 ipad:px-[70px] py-4 ipad:py-[34px] relative rounded-2xl border border-white font-montserrat font-normal text-sm ipad:font-bold ipad:text-3xl space-y-2">

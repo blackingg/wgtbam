@@ -12,31 +12,42 @@ import { useQuestionStore } from "@/zustand/store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Loading from "../loading";
+import { useShallow } from "zustand/react/shallow";
 
 export default function Home() {
   const userRole = "player";
   const router = useRouter();
   let currentuserlevel: number = 0;
 
-  const {
-    allQuestions,
-    currentChallengeIndex,
-    usedFifty,
-    usedPhone,
-    usedAudience,
-    isAnswered,
-    prizeLevel,
-    selectedAnswer,
-    openPrize,
-    isConfirmed,
-    finallyIsCorrectAns,
-    revealCorrectAnswer,
-    showRevealCorrect,
-    showCheckpoint,
-    goToTotal,
-    continueChallenge,
-    updateDataInFirebase,
-  } = useQuestionStore();
+  const allQuestions = useQuestionStore((state) => state.allQuestions);
+  const goToTotal = useQuestionStore((state) => state.goToTotal);
+  const currentChallengeIndex = useQuestionStore(
+    (state) => state.currentChallengeIndex
+  );
+  const usedFifty = useQuestionStore((state) => state.usedFifty);
+  const usedPhone = useQuestionStore((state) => state.usedPhone);
+  const usedAudience = useQuestionStore((state) => state.usedAudience);
+  const isAnswered = useQuestionStore((state) => state.isAnswered);
+  const prizeLevel = useQuestionStore((state) => state.prizeLevel);
+  const selectedAnswer = useQuestionStore((state) => state.selectedAnswer);
+  const openPrize = useQuestionStore((state) => state.openPrize);
+  const isConfirmed = useQuestionStore((state) => state.isConfirmed);
+  const finallyIsCorrectAns = useQuestionStore(
+    (state) => state.finallyIsCorrectAns
+  );
+  const revealCorrectAnswer = useQuestionStore(
+    (state) => state.revealCorrectAnswer
+  );
+  const showRevealCorrect = useQuestionStore(
+    (state) => state.showRevealCorrect
+  );
+  const showCheckpoint = useQuestionStore((state) => state.showCheckpoint);
+  const continueChallenge = useQuestionStore(
+    (state) => state.continueChallenge
+  );
+  const updateDataInFirebase = useQuestionStore(
+    useShallow((state) => state.updateDataInFirebase)
+  );
 
   const handleFiftyFiftyClick = async () => {
     const halfedAnswers = useFiftyClick({
@@ -70,6 +81,7 @@ export default function Home() {
         updateDataInFirebase: updateDataInFirebase,
         user: userRole,
         continueChallenge: continueChallenge,
+        openPrize
       });
       showCheckpoint === true && router.push("/checkpoint");
     }
@@ -85,6 +97,10 @@ export default function Home() {
   ]);
 
   useFirebaseListener();
+
+  if (openPrize) {
+    return <PrizeModal />;
+  }
 
   return showCheckpoint === true ? (
     <Loading />
@@ -121,7 +137,7 @@ export default function Home() {
         showRevealCorrect={showRevealCorrect}
       />
 
-      {openPrize && <PrizeModal />}
+      {/* {openPrize && <PrizeModal />} */}
     </main>
   );
 }

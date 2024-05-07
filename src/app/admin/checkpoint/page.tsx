@@ -11,12 +11,16 @@ import {
   useWithdrawMoney,
 } from "@/hooks";
 import { useQuestionStore } from "@/zustand/store";
+import Loading from "../loading";
 
 const page = ({ searchParams }: { searchParams: { prizeLevel: string } }) => {
   // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
 
-  const { goToTotal, continueChallenge, prizeLevel } = useQuestionStore();
-
+  const goToTotal = useQuestionStore((state) => state.goToTotal);
+  const continueChallenge = useQuestionStore(
+    (state) => state.continueChallenge
+  );
+  const prizeLevel = useQuestionStore((state) => state.prizeLevel);
   const GoToQuestion = useGoToQuestion({ route: "/admin/challenge" });
   const WithdrawMoney = useWithdrawMoney({
     numPrizeLevel: prizeLevel,
@@ -26,6 +30,10 @@ const page = ({ searchParams }: { searchParams: { prizeLevel: string } }) => {
   GoToChallengeOrTotal({ goToTotal, continueChallenge, user: "admin" });
 
   useFirebaseListener();
+
+  if (goToTotal === true || continueChallenge === true) {
+    return <Loading />;
+  }
 
   return (
     <main className="top-0 left-0 overflow-hidden relatve w-screen min-h-screen flex flex-col gap-y-10 justify-center ">

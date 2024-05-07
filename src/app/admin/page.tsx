@@ -9,10 +9,13 @@ import { useFirebaseListener } from "@/hooks";
 import { useQuestionStore } from "@/zustand/store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Loading from "./loading";
 
 export default function Home() {
-  const { updateDataInFirebase, goToHome } = useQuestionStore();
-
+  const updateDataInFirebase = useQuestionStore(
+    (state) => state.updateDataInFirebase
+  );
+  const goToHome = useQuestionStore((state) => state.goToHome);
   const checkLetsPlay = useQuestionStore((state) => state.letsPlay);
   const router = useRouter();
 
@@ -26,6 +29,10 @@ export default function Home() {
   }, [checkLetsPlay, goToHome]);
 
   useFirebaseListener();
+
+  if (checkLetsPlay === true) {
+    return <Loading />;
+  }
 
   return (
     <main className="top-0 left-0 overflow-hidden relatve w-screen min-h-screen flex flex-col gap-y-10 justify-center">

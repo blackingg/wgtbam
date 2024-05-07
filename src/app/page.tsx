@@ -9,6 +9,7 @@ import { useFirebaseListener } from "@/hooks";
 import { useQuestionStore } from "@/zustand/store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Loading from "./loading";
 
 export default function Home() {
   const updateDataInFirebase = useQuestionStore(
@@ -22,6 +23,10 @@ export default function Home() {
   }, [checkLetsPlay]);
 
   useFirebaseListener();
+
+  if (checkLetsPlay === true) {
+    return <Loading />;
+  }
 
   return (
     <main className="relatve top-0 left-0 overflow-hidden w-screen min-h-screen flex flex-col gap-y-10 justify-center items-center">

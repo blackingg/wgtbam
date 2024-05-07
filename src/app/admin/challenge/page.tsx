@@ -16,31 +16,42 @@ import { useFiftyClick } from "@/hooks/useFiftyClick";
 import { useQuestionStore } from "@/zustand/store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Loading from "../loading";
 
 export default function Home() {
   const userRole = "admin";
   const router = useRouter();
   let currentuserlevel: number = 0;
-
-  const {
-    allQuestions,
-    currentChallengeIndex,
-    usedFifty,
-    usedPhone,
-    usedAudience,
-    isAnswered,
-    prizeLevel,
-    selectedAnswer,
-    openPrize,
-    isConfirmed,
-    finallyIsCorrectAns,
-    revealCorrectAnswer,
-    showRevealCorrect,
-    showCheckpoint,
-    goToNextQuestion,
-    continueChallenge,
-    updateDataInFirebase,
-  } = useQuestionStore();
+  const allQuestions = useQuestionStore((state) => state.allQuestions);
+  const goToTotal = useQuestionStore((state) => state.goToTotal);
+  const currentChallengeIndex = useQuestionStore(
+    (state) => state.currentChallengeIndex
+  );
+  const usedFifty = useQuestionStore((state) => state.usedFifty);
+  const usedPhone = useQuestionStore((state) => state.usedPhone);
+  const usedAudience = useQuestionStore((state) => state.usedAudience);
+  const isAnswered = useQuestionStore((state) => state.isAnswered);
+  const prizeLevel = useQuestionStore((state) => state.prizeLevel);
+  const selectedAnswer = useQuestionStore((state) => state.selectedAnswer);
+  const openPrize = useQuestionStore((state) => state.openPrize);
+  const isConfirmed = useQuestionStore((state) => state.isConfirmed);
+  const finallyIsCorrectAns = useQuestionStore(
+    (state) => state.finallyIsCorrectAns
+  );
+  const revealCorrectAnswer = useQuestionStore(
+    (state) => state.revealCorrectAnswer
+  );
+  const showRevealCorrect = useQuestionStore(
+    (state) => state.showRevealCorrect
+  );
+  const showCheckpoint = useQuestionStore((state) => state.showCheckpoint);
+  const goToNextQuestion = useQuestionStore((state) => state.goToNextQuestion);
+  const continueChallenge = useQuestionStore(
+    (state) => state.continueChallenge
+  );
+  const updateDataInFirebase = useQuestionStore(
+    (state) => state.updateDataInFirebase
+  );
 
   const handleFiftyFiftyClick = async () => {
     const halfedAnswers = useFiftyClick({
@@ -81,32 +92,45 @@ export default function Home() {
   }
 
   useEffect(() => {
-    handleQuestionUpdate({
-      revealCorrectAnswer: revealCorrectAnswer,
-      isConfirmed: isConfirmed,
-      selectedAnswer: selectedAnswer,
-      finallyIsCorrectAns: finallyIsCorrectAns,
-      showCheckpoint: showCheckpoint,
-      realQuestAns: allQuestions[currentChallengeIndex].answer,
-      currentChallengeIndex: currentChallengeIndex,
-      prizeLevel: prizeLevel,
-      showRevealCorrect: showRevealCorrect,
-      router: router,
-      updateDataInFirebase: updateDataInFirebase,
-      user: userRole,
-      continueChallenge: continueChallenge,
-    });
+    if (goToTotal === false) {
+      handleQuestionUpdate({
+        revealCorrectAnswer: revealCorrectAnswer,
+        isConfirmed: isConfirmed,
+        selectedAnswer: selectedAnswer,
+        finallyIsCorrectAns: finallyIsCorrectAns,
+        showCheckpoint: showCheckpoint,
+        realQuestAns: allQuestions[currentChallengeIndex].answer,
+        currentChallengeIndex: currentChallengeIndex,
+        prizeLevel: prizeLevel,
+        showRevealCorrect: showRevealCorrect,
+        router: router,
+        updateDataInFirebase: updateDataInFirebase,
+        user: userRole,
+        continueChallenge: continueChallenge,
+        openPrize,
+      });
+      showCheckpoint === true && router.push("/checkpoint");
+    }
+
+    goToTotal === true && router.push("/total");
   }, [
     revealCorrectAnswer,
     isConfirmed,
     selectedAnswer,
     finallyIsCorrectAns,
     showCheckpoint,
+    goToTotal,
   ]);
 
   useFirebaseListener();
 
-  return (
+  if (openPrize) {
+    return <PrizeModal />;
+  }
+
+  return showCheckpoint === true ? (
+    <Loading />
+  ) : (
     <main
       style={{ backgroundImage: `url(${"/Images/purplebg.svg"})` }}
       className=" py-4 relatve bg-cover min-w-full min-h-screen flex flex-col justify-center gap-3 largerdesktop:gap-10"
@@ -171,8 +195,6 @@ export default function Home() {
             )}
         </div>
       </div>
-
-      {openPrize && <PrizeModal />}
     </main>
   );
 }

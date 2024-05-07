@@ -18,7 +18,11 @@ export default function Home({
   searchParams: { prizeLevel: string };
 }) {
   const router = useRouter();
-  const { goToHome, goToTotal, updateDataInFirebase } = useQuestionStore();
+  const goToTotal = useQuestionStore((state) => state.goToTotal);
+  const goToHome = useQuestionStore((state) => state.goToHome);
+  const updateDataInFirebase = useQuestionStore(
+    (state) => state.updateDataInFirebase
+  );
   // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
   const numPrizeLevel = useQuestionStore((state) => state.prizeLevel);
   const [pieces, setPieces] = useState(200);
