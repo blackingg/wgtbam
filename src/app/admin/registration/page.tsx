@@ -1,7 +1,7 @@
 "use client";
 import { DefaultButton, DefaultInput, DefaultModal } from "@/components";
 import { useRouter } from "next/navigation";
-import { InputsArr, QuestionArr, Required } from "@/utils";
+import { InputsArr, Required } from "@/utils";
 import { Fragment, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { User } from "@/types";
@@ -21,7 +21,7 @@ const RegisterationAdmin = () => {
   // const [isError, setIsError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const onSubmit: SubmitHandler<User> = (data: any) => {
+  const onSubmit: SubmitHandler<User> = (_: any) => {
     // setIsLoading(true);
     setSuccessful(true);
     setIsOpen(true);

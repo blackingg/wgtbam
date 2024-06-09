@@ -9,10 +9,10 @@ const PrizeAdmin = () => {
   const router = useRouter();
 
   const search = searchParams.get("prizeLevel");
-  const currrentQuest = searchParams.get("currentQuestion");
+  // const currrentQuest = searchParams.get("currentQuestion");
   // console.log("LLLLLLLLLLLLL", typeof search);
   const prizeLevel = search ? parseInt(search, 10) : 0;
-  const newCurrQuest = currrentQuest ? parseInt(currrentQuest, 10) : 0;
+  // const newCurrQuest = currrentQuest ? parseInt(currrentQuest, 10) : 0;
 
   setTimeout(() => {
     router.push("/challenge");

@@ -13,7 +13,10 @@ import {
 import { useQuestionStore } from "@/zustand/store";
 import Loading from "../loading";
 
-const CheckpointAdmin = ({ searchParams }: { searchParams: { prizeLevel: string } }) => {
+const CheckpointAdmin = (
+  // { searchParams }: { searchParams: { prizeLevel: string } }
+
+) => {
   // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
 
   const goToTotal = useQuestionStore((state) => state.goToTotal);

@@ -109,10 +109,10 @@ export default function Home() {
         continueChallenge: continueChallenge,
         openPrize,
       });
-      showCheckpoint === true && router.push("/checkpoint");
+      showCheckpoint === true && router.push("/admin/checkpoint");
     }
 
-    goToTotal === true && router.push("/total");
+    goToTotal === true && router.push("/admin/total");
   }, [
     revealCorrectAnswer,
     isConfirmed,

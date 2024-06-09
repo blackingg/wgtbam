@@ -7,7 +7,6 @@ export const GoToChallenge = (route: string, callback? : () => void) => {
 
   function goToChallenge() {
     router.push(route);
-    console.log("Inner callback called");
     
     callback && callback();
   }

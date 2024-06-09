@@ -12,11 +12,13 @@ import { useState, useEffect } from "react";
 //@ts-ignore
 import Confetti from "react-confetti";
 
-export default function Home({
-  searchParams,
-}: {
-  searchParams: { prizeLevel: string };
-}) {
+export default function Home(
+//   {
+//   searchParams,
+// }: {
+//   searchParams: { prizeLevel: string };
+// }
+) {
   const router = useRouter();
   const goToTotal = useQuestionStore((state) => state.goToTotal);
   const goToHome = useQuestionStore((state) => state.goToHome);
@@ -53,7 +55,6 @@ export default function Home({
     goToHome === true && goToTotal === false && router.push("/");
   }, [goToHome, goToTotal]);
 
-  console.log("Home", goToHome);
 
   return (
     <main className="top-0 left-0 overflow-hidden relatve w-screen min-h-screen flex flex-col justify-center gap-10">

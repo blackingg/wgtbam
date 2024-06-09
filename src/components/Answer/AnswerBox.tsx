@@ -5,7 +5,8 @@ interface AnswerBoxProps extends React.HTMLAttributes<HTMLButtonElement> {
   answer: string;
   isBig?: boolean;
   disabled?: boolean;
-  handleClick: () => void;
+  // handleClick: () => void;
+  handleClick: () => Promise<void>;
   selected: boolean;
   isConfirm: boolean;
   revealedCorrect: boolean;
@@ -76,7 +77,7 @@ export const AnswerBox = ({
         ${
           !selected &&
           "bg-gradient-to-b from-[#6F006E] via-[#8A0089] to-[#6F006E]"
-        } angle shadow-inner w-full h-full text-white flex justify-center items-center py-2 ${
+        } angle shadow-inner w-full h-full text-white flex justify-center items-center md:min-h-[75px] lg:min-h-full py-2 ${
             isBig ? " ipad:py-6" : " ipad:py-4"
           } rounded-full min-h-[2rem] ipad:min-h-[4rem]`,
           className2

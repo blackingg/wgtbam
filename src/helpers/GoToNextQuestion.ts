@@ -1,5 +1,6 @@
 import { State } from "@/zustand/store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { toast } from "react-toastify";
 
 export const GoToNextQuestH = ({
   goToNextQuestion,
@@ -50,6 +51,7 @@ export const GoToNextQuestH = ({
       }
     } catch (error) {
       console.log("We encountered an error ", error);
+      toast.error("Network error");
     }
   };
 

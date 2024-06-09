@@ -1,5 +1,4 @@
-import { Fragment } from "react";
-import { NonClickableMillionareBox, QuestionBox } from "..";
+import { NonClickableMillionareBox} from "..";
 import { AnswerBox } from "../Answer";
 
 interface ChallengeSkeletonProps {
@@ -9,7 +8,8 @@ interface ChallengeSkeletonProps {
   option3: string;
   option4: string;
   answer: string;
-  handleAnswerClick: (selectedOption: string) => void;
+  // handleAnswerClick: (selectedOption: string) => void;
+  handleAnswerClick: (selectedOption: string) => Promise<void>;
   selectedAnswer: string;
   isConfirm: boolean;
   revealedCorrect: boolean;

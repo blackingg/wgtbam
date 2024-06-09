@@ -21,7 +21,7 @@ const RegistrationUser = () => {
   // const [isError, setIsError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const onSubmit: SubmitHandler<User> = (data: any) => {
+  const onSubmit: SubmitHandler<User> = (_: any) => {
     // setIsLoading(true);
     setSuccessful(true);
     setIsOpen(true);

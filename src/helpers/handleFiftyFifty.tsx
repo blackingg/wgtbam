@@ -13,7 +13,6 @@ export const handleFiftyFifty = (
     allQuestions[challengeIndex].option4,
   ];
 
-  console.log("Whast i gottt", challengeIndex);
 
   const correctAnswerIndex = options.indexOf(
     allQuestions[challengeIndex].answer

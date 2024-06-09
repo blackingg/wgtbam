@@ -1,5 +1,6 @@
-import { State, useQuestionStore } from "@/zustand/store";
+import { State } from "@/zustand/store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { toast } from "react-toastify";
 
 export const handleQuestionUpdate = async ({
   revealCorrectAnswer,
@@ -45,6 +46,7 @@ export const handleQuestionUpdate = async ({
 
       if (currentChallengeIndex >= 14) {
         await updateDataInFirebase({
+          // openPrize: true,
           prizeLevel: prizeLevel,
         });
 
@@ -62,6 +64,7 @@ export const handleQuestionUpdate = async ({
           continueChallenge === false)
       ) {
         await updateDataInFirebase({
+          // openPrize: true,
           showCheckpoint: true,
           prizeLevel: prizeLevel,
         });
@@ -82,5 +85,6 @@ export const handleQuestionUpdate = async ({
     }
   } catch (error) {
     console.log("We encountered an error", error);
+    toast.error("Network error");
   }
 };

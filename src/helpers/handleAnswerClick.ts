@@ -15,12 +15,13 @@ export const handleQuestAnswer = ({
 }) => {
   const handleAnswerClick = async (selectedOption: string) => {
     if (selectedAnswer === "") {
-      await updateDataInFirebase({
-        isAnswered: true,
-      });
+      // await updateDataInFirebase({
+      //   isAnswered: true,
+      // });
       if (selectedOption === realQuestAns) {
-        let updatedPrizeLvl = prizeLevel + 1;
+         const updatedPrizeLvl = prizeLevel + 1;
         await updateDataInFirebase({
+          isAnswered: true,
           isCorrect: true,
           showRevealCorrect: selectedOption,
           prizeLevel: updatedPrizeLvl,
@@ -28,21 +29,39 @@ export const handleQuestAnswer = ({
           finallyIsCorrectAns: true,
         });
       } else {
-        currentuserlevel = prizeLevel;
-        if (currentuserlevel >= 15) {
-          currentuserlevel = 15;
-        } else if (currentuserlevel >= 10) {
-          currentuserlevel = 10;
-        } else if (currentuserlevel >= 5) {
-          currentuserlevel = 5;
+        let finalUserLevel = prizeLevel;
+
+        if (finalUserLevel >= 15) {
+          finalUserLevel = 15;
+        } else if (finalUserLevel >= 10) {
+          finalUserLevel = 10;
+        } else if (finalUserLevel >= 5) {
+          finalUserLevel = 5;
         }
 
         await updateDataInFirebase({
+          isAnswered: true,
           selectedAnswer: selectedOption,
-          finallyUserLevel: currentuserlevel,
+          finallyUserLevel: finalUserLevel,
           finallyIsCorrectAns: false,
           showRevealCorrect: realQuestAns,
         });
+      // } else {
+      //   currentuserlevel = prizeLevel;
+      //   if (currentuserlevel >= 15) {
+      //     currentuserlevel = 15;
+      //   } else if (currentuserlevel >= 10) {
+      //     currentuserlevel = 10;
+      //   } else if (currentuserlevel >= 5) {
+      //     currentuserlevel = 5;
+      //   }
+
+      //   await updateDataInFirebase({
+      //     selectedAnswer: selectedOption,
+      //     finallyUserLevel: currentuserlevel,
+      //     finallyIsCorrectAns: false,
+      //     showRevealCorrect: realQuestAns,
+      //   });
       }
     }
   };

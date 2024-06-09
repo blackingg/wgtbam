@@ -35,8 +35,6 @@ export default function Home() {
       <ClickableMillionareBox
         text="Lets Play!"
         onClick={async () => {
-          console.log("herere");
-
           await updateDataInFirebase({
             letsPlay: true,
           });

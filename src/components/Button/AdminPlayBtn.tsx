@@ -1,15 +1,11 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { ClickableMillionareBox, GoToChallenge } from "..";
-import { useFirebaseListener } from "@/hooks";
+import { ClickableMillionareBox } from "..";
 
 export const AdminPlayBtn = ({
-  route,
   onClick,
 }: {
   route: string;
   onClick: () => void;
 }) => {
-  const router = useRouter();
   return <ClickableMillionareBox text="Lets Play!" onClick={onClick} />;
 };

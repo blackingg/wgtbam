@@ -3,10 +3,10 @@ import {
   ChallengeSkeleton,
   Lifelines,
   MillionareLogo,
-  PrizeModal,
+  UserPrizeModal,
 } from "@/components";
 import { handleQuestAnswer, handleQuestionUpdate } from "@/helpers";
-import { useCreateQueryString, useFirebaseListener } from "@/hooks";
+import { useFirebaseListener } from "@/hooks";
 import { useFiftyClick } from "@/hooks/useFiftyClick";
 import { useQuestionStore } from "@/zustand/store";
 import { useRouter } from "next/navigation";
@@ -99,7 +99,7 @@ export default function Home() {
   useFirebaseListener();
 
   if (openPrize) {
-    return <PrizeModal />;
+    return <UserPrizeModal openPrize={openPrize} />;
   }
 
   return showCheckpoint === true ? (

@@ -5,7 +5,6 @@ import {
   MillionareLogo,
   NonClickableMillionareBox,
 } from "@/components";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 //@ts-ignore
 import Confetti from "react-confetti";
@@ -15,11 +14,13 @@ import { resetObj } from "@/utils";
 import { useQuestionStore } from "@/zustand/store";
 import { useRouter } from "next/navigation";
 
-export default function Home({
-  searchParams,
-}: {
-  searchParams: { prizeLevel: string };
-}) {
+export default function Home(
+//   {
+//   searchParams,
+// }: {
+//   searchParams: { prizeLevel: string };
+// }
+) {
   const updateDataInFirebase = useQuestionStore(
     (state) => state.updateDataInFirebase
   );

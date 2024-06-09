@@ -15,7 +15,6 @@ export const GoToHome = () => {
       await updateDataInFirebase({
         goToHome: true,
       });
-      console.log("Effect called, to go to home");
     };
 
     Run();
