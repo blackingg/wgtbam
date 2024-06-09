@@ -15,13 +15,13 @@ export const handleQuestAnswer = ({
 }) => {
   const handleAnswerClick = async (selectedOption: string) => {
     if (selectedAnswer === "") {
-      // await updateDataInFirebase({
-      //   isAnswered: true,
-      // });
+      await updateDataInFirebase({
+        isAnswered: true,
+      });
       if (selectedOption === realQuestAns) {
          const updatedPrizeLvl = prizeLevel + 1;
         await updateDataInFirebase({
-          isAnswered: true,
+          // isAnswered: true,
           isCorrect: true,
           showRevealCorrect: selectedOption,
           prizeLevel: updatedPrizeLvl,
@@ -40,7 +40,7 @@ export const handleQuestAnswer = ({
         }
 
         await updateDataInFirebase({
-          isAnswered: true,
+          // isAnswered: true,
           selectedAnswer: selectedOption,
           finallyUserLevel: finalUserLevel,
           finallyIsCorrectAns: false,

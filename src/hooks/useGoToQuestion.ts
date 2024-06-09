@@ -16,7 +16,7 @@ export const useGoToQuestion = ({ route }: { route: string }) => {
       goToNextQuestion: false
     });
     router.push(route ?? "");
-    router.refresh();
+    // router.refresh();
   }
   return GoToQuestion;
 };
