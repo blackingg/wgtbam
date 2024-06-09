@@ -4,7 +4,7 @@ import { values } from "@/utils";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const page = () => {
+const PrizeAdmin = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -68,4 +68,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default PrizeAdmin;

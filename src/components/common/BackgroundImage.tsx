@@ -4,11 +4,11 @@ export const BackgroundImage = () => {
   return (
     // <div className=" min-w-screen min-h-screen absolute z-[-1]">
     <Image
-      src="/Images/purplebg.svg"
+      src="/Images/purplebg.png"
       fill
       alt="Background image"
       placeholder="blur"
-      blurDataURL="/Images/purplebg.svg"
+      blurDataURL="/Images/purplebg.png"
       quality={100}
       sizes="100vw, 100vh"
       priority

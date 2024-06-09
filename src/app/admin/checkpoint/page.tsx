@@ -13,7 +13,7 @@ import {
 import { useQuestionStore } from "@/zustand/store";
 import Loading from "../loading";
 
-const page = ({ searchParams }: { searchParams: { prizeLevel: string } }) => {
+const CheckpointAdmin = ({ searchParams }: { searchParams: { prizeLevel: string } }) => {
   // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
 
   const goToTotal = useQuestionStore((state) => state.goToTotal);
@@ -58,4 +58,4 @@ const page = ({ searchParams }: { searchParams: { prizeLevel: string } }) => {
   );
 };
 
-export default page;
+export default CheckpointAdmin;

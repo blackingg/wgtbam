@@ -49,11 +49,11 @@ export default function Home() {
     useShallow((state) => state.updateDataInFirebase)
   );
 
+  const halfedAnswers = useFiftyClick({
+    allQuestions,
+    currentChallengeIndex,
+  });
   const handleFiftyFiftyClick = async () => {
-    const halfedAnswers = useFiftyClick({
-      allQuestions,
-      currentChallengeIndex,
-    });
     await updateDataInFirebase(halfedAnswers);
   };
 
@@ -106,7 +106,7 @@ export default function Home() {
     <Loading />
   ) : (
     <main
-      style={{ backgroundImage: `url(${"/Images/purplebg.svg"})` }}
+      style={{ backgroundImage: `url(${"/Images/purplebg.png"})` }}
       className=" pt-4 relatve bg-cover min-w-full min-h-screen flex flex-col justify-center gap-3 largerdesktop:gap-10"
     >
       <div className=" w-full h-full relative">

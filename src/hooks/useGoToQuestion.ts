@@ -13,8 +13,10 @@ export const useGoToQuestion = ({ route }: { route: string }) => {
     await updateDataInFirebase({
       continueChallenge: true,
       showCheckpoint: false,
+      goToNextQuestion: false
     });
     router.push(route ?? "");
+    router.refresh();
   }
   return GoToQuestion;
 };

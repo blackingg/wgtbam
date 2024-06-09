@@ -5,8 +5,9 @@ import { InputsArr, Required } from "@/utils";
 import { Fragment, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { User } from "@/types";
+import Image from "next/image";
 
-const page = () => {
+const RegistrationUser = () => {
   const {
     register,
     handleSubmit,
@@ -59,7 +60,7 @@ const page = () => {
       <div className="purplebg  min-h-screen flex justify-center items-center text-white pb-[25px] px-[20px]">
         <div className=" mt-[80px] border border-white rounded-3xl w-full max-w-[558px] z-10 pt-[55px] pb-[30px] px-[15px] tablet:px-[30px] flex flex-col items-center justify-center relative bg-gradient-to-br from-white/10 to-white/0 bg-opacity-[0.15] backdrop-blur-sm shadow-md">
           <div className="absolute w-full max-w-[150px] tablet:max-w-[200px] top-[0%] translate-y-[-50%] left-[50%] translate-x-[-50%]">
-            <img src="/Images/logo.svg" alt="Logo" className="" />
+            <Image src="/Images/logo.svg" fill alt="Logo" className="" />
           </div>
           <h1 className=" w-full font-montserrat font-medium text-2xl tablet:text-4xl">
             Welcome to
@@ -100,7 +101,9 @@ const page = () => {
             setIsOpen={setIsOpen}
             Image={
               <div className=" max-w-[150px] w-full">
-                <img
+                <Image
+                  fill
+                  alt="img"
                   src="/Images/succestick.svg"
                   className=" cursor-not-allowed"
                   draggable={false}
@@ -124,4 +127,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default RegistrationUser;

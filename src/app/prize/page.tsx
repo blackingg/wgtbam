@@ -1,9 +1,10 @@
 "use client";
 import { TelIcon, UsergroupIcon } from "@/components";
 import { values } from "@/utils";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const page = () => {
+const PrizeUser = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -29,7 +30,7 @@ const page = () => {
             }`}
             key={value.value}
           >
-            <img
+            <Image
               src="/Images/rect.svg"
               alt=""
               className={` left-0 absolute min-w-full min-h-full ${
@@ -59,5 +60,5 @@ const page = () => {
   );
 };
 
-export default page;
+export default PrizeUser;
 
