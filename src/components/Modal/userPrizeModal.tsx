@@ -1,30 +1,28 @@
+import { BackgroundImage } from "../common";
+import { PrizePool } from "../PrizePool";
 
-import { BackgroundImage, PrizePool } from "..";
-
-export const UserPrizeModal = ({openPrize}: {openPrize: boolean}) => {
-
+export const UserPrizeModal = ({ openPrize }: { openPrize: boolean }) => {
   // const updateDataInFirebase = useQuestionStore(
   //   useShallow((state) => state.updateDataInFirebase)
   // );
-
 
   // const closeModal = async () => {
   //   await updateDataInFirebase({
   //     openPrize: false,
   //   });
-  // };  
+  // };
 
   return (
     <>
       {openPrize && (
         <div
           // onClick={closeModal}
-          className=" overflow-hidden min-h-screen backdrop-blur-lg fixed left-0 top-0 w-screen grid place-items-center z-[999995]"
+          className="fixed left-0 top-0 z-[999995] grid min-h-[100dvh] w-screen place-items-center overflow-hidden backdrop-blur-lg"
         >
           <BackgroundImage />
           <div
             onClick={(e) => e.stopPropagation()}
-            className=" relative z-[999999] bg-opacity-[0.15] backdrop-blur-sm shadow-md w-full h-full flex justify-center items-center"
+            className="relative z-[999999] flex h-full w-full items-center justify-center bg-opacity-[0.15] shadow-md backdrop-blur-sm"
           >
             <PrizePool
             // prizeLevel={prizeLevel}
@@ -36,5 +34,5 @@ export const UserPrizeModal = ({openPrize}: {openPrize: boolean}) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};

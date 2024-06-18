@@ -1,6 +1,6 @@
 "use client";
 import { Dispatch, ReactNode } from "react";
-import { DefaultButton } from "..";
+import { DefaultButton } from "../Form/Buttons/DefaultButton";
 
 interface ModalWImageProps {
   Image: ReactNode;
@@ -32,14 +32,14 @@ export const DefaultModal = ({
       {isOpen && (
         <div
           onClick={closeModal}
-          className=" bg-black/70 backdrop-blur-lg fixed left-0 top-0 w-screen h-screen grid place-items-center z-[999995] px-5"
+          className="fixed left-0 top-0 z-[999995] grid h-[100dvh] w-screen place-items-center bg-black/70 px-5 backdrop-blur-lg"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className=" relative z-[999999] bg-gradient-to-br from-white/10 to-white/0 bg-opacity-[0.15] backdrop-blur-sm shadow-md w-full max-w-[593px] min-h-[487px] p-5 tablet:p-10 grid place-items-center gap-6 text-center font-montserrat border border-white rounded-3xl"
+            className="relative z-[999999] grid min-h-[487px] w-full max-w-[593px] place-items-center gap-6 rounded-3xl border border-white bg-opacity-[0.15] bg-gradient-to-br from-white/10 to-white/0 p-5 text-center font-montserrat shadow-md backdrop-blur-sm tablet:p-10"
           >
             {Image}
-            <h1 className=" font-extrabold text-lg tablet:text-[28px] text-white font-montserrat">
+            <h1 className="font-montserrat text-lg font-extrabold text-white tablet:text-[28px]">
               {label}
             </h1>
             {Text}

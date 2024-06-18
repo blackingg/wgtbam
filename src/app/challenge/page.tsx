@@ -22,7 +22,7 @@ export default function Home() {
   const allQuestions = useQuestionStore((state) => state.allQuestions);
   const goToTotal = useQuestionStore((state) => state.goToTotal);
   const currentChallengeIndex = useQuestionStore(
-    (state) => state.currentChallengeIndex
+    (state) => state.currentChallengeIndex,
   );
   const usedFifty = useQuestionStore((state) => state.usedFifty);
   const usedPhone = useQuestionStore((state) => state.usedPhone);
@@ -33,20 +33,20 @@ export default function Home() {
   const openPrize = useQuestionStore((state) => state.openPrize);
   const isConfirmed = useQuestionStore((state) => state.isConfirmed);
   const finallyIsCorrectAns = useQuestionStore(
-    (state) => state.finallyIsCorrectAns
+    (state) => state.finallyIsCorrectAns,
   );
   const revealCorrectAnswer = useQuestionStore(
-    (state) => state.revealCorrectAnswer
+    (state) => state.revealCorrectAnswer,
   );
   const showRevealCorrect = useQuestionStore(
-    (state) => state.showRevealCorrect
+    (state) => state.showRevealCorrect,
   );
   const showCheckpoint = useQuestionStore((state) => state.showCheckpoint);
   const continueChallenge = useQuestionStore(
-    (state) => state.continueChallenge
+    (state) => state.continueChallenge,
   );
   const updateDataInFirebase = useQuestionStore(
-    useShallow((state) => state.updateDataInFirebase)
+    useShallow((state) => state.updateDataInFirebase),
   );
 
   const halfedAnswers = useFiftyClick({
@@ -81,7 +81,7 @@ export default function Home() {
         updateDataInFirebase: updateDataInFirebase,
         user: userRole,
         continueChallenge: continueChallenge,
-        openPrize
+        openPrize,
       });
       showCheckpoint === true && router.push("/checkpoint");
     }
@@ -107,10 +107,10 @@ export default function Home() {
   ) : (
     <main
       style={{ backgroundImage: `url(${"/Images/purplebg.png"})` }}
-      className=" pt-4 relatve bg-cover min-w-full min-h-screen flex flex-col justify-center gap-3 largerdesktop:gap-10"
+      className="relatve flex min-h-[100dvh] min-w-full flex-col justify-center gap-3 bg-cover pt-4 largerdesktop:gap-10"
     >
-      <div className=" w-full h-full relative">
-        <div className=" max-w-[150px] tablet:max-w-[250px] max-h-[150px] tablet:max-h-[250px] w-full h-full flex justify-center items-center mx-auto">
+      <div className="relative h-full w-full">
+        <div className="mx-auto flex h-full max-h-[150px] w-full max-w-[150px] items-center justify-center tablet:max-h-[250px] tablet:max-w-[250px]">
           <MillionareLogo />
           <Lifelines
             usedFifty={usedFifty}

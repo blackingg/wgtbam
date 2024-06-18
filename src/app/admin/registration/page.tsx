@@ -57,24 +57,24 @@ const RegisterationAdmin = () => {
 
   return (
     isClient && (
-      <div className="purplebg  min-h-screen flex justify-center items-center text-white pb-[25px] px-[20px]">
-        <div className=" mt-[80px] border border-white rounded-3xl w-full max-w-[558px] z-10 pt-[55px] pb-[30px] px-[15px] tablet:px-[30px] flex flex-col items-center justify-center relative bg-gradient-to-br from-white/10 to-white/0 bg-opacity-[0.15] backdrop-blur-sm shadow-md">
-          <div className="absolute w-full max-w-[150px] tablet:max-w-[200px] top-[0%] translate-y-[-50%] left-[50%] translate-x-[-50%]">
+      <div className="purplebg flex min-h-[100dvh] items-center justify-center px-[20px] pb-[25px] text-white">
+        <div className="relative z-10 mt-[80px] flex w-full max-w-[558px] flex-col items-center justify-center rounded-3xl border border-white bg-opacity-[0.15] bg-gradient-to-br from-white/10 to-white/0 px-[15px] pb-[30px] pt-[55px] shadow-md backdrop-blur-sm tablet:px-[30px]">
+          <div className="absolute left-[50%] top-[0%] w-full max-w-[150px] translate-x-[-50%] translate-y-[-50%] tablet:max-w-[200px]">
             <Image src="/Images/logo.png" fill alt="Logo" className="" />
           </div>
-          <h1 className=" w-full font-montserrat font-medium text-2xl tablet:text-4xl">
+          <h1 className="w-full font-montserrat text-2xl font-medium tablet:text-4xl">
             Welcome to
           </h1>
-          <h2 className=" w-full text-base tablet:text-xl font-montserrat font-medium">
+          <h2 className="w-full font-montserrat text-base font-medium tablet:text-xl">
             OAU Who Gets To Be A Millionare
           </h2>
 
-          <p className=" w-full font-poppins text-sm tablet:text-base font-normal text-opacity-90">
+          <p className="w-full font-poppins text-sm font-normal text-opacity-90 tablet:text-base">
             Register Now! And stand a chance to be a millionaire!!!!
           </p>
 
           <form className="mt-[24px] w-full" onSubmit={handleSubmit(onSubmit)}>
-            <div className=" flex flex-col gap-3">
+            <div className="flex flex-col gap-3">
               {InputsArr.map((input, index) => (
                 <Fragment key={index}>
                   <DefaultInput
@@ -88,7 +88,7 @@ const RegisterationAdmin = () => {
                   />
                 </Fragment>
               ))}
-              <div className=" mt-6">
+              <div className="mt-6">
                 <DefaultButton text="Register" />
               </div>
             </div>
@@ -100,10 +100,10 @@ const RegisterationAdmin = () => {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             Image={
-              <div className=" max-w-[150px] w-full">
+              <div className="w-full max-w-[150px]">
                 <Image
                   src="/Images/succestick.svg"
-                  className=" cursor-not-allowed"
+                  className="cursor-not-allowed"
                   draggable={false}
                   alt="Success Icon"
                 />
@@ -111,8 +111,8 @@ const RegisterationAdmin = () => {
             }
             label="Registration successful!"
             Text={
-              <div className=" flex flex-col gap-6">
-                <p className=" text-center font-normal text-base font-poppins">
+              <div className="flex flex-col gap-6">
+                <p className="text-center font-poppins text-base font-normal">
                   You have successfully registered for this event, watch out for
                   more updates
                 </p>

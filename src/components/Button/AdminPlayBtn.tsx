@@ -1,5 +1,5 @@
 "use client";
-import { ClickableMillionareBox } from "..";
+import { ClickableMillionareBox } from "./ClickableMillionareBox";
 
 export const AdminPlayBtn = ({
   onClick,

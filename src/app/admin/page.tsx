@@ -13,7 +13,7 @@ import Loading from "./loading";
 
 export default function Home() {
   const updateDataInFirebase = useQuestionStore(
-    (state) => state.updateDataInFirebase
+    (state) => state.updateDataInFirebase,
   );
   const goToHome = useQuestionStore((state) => state.goToHome);
   const checkLetsPlay = useQuestionStore((state) => state.letsPlay);
@@ -35,7 +35,7 @@ export default function Home() {
   }
 
   return (
-    <main className="top-0 left-0 overflow-hidden relatve w-screen min-h-screen flex flex-col gap-y-10 justify-center">
+    <main className="relatve left-0 top-0 flex min-h-[100dvh] w-screen flex-col justify-center gap-y-10 overflow-hidden">
       <BackgroundImage />
       <MillionareLogo />
       <ClickableMillionareBox

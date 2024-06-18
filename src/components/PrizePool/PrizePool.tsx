@@ -1,8 +1,8 @@
 import { values } from "@/utils";
 import { Fragment } from "react";
-import { AskAudienceBtn, FiftyFiftyButton, PhoneFriendBtn } from "..";
 import Image from "next/image";
 import { useQuestionStore } from "@/zustand/store";
+import { AskAudienceBtn, FiftyFiftyButton, PhoneFriendBtn } from "../Button";
 
 // interface PrizePoolProps {
 //   prizeLevel: number;
@@ -19,10 +19,10 @@ export const PrizePool = () => {
 
   return (
     <Fragment>
-      <div className=" bg-gradient-to-br from-[#121F3B] to-[#070E1D] bg-opacity-50 px-8 ipad:px-[70px] py-4 ipad:py-[34px] relative rounded-2xl border border-white font-montserrat font-normal text-sm ipad:font-bold ipad:text-3xl space-y-2">
+      <div className="relative space-y-2 rounded-2xl border border-white bg-opacity-50 bg-gradient-to-br from-[#121F3B] to-[#070E1D] px-8 py-4 font-montserrat text-sm font-normal ipad:px-[70px] ipad:py-[34px] ipad:text-3xl ipad:font-bold">
         {values.map((value) => (
           <div
-            className={`flex items-center w-full h-full ${
+            className={`flex h-full w-full items-center ${
               value.value !== 5 && value.value !== 10 && value.value !== 15
                 ? "text-[#F88008]"
                 : "text-white"
@@ -39,19 +39,19 @@ export const PrizePool = () => {
               sizes="100%"
               src="/Images/rect.svg"
               alt=""
-              className={` left-0 absolute min-w-full min-h-full ${
+              className={`absolute left-0 min-h-full min-w-full ${
                 value.value === prizeLevel ? "flex" : "hidden"
               }`}
             />
-            <span className=" flex justify-start ipad:justify-center max-w-[43px] w-full">
+            <span className="flex w-full max-w-[43px] justify-start ipad:justify-center">
               {value.value}.
             </span>
-            <span className=" flex justify-start pl-8">{value.amount}</span>
+            <span className="flex justify-start pl-8">{value.amount}</span>
           </div>
         ))}
       </div>
 
-      <div className=" absolute right-[30px] tablet:right-[50px] bottom-[50px] flex flex-col gap-6 items-center">
+      <div className="absolute bottom-[50px] right-[30px] flex flex-col items-center gap-6 tablet:right-[50px]">
         <FiftyFiftyButton
           disabled
           className={`${usedFifty && `bg-[#EB1212]`}`}

@@ -1,5 +1,7 @@
-import { AskAudienceBtn, FiftyFiftyButton, PhoneFriendBtn } from ".";
 import { useQuestionStore } from "@/zustand/store";
+import { FiftyFiftyButton } from "./FiftyFiftyButton";
+import { PhoneFriendBtn } from "./PhoneFriendBtn";
+import { AskAudienceBtn } from "./AskAudienceBtn";
 
 export const Lifelines = ({
   usedFifty,
@@ -15,11 +17,11 @@ export const Lifelines = ({
   handleFiftyFiftyClick: () => void;
 }) => {
   const updateDataInFirebase = useQuestionStore(
-    (state) => state.updateDataInFirebase
+    (state) => state.updateDataInFirebase,
   );
 
   return (
-    <div className=" absolute right-[3rem] top-[50%] translate-y-[-50%] flex flex-col ipad:flex-row gap-6 items-center">
+    <div className="absolute right-[3rem] top-[50%] flex translate-y-[-50%] flex-col items-center gap-6 ipad:flex-row">
       <FiftyFiftyButton
         onClick={() => {
           if (usedFifty === false && isAnswered === false) {

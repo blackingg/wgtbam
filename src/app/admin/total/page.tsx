@@ -14,15 +14,14 @@ import { resetObj } from "@/utils";
 import { useQuestionStore } from "@/zustand/store";
 import { useRouter } from "next/navigation";
 
-export default function Home(
-//   {
-//   searchParams,
-// }: {
-//   searchParams: { prizeLevel: string };
-// }
-) {
+export default function Home() {
+  //   {
+  //   searchParams,
+  // }: {
+  //   searchParams: { prizeLevel: string };
+  // }
   const updateDataInFirebase = useQuestionStore(
-    (state) => state.updateDataInFirebase
+    (state) => state.updateDataInFirebase,
   );
 
   const router = useRouter();
@@ -47,17 +46,17 @@ export default function Home(
   useFirebaseListener();
 
   return (
-    <main className="top-0 left-0 overflow-hidden relatve w-screen min-h-screen flex flex-col justify-center gap-10">
+    <main className="relatve left-0 top-0 flex min-h-[100dvh] w-screen flex-col justify-center gap-10 overflow-hidden">
       <BackgroundImage />
       {client && (
         <Confetti
           gravity={0.2}
           numberOfPieces={pieces}
-          className="lConfetti w-screen h-screen grid place-items-center mx-auto"
+          className="lConfetti mx-auto grid h-[100dvh] w-screen place-items-center"
         />
       )}
       <MillionareLogo />
-      <h1 className="  font-montserrat font-medium text-xl tablet:text-3xl ipad:text-5xl text-white/90 text-center">
+      <h1 className="text-center font-montserrat text-xl font-medium text-white/90 tablet:text-3xl ipad:text-5xl">
         Total prize money won
       </h1>
 
@@ -66,14 +65,14 @@ export default function Home(
         className2=" ipad:text-[50px]"
         className="ipad:py-[40px]"
       />
-      <div className=" flex justify-center items-center w-full z-10">
+      <div className="z-10 flex w-full items-center justify-center">
         <ConfirmationBtn
           onClick={async () => {
             await updateDataInFirebase(resetObj);
             router.push("/admin");
           }}
           btntext="Reset Quiz"
-          className=" bg-[#FFFFFF] text-[#8A0089]"
+          className="bg-[#FFFFFF] text-[#8A0089]"
         />
       </div>
     </main>

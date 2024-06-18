@@ -12,7 +12,7 @@ export const BackgroundImage = () => {
       quality={100}
       sizes="100vw, 100vh"
       priority
-      className=" top-0 left-0 object-cover bg-no-repeat cursor-not-allowed min-w-screen min-h-screen z-[-1]"
+      className="min-w-screen left-0 top-0 z-[-1] min-h-[100dvh] cursor-not-allowed bg-no-repeat object-cover"
       draggable={false}
     />
     // </div>

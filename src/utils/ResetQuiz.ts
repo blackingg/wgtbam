@@ -1,4 +1,4 @@
-import { QuestionArr } from '.';
+import { QuestionArr } from "./data";
 
  export const resetObj = {
       allQuestions: QuestionArr,

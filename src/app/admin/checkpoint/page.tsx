@@ -13,52 +13,52 @@ import {
 import { useQuestionStore } from "@/zustand/store";
 import Loading from "../loading";
 
-const CheckpointAdmin = (
+const CheckpointAdmin = () =>
   // { searchParams }: { searchParams: { prizeLevel: string } }
 
-) => {
-  // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
+  {
+    // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
 
-  const goToTotal = useQuestionStore((state) => state.goToTotal);
-  const continueChallenge = useQuestionStore(
-    (state) => state.continueChallenge
-  );
-  const prizeLevel = useQuestionStore((state) => state.prizeLevel);
-  const GoToQuestion = useGoToQuestion({ route: "/admin/challenge" });
-  const WithdrawMoney = useWithdrawMoney({
-    numPrizeLevel: prizeLevel,
-    route: "/admin/total",
-  });
+    const goToTotal = useQuestionStore((state) => state.goToTotal);
+    const continueChallenge = useQuestionStore(
+      (state) => state.continueChallenge,
+    );
+    const prizeLevel = useQuestionStore((state) => state.prizeLevel);
+    const GoToQuestion = useGoToQuestion({ route: "/admin/challenge" });
+    const WithdrawMoney = useWithdrawMoney({
+      numPrizeLevel: prizeLevel,
+      route: "/admin/total",
+    });
 
-  GoToChallengeOrTotal({ goToTotal, continueChallenge, user: "admin" });
+    GoToChallengeOrTotal({ goToTotal, continueChallenge, user: "admin" });
 
-  useFirebaseListener();
+    useFirebaseListener();
 
-  if (goToTotal === true || continueChallenge === true) {
-    return <Loading />;
-  }
+    if (goToTotal === true || continueChallenge === true) {
+      return <Loading />;
+    }
 
-  return (
-    <main className="top-0 left-0 overflow-hidden relatve w-screen min-h-screen flex flex-col gap-y-10 justify-center ">
-      <BackgroundImage />
+    return (
+      <main className="relatve left-0 top-0 flex min-h-[100dvh] w-screen flex-col justify-center gap-y-10 overflow-hidden">
+        <BackgroundImage />
 
-      <MillionareLogo />
+        <MillionareLogo />
 
-      <h1 className=" font-montserrat font-semibold text-xl tablet:text-3xl ipad:text-[40px] text-white/90 text-center">
-        Checkpoint Confirmation
-      </h1>
-      <section className="w-full flex flex-col items-center gap-10">
-        <ClickableMillionareBox
-          text="Withdraw Prize Money"
-          onClick={WithdrawMoney}
-        />
-        <ClickableMillionareBox
-          text="Continue Playing"
-          onClick={GoToQuestion}
-        />
-      </section>
-    </main>
-  );
-};
+        <h1 className="text-center font-montserrat text-xl font-semibold text-white/90 tablet:text-3xl ipad:text-[40px]">
+          Checkpoint Confirmation
+        </h1>
+        <section className="flex w-full flex-col items-center gap-10">
+          <ClickableMillionareBox
+            text="Withdraw Prize Money"
+            onClick={WithdrawMoney}
+          />
+          <ClickableMillionareBox
+            text="Continue Playing"
+            onClick={GoToQuestion}
+          />
+        </section>
+      </main>
+    );
+  };
 
 export default CheckpointAdmin;

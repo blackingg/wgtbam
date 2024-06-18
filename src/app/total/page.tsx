@@ -12,18 +12,17 @@ import { useState, useEffect } from "react";
 //@ts-ignore
 import Confetti from "react-confetti";
 
-export default function Home(
-//   {
-//   searchParams,
-// }: {
-//   searchParams: { prizeLevel: string };
-// }
-) {
+export default function Home() {
+  //   {
+  //   searchParams,
+  // }: {
+  //   searchParams: { prizeLevel: string };
+  // }
   const router = useRouter();
   const goToTotal = useQuestionStore((state) => state.goToTotal);
   const goToHome = useQuestionStore((state) => state.goToHome);
   const updateDataInFirebase = useQuestionStore(
-    (state) => state.updateDataInFirebase
+    (state) => state.updateDataInFirebase,
   );
   // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
   const numPrizeLevel = useQuestionStore((state) => state.prizeLevel);
@@ -55,19 +54,18 @@ export default function Home(
     goToHome === true && goToTotal === false && router.push("/");
   }, [goToHome, goToTotal]);
 
-
   return (
-    <main className="top-0 left-0 overflow-hidden relatve w-screen min-h-screen flex flex-col justify-center gap-10">
+    <main className="relatve left-0 top-0 flex min-h-[100dvh] w-screen flex-col justify-center gap-10 overflow-hidden">
       <BackgroundImage />
       {client && (
         <Confetti
           gravity={0.2}
           numberOfPieces={pieces}
-          className="lConfetti w-screen h-screen grid place-items-center mx-auto"
+          className="lConfetti mx-auto grid h-[100dvh] w-screen place-items-center"
         />
       )}
       <MillionareLogo />
-      <h1 className="  font-montserrat font-medium text-xl tablet:text-3xl ipad:text-5xl text-white/90 text-center">
+      <h1 className="text-center font-montserrat text-xl font-medium text-white/90 tablet:text-3xl ipad:text-5xl">
         Total prize money won
       </h1>
       <NonClickableMillionareBox

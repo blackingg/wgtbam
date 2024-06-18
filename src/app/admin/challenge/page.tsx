@@ -25,7 +25,7 @@ export default function Home() {
   const allQuestions = useQuestionStore((state) => state.allQuestions);
   const goToTotal = useQuestionStore((state) => state.goToTotal);
   const currentChallengeIndex = useQuestionStore(
-    (state) => state.currentChallengeIndex
+    (state) => state.currentChallengeIndex,
   );
   const usedFifty = useQuestionStore((state) => state.usedFifty);
   const usedPhone = useQuestionStore((state) => state.usedPhone);
@@ -36,21 +36,21 @@ export default function Home() {
   const openPrize = useQuestionStore((state) => state.openPrize);
   const isConfirmed = useQuestionStore((state) => state.isConfirmed);
   const finallyIsCorrectAns = useQuestionStore(
-    (state) => state.finallyIsCorrectAns
+    (state) => state.finallyIsCorrectAns,
   );
   const revealCorrectAnswer = useQuestionStore(
-    (state) => state.revealCorrectAnswer
+    (state) => state.revealCorrectAnswer,
   );
   const showRevealCorrect = useQuestionStore(
-    (state) => state.showRevealCorrect
+    (state) => state.showRevealCorrect,
   );
   const showCheckpoint = useQuestionStore((state) => state.showCheckpoint);
   const goToNextQuestion = useQuestionStore((state) => state.goToNextQuestion);
   const continueChallenge = useQuestionStore(
-    (state) => state.continueChallenge
+    (state) => state.continueChallenge,
   );
   const updateDataInFirebase = useQuestionStore(
-    (state) => state.updateDataInFirebase
+    (state) => state.updateDataInFirebase,
   );
 
   const halfedAnswers = useFiftyClick({
@@ -133,10 +133,10 @@ export default function Home() {
   ) : (
     <main
       style={{ backgroundImage: `url(${"/Images/purplebg.png"})` }}
-      className=" py-4 relatve bg-cover min-w-full min-h-screen flex flex-col justify-center gap-3 largerdesktop:gap-10"
+      className="relative flex min-h-[100dvh] min-w-full flex-col justify-center gap-3 bg-cover py-4 largerdesktop:gap-10"
     >
-      <div className=" w-full h-full relative">
-        <div className=" max-w-[150px] tablet:max-w-[250px] max-h-[150px] tablet:max-h-[250px] w-full h-full flex justify-center items-center mx-auto">
+      <div className="relative h-full w-full">
+        <div className="mx-auto flex h-full max-h-[150px] w-full max-w-[150px] items-center justify-center tablet:max-h-[250px] tablet:max-w-[250px]">
           <MillionareLogo />
           <Lifelines
             usedFifty={usedFifty}
@@ -148,7 +148,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className=" w-full space-y-10">
+      <div className="w-full space-y-10">
         <ChallengeSkeleton
           question={allQuestions[currentChallengeIndex].question}
           option1={allQuestions[currentChallengeIndex].option1}
@@ -165,7 +165,7 @@ export default function Home() {
         />
 
         <div
-          className={` pb-4 l-mt-20 flex flex-col tablet:flex-row gap-4 tablet:gap-0 justify-center items-center px-12`}
+          className={`l-mt-20 flex flex-col items-center justify-center gap-4 px-12 pb-4 tablet:flex-row tablet:gap-0`}
         >
           {revealCorrectAnswer === false && userRole === "admin" && (
             <ConfirmationBtn
@@ -190,7 +190,7 @@ export default function Home() {
                     : false
                 }
                 btntext="Go to Next Question"
-                className=" bg-[#FFFFFF] text-[#8A0089]"
+                className="bg-[#FFFFFF] text-[#8A0089]"
               />
             )}
         </div>

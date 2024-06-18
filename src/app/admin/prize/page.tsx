@@ -19,11 +19,11 @@ const PrizeAdmin = () => {
   }, 3000);
 
   return (
-    <section className="relative w-full min-h-screen flex justify-center items-center purplebg overflow-y-hidden">
-      <div className=" bg-gradient-to-br from-[#121F3B] to-[#070E1D] bg-opacity-50 px-8 tablet:px-[70px] py-4 tablet:py-[34px] relative rounded-2xl border border-white font-montserrat font-normal text-sm tablet:font-bold tablet:text-3xl space-y-2">
+    <section className="purplebg relative flex min-h-[100dvh] w-full items-center justify-center overflow-y-hidden">
+      <div className="relative space-y-2 rounded-2xl border border-white bg-opacity-50 bg-gradient-to-br from-[#121F3B] to-[#070E1D] px-8 py-4 font-montserrat text-sm font-normal tablet:px-[70px] tablet:py-[34px] tablet:text-3xl tablet:font-bold">
         {values.map((value) => (
           <div
-            className={` relative flex items-center w-full h-full ${
+            className={`relative flex h-full w-full items-center ${
               value.value !== 5 && value.value !== 10 && value.value !== 15
                 ? "text-[#F88008]"
                 : "text-white"
@@ -41,26 +41,26 @@ const PrizeAdmin = () => {
               src="/Images/rect.svg"
               alt=""
               draggable={false}
-              className={` left-0 absolute min-w-full min-h-full cursor-not-allowed ${
+              className={`absolute left-0 min-h-full min-w-full cursor-not-allowed ${
                 value.value === prizeLevel ? "flex" : "hidden"
               }`}
             />
-            <span className=" flex justify-start tablet:justify-center max-w-[43px] w-full">
+            <span className="flex w-full max-w-[43px] justify-start tablet:justify-center">
               {value.value}.
             </span>
-            <span className=" flex justify-start pl-8">{value.amount}</span>
+            <span className="flex justify-start pl-8">{value.amount}</span>
           </div>
         ))}
       </div>
 
-      <div className=" absolute right-[50px] bottom-[50px] space-y-8">
-        <div className=" font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] bg-white/90 shadow-md px-6 py-4">
+      <div className="absolute bottom-[50px] right-[50px] space-y-8">
+        <div className="rounded-[72px] bg-white/90 px-6 py-4 font-montserrat text-3xl font-bold text-[#8A0089] shadow-md">
           50/50
         </div>
-        <div className=" flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] bg-white/90 shadow-md px-6 py-4">
+        <div className="flex items-center justify-center rounded-[72px] bg-white/90 px-6 py-4 font-montserrat text-3xl font-bold text-[#8A0089] shadow-md">
           <TelIcon />
         </div>
-        <div className="flex justify-center items-center font-montserrat font-bold text-3xl text-[#8A0089] rounded-[72px] bg-white/90 shadow-md px-6 py-4">
+        <div className="flex items-center justify-center rounded-[72px] bg-white/90 px-6 py-4 font-montserrat text-3xl font-bold text-[#8A0089] shadow-md">
           <UsergroupIcon />
         </div>
       </div>

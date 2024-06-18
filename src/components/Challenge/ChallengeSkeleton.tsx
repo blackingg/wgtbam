@@ -1,5 +1,5 @@
-import { NonClickableMillionareBox} from "..";
 import { AnswerBox } from "../Answer";
+import { NonClickableMillionareBox } from "../Button";
 
 interface ChallengeSkeletonProps {
   question: string;
@@ -33,15 +33,15 @@ export const ChallengeSkeleton = ({
 }: ChallengeSkeletonProps) => {
   const options = [option1, option2, option3, option4];
   return (
-    <div className=" w-full flex flex-col gap-10 largerdesktop:gap-10">
+    <div className="flex w-full flex-col gap-10 largerdesktop:gap-10">
       <NonClickableMillionareBox text={question} />
-      <div className=" flex flex-col gap-y-4 ipad:gap-y-8">
+      <div className="flex flex-col gap-y-4 ipad:gap-y-8">
         {[1, 2].map((group) => (
           <div
             key={`${group} group`}
-            className={` flex flex-col tablet:flex-row items-center justify-center gap-4 relative  ipad:px-8`}
+            className={`relative flex flex-col items-center justify-center gap-4 tablet:flex-row ipad:px-8`}
           >
-            <div className="bg-[#EAB95A] w-full h-[4.5px] z-[1] absolute left-[0%] top-[50%] translate-y-[-50%] hidden tablet:block" />
+            <div className="absolute left-[0%] top-[50%] z-[1] hidden h-[4.5px] w-full translate-y-[-50%] bg-[#EAB95A] tablet:block" />
             {options.slice((group - 1) * 2, group * 2).map((option, index) => (
               <AnswerBox
                 key={index}
