@@ -30,6 +30,6 @@
 @layer utilities {
   .cscale-90 {
     @apply transform scale-90;
-    transform-origin: top left;
+    transform-origin: center;
   }
 }

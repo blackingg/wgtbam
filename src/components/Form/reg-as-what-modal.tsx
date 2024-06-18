@@ -25,9 +25,9 @@ export const RegAsWhat = ({
   };
 
   return (
-    <div className="purplebg fixed left-0 top-0 z-[999999] flex h-[100dvh] w-screen items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="purplebg fixed left-0 top-0 z-[999999] flex h-[100dvh] w-screen items-center justify-center bg-black/50 px-[5%] backdrop-blur-sm">
       <form
-        className="relative z-10 mt-[24px] flex w-full max-w-[600px] flex-col items-center justify-center rounded-3xl border border-white bg-opacity-[0.15] bg-gradient-to-br from-white/10 to-white/0 px-5 py-8 shadow-md backdrop-blur-sm"
+        className="relative z-[99999] mt-[24px] flex w-full max-w-[600px] flex-col items-center justify-center rounded-3xl border border-white bg-opacity-[0.15] bg-gradient-to-br from-white/10 to-white/0 px-4 py-8 shadow-md backdrop-blur-sm lg:px-5"
         action={handleRegAs}
       >
         <div className="flex w-full flex-col gap-3 text-white">

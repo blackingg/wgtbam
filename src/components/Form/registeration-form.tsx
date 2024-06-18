@@ -7,10 +7,10 @@ import { InputsArr, Required } from "@/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { DefaultModal } from "../Modal/DefaultModal";
+import { AltModal, DefaultModal } from "../Modal/DefaultModal";
 import { User } from "@/types";
 
-export const RegisterationForm = () => {
+export const RegisterationForm = ({ role }: { role: string }) => {
   const {
     register,
     handleSubmit,
@@ -24,11 +24,12 @@ export const RegisterationForm = () => {
   // const [isLoading, setIsLoading] = useState(false);
   // const [isError, setIsError] = useState("");
 
-  const onSubmit: SubmitHandler<User> = (_: any) => {
+  const onSubmit: SubmitHandler<User> = (data: User) => {
     setSuccessful(true);
     setIsOpen(true);
     // setIsLoading(true);
-    // console.log(data);
+    const newData = { ...data, role };
+    console.log(newData, "hekko");
   };
 
   // const submitme = () => {
@@ -74,20 +75,19 @@ export const RegisterationForm = () => {
         </div>
       </form>
       {successful && (
-        <DefaultModal
+        <AltModal
           closeAction={() => router.push("/registration")}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           Image={
-            <div className="w-full max-w-[150px]">
-              <Image
-                fill
-                alt="img"
-                src="/Images/succestick.svg"
-                className="cursor-not-allowed"
-                draggable={false}
-              />
-            </div>
+            <Image
+              width={150}
+              height={150}
+              alt="img"
+              src="/Images/succestick.svg"
+              className="h-auto w-full max-w-[100px] lg:max-w-[150px]"
+              draggable={false}
+            />
           }
           label="Registration successful!"
           Text={
