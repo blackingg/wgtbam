@@ -30,7 +30,7 @@ const RegistrationUser = () => {
   }
 
   return (
-    <div className="purplebg flex min-h-[100dvh] w-full items-center justify-center px-[5%] text-white">
+    <div className="purplebg flex min-h-[100svh] w-full items-center justify-center px-[5%] py-[20px] text-white lg:py-0">
       <div className="lg:cscale-90 relative z-10 mt-[55px] flex w-full max-w-[550px] flex-col items-center justify-center rounded-3xl border border-white bg-opacity-[0.15] bg-gradient-to-br from-white/10 to-white/0 px-5 pb-[30px] pt-[55px] shadow-md backdrop-blur-sm tablet:px-[30px]">
         {!isRole ? (
           <RegAsWhat
