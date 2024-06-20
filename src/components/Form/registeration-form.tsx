@@ -53,8 +53,9 @@ export const RegisterationForm = ({ role }: { role: string }) => {
         setRegSuccessful(true);
       } else {
         toast.dismiss();
-        toast.error("Failed to register");
-        response.error.email && toast.error(response.error.email);
+        response.error.email
+          ? toast.error(response.error.email)
+          : toast.error("Failed to register");
       }
     } catch (error: any) {
       toast.dismiss();
@@ -66,7 +67,7 @@ export const RegisterationForm = ({ role }: { role: string }) => {
   return (
     <>
       <form className="mt-[24px] w-full" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           {InputsArr.map((input, index) => (
             <Fragment key={index}>
               <DefaultInput
@@ -80,7 +81,7 @@ export const RegisterationForm = ({ role }: { role: string }) => {
               />
             </Fragment>
           ))}
-          <div className="mt-6">
+          <div className="mt-4">
             <CustomizableBtn
               BtnContent={
                 isPending ? (
