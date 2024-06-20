@@ -33,7 +33,7 @@ export const DefaultModal = ({
       {isOpen && (
         <div
           onClick={closeModal}
-          className="fixed left-0 top-0 z-[999995] grid h-[100dvh] w-screen place-items-center bg-black/70 px-5 backdrop-blur-lg"
+          className="fixed left-0 top-0 z-[999995] grid h-[100vh] w-screen place-items-center bg-black/70 px-5 backdrop-blur-lg"
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -77,7 +77,7 @@ export const AltModal = ({
       {isOpen && (
         <div
           onClick={closeModal}
-          className="fixed left-0 top-0 z-[50] grid h-[100dvh] w-screen place-items-center bg-black/70 px-5 text-white backdrop-blur-lg"
+          className="fixed left-0 top-0 z-[50] grid h-[100vh] w-screen place-items-center bg-black/70 px-5 text-white backdrop-blur-lg"
         >
           <div
             onClick={(e) => e.stopPropagation()}

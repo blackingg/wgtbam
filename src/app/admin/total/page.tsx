@@ -46,13 +46,13 @@ export default function Home() {
   useFirebaseListener();
 
   return (
-    <main className="relatve left-0 top-0 flex min-h-[100dvh] w-screen flex-col justify-center gap-10 overflow-hidden">
+    <main className="relatve left-0 top-0 flex min-h-[100vh] w-screen flex-col justify-center gap-10 overflow-hidden">
       <BackgroundImage />
       {client && (
         <Confetti
           gravity={0.2}
           numberOfPieces={pieces}
-          className="lConfetti mx-auto grid h-[100dvh] w-screen place-items-center"
+          className="lConfetti mx-auto grid h-[100vh] w-screen place-items-center"
         />
       )}
       <MillionareLogo />

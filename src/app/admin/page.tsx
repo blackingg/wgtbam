@@ -35,7 +35,7 @@ export default function Home() {
   }
 
   return (
-    <main className="relatve left-0 top-0 flex min-h-[100dvh] w-screen flex-col justify-center gap-y-10 overflow-hidden">
+    <main className="relatve left-0 top-0 flex min-h-[100vh] w-screen flex-col justify-center gap-y-10 overflow-hidden">
       <BackgroundImage />
       <MillionareLogo />
       <ClickableMillionareBox

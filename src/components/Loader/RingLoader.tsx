@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const RingLoader = () => {
   return (
-    <div className="purplebg fixed left-0 top-0 z-[99999] flex h-[100dvh] w-screen items-center justify-center">
+    <div className="purplebg fixed left-0 top-0 z-[99999] flex h-[100vh] w-screen items-center justify-center">
       <Image
         src="/Images/loaderImg.svg"
         alt="loader"

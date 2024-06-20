@@ -19,7 +19,7 @@ const PrizeAdmin = () => {
   }, 3000);
 
   return (
-    <section className="purplebg relative flex min-h-[100dvh] w-full items-center justify-center overflow-y-hidden">
+    <section className="purplebg relative flex min-h-[100vh] w-full items-center justify-center overflow-y-hidden">
       <div className="relative space-y-2 rounded-2xl border border-white bg-opacity-50 bg-gradient-to-br from-[#121F3B] to-[#070E1D] px-8 py-4 font-montserrat text-sm font-normal tablet:px-[70px] tablet:py-[34px] tablet:text-3xl tablet:font-bold">
         {values.map((value) => (
           <div

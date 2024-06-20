@@ -26,7 +26,7 @@ export const RegAsWhat = ({
   };
 
   return ReactDOM.createPortal(
-    <div className="purplebg fixed left-0 top-0 z-[999999] flex h-[100dvh] w-screen items-center justify-center bg-black/50 px-[5%] backdrop-blur-sm">
+    <div className="purplebg fixed left-0 top-0 z-[999999] flex h-[100vh] w-screen items-center justify-center bg-black/50 px-[5%] backdrop-blur-sm">
       <form
         className="relative z-[99999] mt-[24px] flex w-full max-w-[500px] flex-col items-center justify-center py-8 lg:rounded-3xl lg:border lg:border-white lg:bg-opacity-[0.15] lg:bg-gradient-to-br lg:from-white/10 lg:to-white/0 lg:px-5 lg:shadow-md lg:backdrop-blur-sm"
         action={handleRegAs}

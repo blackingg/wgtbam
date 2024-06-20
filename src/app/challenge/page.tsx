@@ -107,7 +107,7 @@ export default function Home() {
   ) : (
     <main
       style={{ backgroundImage: `url(${"/Images/purplebg.png"})` }}
-      className="relatve flex min-h-[100dvh] min-w-full flex-col justify-center gap-3 bg-cover pt-4 largerdesktop:gap-10"
+      className="relatve flex min-h-[100vh] min-w-full flex-col justify-center gap-3 bg-cover pt-4 largerdesktop:gap-10"
     >
       <div className="relative h-full w-full">
         <div className="mx-auto flex h-full max-h-[150px] w-full max-w-[150px] items-center justify-center tablet:max-h-[250px] tablet:max-w-[250px]">

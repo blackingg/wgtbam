@@ -15,7 +15,7 @@ const RegistrationUser = () => {
 
   if (!isMounted) {
     return (
-      <div className="purplebg flex min-h-[100dvh] w-full items-center justify-center px-[5%] text-white">
+      <div className="purplebg flex min-h-[100vh] w-full items-center justify-center px-[5%] text-white">
         <div className="lg:cscale-90 relative z-10 mt-[55px] flex w-full max-w-[550px] flex-col items-center justify-center rounded-3xl pb-[30px] pt-[55px] tablet:px-[30px] lg:border lg:border-white lg:bg-opacity-[0.15] lg:bg-gradient-to-br lg:from-white/10 lg:to-white/0 lg:pt-[55px] lg:shadow-md lg:backdrop-blur-sm">
           <Image
             src="/Images/loaderImg.svg"

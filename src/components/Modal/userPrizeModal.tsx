@@ -17,7 +17,7 @@ export const UserPrizeModal = ({ openPrize }: { openPrize: boolean }) => {
       {openPrize && (
         <div
           // onClick={closeModal}
-          className="fixed left-0 top-0 z-[999995] grid min-h-[100dvh] w-screen place-items-center overflow-hidden backdrop-blur-lg"
+          className="fixed left-0 top-0 z-[999995] grid min-h-[100vh] w-screen place-items-center overflow-hidden backdrop-blur-lg"
         >
           <BackgroundImage />
           <div

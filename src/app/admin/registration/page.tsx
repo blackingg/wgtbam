@@ -57,7 +57,7 @@ const RegisterationAdmin = () => {
 
   return (
     isClient && (
-      <div className="purplebg flex min-h-[100dvh] items-center justify-center px-[20px] pb-[25px] text-white">
+      <div className="purplebg flex min-h-[100vh] items-center justify-center px-[20px] pb-[25px] text-white">
         <div className="relative z-10 mt-[80px] flex w-full max-w-[558px] flex-col items-center justify-center rounded-3xl border border-white bg-opacity-[0.15] bg-gradient-to-br from-white/10 to-white/0 px-[15px] pb-[30px] pt-[55px] shadow-md backdrop-blur-sm tablet:px-[30px]">
           <div className="absolute left-[50%] top-[0%] w-full max-w-[150px] translate-x-[-50%] translate-y-[-50%] tablet:max-w-[200px]">
             <Image src="/Images/logo.png" fill alt="Logo" className="" />
