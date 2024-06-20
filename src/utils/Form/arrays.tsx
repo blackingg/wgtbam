@@ -3,8 +3,22 @@ import Image from "next/image";
 
 export const InputsArr = [
   {
+    label: "Name",
+    Icon: null,
+    name: "sname" as InputName,
+    label2: "e.g Samuel",
+  },
+  {
     label: "Email",
-    Icon: <Image src="/Images/mailIcon.svg" alt="img" width={20} height={20} className=" w-5 h-5" />,
+    Icon: (
+      <Image
+        src="/Images/mailIcon.svg"
+        alt="img"
+        width={20}
+        height={20}
+        className="h-5 w-5"
+      />
+    ),
     name: "email" as InputName,
     label2: "e.g. xyz@gmail.com",
   },

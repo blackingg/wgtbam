@@ -5,12 +5,23 @@ export type User = {
   email: string;
   dept: string;
   phoneNo: number;
+  sname: string;
 };
 
-export type InputName = "faculty" | "email" | "dept" | "phoneNo";
+export type InputName = "faculty" | "email" | "dept" | "phoneNo" | "sname";
 
 export interface NonClickableMillionareBtnProps
   extends HTMLAttributes<HTMLDivElement> {
   text: string;
   className2?: string;
+}
+
+
+export interface finalUserData {
+  name: string;
+  email: string;
+  department: string;
+  faculty: string;
+  phone: string;
+  reg_type: string;
 }

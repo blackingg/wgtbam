@@ -1,14 +1,17 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import { DefaultButton } from "./Buttons";
+import { CustomizableBtn } from "./Buttons";
 import { DefaultInput } from "./Inputs";
 import { InputsArr, Required } from "@/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AltModal, DefaultModal } from "../Modal/DefaultModal";
-import { User } from "@/types";
+import { AltModal } from "../Modal/DefaultModal";
+import { finalUserData, User } from "@/types";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { registerUser } from "@/server/actions";
 
 export const RegisterationForm = ({ role }: { role: string }) => {
   const {
@@ -17,40 +20,48 @@ export const RegisterationForm = ({ role }: { role: string }) => {
     formState: { errors },
   } = useForm<User>();
 
+  const [regSuccessful, setRegSuccessful] = useState(false);
+
+  const { mutateAsync, isPending, data, isSuccess } = useMutation({
+    mutationFn: registerUser,
+  });
+
   const router = useRouter();
 
-  const [successful, setSuccessful] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isError, setIsError] = useState("");
 
-  const onSubmit: SubmitHandler<User> = (data: User) => {
-    setSuccessful(true);
+  const onSubmit: SubmitHandler<User> = async (data: User) => {
     setIsOpen(true);
-    // setIsLoading(true);
-    const newData = { ...data, role };
-    console.log(newData, "hekko");
+
+    const newData: finalUserData = {
+      name: data.sname,
+      email: data.email,
+      department: data.dept,
+      faculty: data.faculty,
+      phone: `${data.phoneNo}`,
+      reg_type: role,
+    };
+    // console.log(newData, "hekko");
+
+    try {
+      const response = await mutateAsync(newData);
+      // console.log(response, "response");
+
+      if (response.passed === true) {
+        toast.dismiss();
+        toast.success("Registration successful!");
+        setRegSuccessful(true);
+      } else {
+        toast.dismiss();
+        toast.error("Failed to register");
+        response.error.email && toast.error(response.error.email);
+      }
+    } catch (error: any) {
+      toast.dismiss();
+      toast.error(`${error.message}`);
+      console.error("An error occurred", error);
+    }
   };
-
-  // const submitme = () => {
-  //   const url = "https://owgtbam-default-rtdb.firebaseio.com/questions.json";
-  //   const UserData = {
-  //     questions: QuestionArr,
-  //   };
-
-  //   fetch(url, {
-  //     method: "POST",
-  //     body: JSON.stringify(UserData),
-  //     headers: { "Content-Type": "application/json" },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("FireBase Successfully Connected Success:", data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // };
 
   return (
     <>
@@ -70,13 +81,33 @@ export const RegisterationForm = ({ role }: { role: string }) => {
             </Fragment>
           ))}
           <div className="mt-6">
-            <DefaultButton text="Register" />
+            <CustomizableBtn
+              BtnContent={
+                isPending ? (
+                  <Image
+                    width={30}
+                    height={30}
+                    alt="img"
+                    src="/Images/loading-circle.svg"
+                    className="h-full w-auto"
+                    draggable={false}
+                  />
+                ) : (
+                  "Register"
+                )
+              }
+              disabled={isPending}
+              className="h-[60px] disabled:bg-gray-500"
+            />
           </div>
         </div>
       </form>
-      {successful && (
+      {regSuccessful && (
         <AltModal
-          closeAction={() => router.push("/registration")}
+          closeAction={() => {
+            router.refresh();
+            setRegSuccessful(false);
+          }}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           Image={

@@ -77,11 +77,11 @@ export const AltModal = ({
       {isOpen && (
         <div
           onClick={closeModal}
-          className="fixed left-0 top-0 z-[999995] grid h-[100dvh] w-screen place-items-center bg-black/70 px-5 text-white backdrop-blur-lg"
+          className="fixed left-0 top-0 z-[50] grid h-[100dvh] w-screen place-items-center bg-black/70 px-5 text-white backdrop-blur-lg"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative z-[999999] grid min-h-[300px] w-full max-w-[500px] place-items-center gap-6 rounded-3xl border border-white bg-opacity-[0.15] bg-gradient-to-br from-white/10 to-white/0 p-5 text-center font-montserrat shadow-md backdrop-blur-sm"
+            className="relative z-[50] grid min-h-[300px] w-full max-w-[500px] place-items-center gap-6 rounded-3xl border border-white bg-opacity-[0.15] bg-gradient-to-br from-white/10 to-white/0 p-5 text-center font-montserrat shadow-md backdrop-blur-sm"
           >
             {Image}
             <h1 className="font-montserrat text-xl font-extrabold text-white tablet:text-[28px]">
