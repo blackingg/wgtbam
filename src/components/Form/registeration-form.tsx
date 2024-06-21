@@ -41,7 +41,7 @@ export const RegisterationForm = ({ role }: { role: string }) => {
       phone: `${data.phoneNo}`,
       reg_type: role,
     };
-    // console.log(newData, "hekko");
+    console.log(newData, "hekko");
 
     try {
       const response = await mutateAsync(newData);
@@ -125,8 +125,8 @@ export const RegisterationForm = ({ role }: { role: string }) => {
           Text={
             <div className="flex flex-col gap-6">
               <p className="text-center font-poppins text-base font-normal">
-                You have successfully registered for this event, watch out for
-                more updates
+                Thank you for registering for this event. Please check your
+                email for more details and further instructions.
               </p>
             </div>
           }

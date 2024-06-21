@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const RegistrationUser = () => {
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("participant");
   const [isRole, setIsRole] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
