@@ -35,17 +35,20 @@ export default function Home() {
       setPieces(0);
     }, 3000);
   };
+  const AUTH_TOKEN_KEY = "authToken";
+  const AUTH_TOKEN_VALUE = "admin0987";
+  const handleLogout = async () => {
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+  };
 
   useEffect(() => {
     stopConfetti();
     setIsClient(true);
+    const Run = async () => {
+      await handleLogout();
+    };
+    Run();
   }, []);
-
-  useFirebaseListener();
-
-  const handleLogout = async () => {
-    localStorage.removeItem(AUTH_TOKEN_KEY);
-  };
 
   useEffect(() => {
     const Run = async () => {
@@ -55,12 +58,10 @@ export default function Home() {
     };
 
     Run();
-    clearStorage && handleLogout();
     goToHome === true && goToTotal === false && router.push("/");
   }, [goToHome, goToTotal, clearStorage]);
 
-  const AUTH_TOKEN_KEY = "authToken";
-  const AUTH_TOKEN_VALUE = "admin0987";
+  useFirebaseListener();
 
   return (
     <main className="relatve left-0 top-0 flex min-h-[100vh] w-screen flex-col justify-center gap-10 overflow-hidden">

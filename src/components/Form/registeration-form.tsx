@@ -41,7 +41,7 @@ export const RegisterationForm = ({ role }: { role: string }) => {
       phone: `${data.phoneNo}`,
       reg_type: role,
     };
-    console.log(newData, "hekko");
+    // console.log(newData, "hekko");
 
     try {
       const response = await mutateAsync(newData);

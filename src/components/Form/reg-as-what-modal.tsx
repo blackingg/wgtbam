@@ -55,6 +55,7 @@ export const RegAsWhat = ({
               name="participant"
               value="participant"
               checked={role === "participant"}
+              disabled={true}
               readOnly
               className="h-[24px] w-[24px] rounded-lg bg-white/10 pl-[16px] placeholder:font-poppins placeholder:text-white/50"
             />

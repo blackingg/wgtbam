@@ -3,11 +3,19 @@
 import { RegAsWhat, RegisterationForm } from "@/components";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const RegistrationUser = () => {
-  const [role, setRole] = useState("participant");
+  const [role, setRole] = useState("attendee");
   const [isRole, setIsRole] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    if (role === "participant") {
+      toast.error("Participant registration is closed");
+      setRole("attendee");
+    }
+  }, [role]);
 
   useEffect(() => {
     setIsMounted(true);
