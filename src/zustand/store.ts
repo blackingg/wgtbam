@@ -1,265 +1,212 @@
 "use client";
 import { database } from "@/firebase";
-import { Question } from "@/types";
-import { QuestionArr } from "@/utils";
+import axios from "axios";
 //@ts-ignore
 import { ref, set as FirebaseSet, set } from "firebase/database";
+import { toast } from "react-toastify";
 import { create } from "zustand";
 
+interface Options {
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+}
+
+// Define the shape of the main data
+interface QuestionData {
+  answer: string;
+  difficulty_level: string;
+  id: number;
+  options: Options;
+  // qid: string;
+  // qtype: string;
+  question: string;
+  // status: string;
+}
+
 export type State = {
-  allQuestions: Question[];
-  currentChallengeIndex: number;
+  answer: string | null;
+  difficulty_level: string | null;
+  id: number | null;
+  options: Options | null;
+  question: string | null;
   usedFifty: boolean;
   usedPhone: boolean;
   usedAudience: boolean;
   isAnswered: boolean;
-  isCorrect: boolean;
-  prizeLevel: number;
-  selectedAnswer: string;
-  openPrize: boolean;
-  isConfirmed: boolean;
-  finallyIsCorrectAns: boolean;
-  finallyUserLevel: number;
-  revealCorrectAnswer: boolean;
-  showRevealCorrect: string;
-  goToNextQuestion: boolean;
   goToHome: boolean;
   showCheckpoint: boolean;
   letsPlay: boolean;
   goToTotal: boolean;
   continueChallenge: boolean;
+  prizeLevel: number;
+  openPrize: boolean;
+  revealCorrectAnswer: boolean;
+  isConfirmed: boolean;
+  finallyIsCorrectAns: boolean;
+  finallyUserLevel: number;
+  showRevealCorrect: string;
+  selectedAnswer: string;
+  isCorrect: boolean;
+  clearStorage: boolean;
 };
 
 export type Action = {
-  setQuestionArr: (
-    allQuestions: Question[],
-    callback?: (allQuestions: Question[]) => void
-  ) => void;
-  setAllQuestions: (
-    updatedOptions: (string | undefined)[],
-    challengeIndex: number,
-    callback?: (updatedQuestions: Question[]) => void
-  ) => void;
-  setCurrentChallengeIndex: (
-    index: number,
-    callback?: (index: number) => void
-  ) => void;
-  setUsedFifty: (used: boolean, callback?: (used: boolean) => void) => void;
-  setUsedPhone: (used: boolean, callback?: (used: boolean) => void) => void;
-  setUsedAudience: (used: boolean, callback?: (used: boolean) => void) => void;
-  setIsAnswered: (
-    answered: boolean,
-    callback?: (answered: boolean) => void
-  ) => void;
-  setIsCorrect: (
-    correct: boolean,
-    callback?: (correct: boolean) => void
-  ) => void;
-  setPrizeLevel: (level: number, callback?: (level: number) => void) => void;
-  setSelectedAnswer: (
-    answer: string,
-    callback?: (answer: string) => void
-  ) => void;
-  setOpenPrize: (open: boolean, callback?: (open: boolean) => void) => void;
-  setIsConfirmed: (
-    confirmed: boolean,
-    callback?: (confirmed: boolean) => void
-  ) => void;
-  setFinallyIsCorrectAns: (
-    correct: boolean,
-    callback?: (correct: boolean) => void
-  ) => void;
-  setFinallyUserLevel: (
-    level: number,
-    callback?: (level: number) => void
-  ) => void;
-  setRevealCorrectAnswer: (
-    reveal: boolean,
-    callback?: (reveal: boolean) => void
-  ) => void;
-  setShowRevealCorrect: (
-    reveal: string,
-    callback?: (reveal: string) => void
-  ) => void;
-  setGoToNextQuestion: (
-    next: boolean,
-    callback?: (next: boolean) => void
-  ) => void;
+  getQuestionsFromServer: () => Promise<void>;
+
+  setUsedFifty: (value: boolean) => void;
+  setUsedPhone: (value: boolean) => void;
+  setUsedAudience: (value: boolean) => void;
+  setIsAnswered: (value: boolean) => void;
+  setGoToHome: (value: boolean) => void;
+  setShowCheckpoint: (value: boolean) => void;
+  setLetsPlay: (value: boolean) => void;
+  setGoToTotal: (value: boolean) => void;
+  setContinueChallenge: (value: boolean) => void;
+  setPrizeLevel: (value: number) => void;
+  setOpenPrize: (value: boolean) => void;
+  setRevealCorrectAnswer: (reveal: boolean) => void;
+  setSelectedAnswer: (answer: string) => void;
+  setFinallyIsCorrectAns: (correct: boolean) => void;
+  setFinallyUserLevel: (level: number) => void;
+  setShowRevealCorrect: (reveal: string) => void;
+  setIsConfirmed: (confirmed: boolean) => void;
+  setIsCorrect: (correct: boolean) => void;
+  setClearStorage: (clear: boolean) => void;
+
   updateDataInFirebase: (data: Partial<State>) => Promise<void>;
   updateDataInStore: (data: Partial<State>) => void;
-  setGoToHome: (home: boolean, callback?: (home: boolean) => void) => void;
-  setShowCheckpoint: (
-    show: boolean,
-    callback?: (show: boolean) => void
-  ) => void;
-  setLetsPlay: (
-    started: boolean,
-    callback?: (started: boolean) => void
-  ) => void;
-  setGoToTotal: (total: boolean, callback?: (total: boolean) => void) => void;
-  setContinueChallenge: (
-    continueChallenge: boolean,
-    callback?: (continueChallenge: boolean) => void
-  ) => void;
 };
 
 export const useQuestionStore = create<State & Action>()((set, get) => ({
-  allQuestions: QuestionArr,
-  currentChallengeIndex: 0,
+  answer: null,
+  difficulty_level: null,
+  id: null,
+  options: null,
+  question: null,
   usedFifty: false,
   usedPhone: false,
   usedAudience: false,
   isAnswered: false,
-  isCorrect: false,
-  prizeLevel: 0,
-  selectedAnswer: "",
-  openPrize: false,
-  isConfirmed: false,
-  finallyIsCorrectAns: false,
-  finallyUserLevel: 0,
-  revealCorrectAnswer: false,
-  showRevealCorrect: "",
-  goToNextQuestion: false,
   goToHome: false,
   showCheckpoint: false,
   letsPlay: false,
   goToTotal: false,
   continueChallenge: false,
-  setContinueChallenge: (continueChallenge, callback) =>
-    set(() => {
-      callback && callback(continueChallenge);
-      return { continueChallenge: continueChallenge };
-    }),
-  setGoToTotal: (total, callback) =>
-    set(() => {
-      callback && callback(total);
-      return { goToTotal: total };
-    }),
-  setLetsPlay: (started, callback) =>
-    set(() => {
-      callback && callback(started);
-      return { letsPlay: started };
-    }),
-  setShowCheckpoint: (show, callback) =>
-    set(() => {
-      callback && callback(show);
-      return { showCheckpoint: show };
-    }),
-  setGoToHome: (boolValue, callback) =>
-    set(() => {
-      callback && callback(boolValue);
-      return { goToHome: boolValue };
-    }),
-  setQuestionArr: (allQuest, callback) =>
-    set((state) => {
-      const newQuestionsArr = allQuest;
-      callback && callback(newQuestionsArr);
-      return { allQuestions: newQuestionsArr };
-    }),
-  setAllQuestions: (updatedOptions, challengeIndex, callback) =>
-    set((state) => {
-      const updatedQuestions = [...state.allQuestions];
-      updatedQuestions[challengeIndex] = {
-        ...state.allQuestions[challengeIndex],
-        option1: updatedOptions[0] || "",
-        option2: updatedOptions[1] || "",
-        option3: updatedOptions[2] || "",
-        option4: updatedOptions[3] || "",
-      };
-      callback && callback(updatedQuestions);
-      return { allQuestions: updatedQuestions };
-    }),
+  prizeLevel: 0,
+  openPrize: false,
+  revealCorrectAnswer: false,
+  isConfirmed: false,
+  finallyIsCorrectAns: false,
+  finallyUserLevel: 0,
+  showRevealCorrect: "",
+  selectedAnswer: "",
+  isCorrect: false,
+  clearStorage: false,
 
-  setCurrentChallengeIndex: (index, callback) =>
-    set((state) => {
-      const newIndex = state.currentChallengeIndex + index;
-      callback && callback(newIndex);
-      return { currentChallengeIndex: newIndex };
-    }),
+  getQuestionsFromServer: async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.post(
+          "https://oneklass2.oauife.edu.ng/api/wgtbam/fetchquestion",
+          {
+            fetchpair: {
+              // qtype: "currentaffairs",
+              // difficulty: "2",
+            },
+            adminpass: "admin0987",
+          },
+        );
+        console.log("questions", response.data);
 
-  setUsedFifty: (used, callback) =>
-    set((state) => {
-      callback && callback(used);
-      return { usedFifty: used };
-    }),
+        const questionData = {
+          answer: response.data.queryset[0].answer,
+          difficulty_level: response.data.queryset[0].difficulty_level,
+          id: response.data.queryset[0].id,
+          options: response.data.queryset[0].options,
+          question: response.data.queryset[0].question,
+        }
 
-  setUsedPhone: (used, callback) =>
-    set((state) => {
-      callback && callback(used);
-      return { usedPhone: used };
-    }),
+        set({
+          answer: response.data.queryset[0].answer,
+          difficulty_level: response.data.queryset[0].difficulty_level,
+          id: response.data.queryset[0].id,
+          options: response.data.queryset[0].options,
+          question: response.data.queryset[0].question,
+        });
 
-  setUsedAudience: (used, callback) =>
-    set((state) => {
-      callback && callback(used);
-      return { usedAudience: used };
-    }),
+        try {
+        const dbRef = ref(database, "questionStore");
+        const currentState = get();
+        const newData = { ...currentState, ...questionData };
 
-  setIsAnswered: (answered, callback) =>
-    set((state) => {
-      callback && callback(answered);
-      return { isAnswered: answered };
-    }),
+        const {
+          setUsedFifty,
+          setUsedPhone,
+          setUsedAudience,
+          setIsAnswered,
+          setGoToHome,
+          setShowCheckpoint,
+          setLetsPlay,
+          setGoToTotal,
+          setContinueChallenge,
+          getQuestionsFromServer,
+          updateDataInFirebase,
+          updateDataInStore,
+          setOpenPrize,
+          setPrizeLevel,
+          setFinallyIsCorrectAns,
+          setFinallyUserLevel,
+          setIsConfirmed,
+          setIsCorrect,
+          setRevealCorrectAnswer,
+          setSelectedAnswer,
+          setShowRevealCorrect,
+          setClearStorage,
+          ...stateToSave
+        } = newData;
 
-  setIsCorrect: (correct, callback) =>
-    set((state) => {
-      callback && callback(correct);
-      return { isCorrect: correct };
-    }),
+        set(stateToSave);
 
-  setPrizeLevel: (level, callback) =>
-    set((state) => {
-      callback && callback(level);
-      return { prizeLevel: level };
-    }),
+        FirebaseSet(dbRef, stateToSave)
+          .then(() => resolve())
+          .catch((error: any) => reject(error));
+      } catch (error) {
+        console.log("firebase error, ", error);
+        
+        reject(error);
+      }
 
-  setSelectedAnswer: (answer, callback) =>
-    set((state) => {
-      callback && callback(answer);
-      return { selectedAnswer: answer };
-    }),
+        resolve();
+      } catch (error) {
+        console.log("error", error);
+        toast.error("Failed to fetch questions");
+        reject(error);
+      }
+    });
+  },
 
-  setOpenPrize: (open, callback) =>
-    set((state) => {
-      callback && callback(open);
-      return { openPrize: open };
-    }),
+  setUsedFifty: (value) => set({ usedFifty: value }),
+  setUsedPhone: (value) => set({ usedPhone: value }),
+  setUsedAudience: (value) => set({ usedAudience: value }),
+  setIsAnswered: (value) => set({ isAnswered: value }),
+  setGoToHome: (value) => set({ goToHome: value }),
+  setShowCheckpoint: (value) => set({ showCheckpoint: value }),
+  setLetsPlay: (value) => set({ letsPlay: value }),
+  setGoToTotal: (value) => set({ goToTotal: value }),
+  setContinueChallenge: (value) => set({ continueChallenge: value }),
+  setPrizeLevel: (value) => set({ prizeLevel: value }),
+  setOpenPrize: (value) => set({ openPrize: value }),
+  setRevealCorrectAnswer: (reveal) => set({ revealCorrectAnswer: reveal }),
+  setIsConfirmed: (confirmed) => set({ isConfirmed: confirmed }),
+  setFinallyIsCorrectAns: (correct) => set({ finallyIsCorrectAns: correct }),
+  setFinallyUserLevel: (level) => set({ finallyUserLevel: level }),
+  setSelectedAnswer: (answer) => set({ selectedAnswer: answer }),
+  setShowRevealCorrect: (reveal) => set({ showRevealCorrect: reveal }),
+  setIsCorrect: (correct) => set({ isCorrect: correct }),
+  setClearStorage: (clear) => set({ clearStorage: clear }),
 
-  setIsConfirmed: (confirmed, callback) =>
-    set((state) => {
-      callback && callback(confirmed);
-      return { isConfirmed: confirmed };
-    }),
-
-  setFinallyIsCorrectAns: (correct, callback) =>
-    set((state) => {
-      callback && callback(correct);
-      return { finallyIsCorrectAns: correct };
-    }),
-
-  setFinallyUserLevel: (level, callback) =>
-    set((state) => {
-      callback && callback(level);
-      return { finallyUserLevel: level };
-    }),
-
-  setRevealCorrectAnswer: (reveal, callback) =>
-    set((state) => {
-      callback && callback(reveal);
-      return { revealCorrectAnswer: reveal };
-    }),
-
-  setShowRevealCorrect: (reveal, callback) =>
-    set((state) => {
-      callback && callback(reveal);
-      return { showRevealCorrect: reveal };
-    }),
-
-  setGoToNextQuestion: (next, callback) =>
-    set((state) => {
-      callback && callback(next);
-      return { goToNextQuestion: next };
-    }),
   updateDataInFirebase: async (data) => {
     return new Promise((resolve, reject) => {
       try {
@@ -268,30 +215,28 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
         const newData = { ...currentState, ...data };
 
         const {
-          setAllQuestions,
-          setCurrentChallengeIndex,
           setUsedFifty,
           setUsedPhone,
           setUsedAudience,
           setIsAnswered,
-          setIsCorrect,
-          setPrizeLevel,
-          setSelectedAnswer,
-          setOpenPrize,
-          setIsConfirmed,
-          setFinallyIsCorrectAns,
-          setFinallyUserLevel,
-          setRevealCorrectAnswer,
-          setShowRevealCorrect,
-          setGoToNextQuestion,
-          setQuestionArr,
-          updateDataInFirebase,
-          updateDataInStore,
           setGoToHome,
           setShowCheckpoint,
           setLetsPlay,
           setGoToTotal,
           setContinueChallenge,
+          getQuestionsFromServer,
+          updateDataInFirebase,
+          updateDataInStore,
+          setOpenPrize,
+          setPrizeLevel,
+          setFinallyIsCorrectAns,
+          setFinallyUserLevel,
+          setIsConfirmed,
+          setIsCorrect,
+          setRevealCorrectAnswer,
+          setSelectedAnswer,
+          setShowRevealCorrect,
+          setClearStorage,
           ...stateToSave
         } = newData;
 
@@ -310,29 +255,28 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
     const newData = { ...currentState, ...data };
 
     const {
-      setAllQuestions,
-      setCurrentChallengeIndex,
       setUsedFifty,
       setUsedPhone,
       setUsedAudience,
       setIsAnswered,
-      setIsCorrect,
-      setPrizeLevel,
-      setSelectedAnswer,
-      setOpenPrize,
-      setIsConfirmed,
-      setFinallyIsCorrectAns,
-      setFinallyUserLevel,
-      setRevealCorrectAnswer,
-      setShowRevealCorrect,
-      setGoToNextQuestion,
-      setQuestionArr,
-      updateDataInFirebase,
       setGoToHome,
       setShowCheckpoint,
       setLetsPlay,
       setGoToTotal,
       setContinueChallenge,
+      getQuestionsFromServer,
+      updateDataInFirebase,
+      updateDataInStore,
+      setOpenPrize,
+      setPrizeLevel,
+      setFinallyIsCorrectAns,
+      setFinallyUserLevel,
+      setIsConfirmed,
+      setIsCorrect,
+      setRevealCorrectAnswer,
+      setSelectedAnswer,
+      setShowRevealCorrect,
+      setClearStorage,
       ...stateToSave
     } = newData;
 

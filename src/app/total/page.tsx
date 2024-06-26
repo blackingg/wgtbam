@@ -26,6 +26,7 @@ export default function Home() {
   );
   // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
   const numPrizeLevel = useQuestionStore((state) => state.prizeLevel);
+  const clearStorage = useQuestionStore((state) => state.clearStorage);
   const [pieces, setPieces] = useState(200);
   const [client, setIsClient] = useState(false);
 
@@ -42,6 +43,10 @@ export default function Home() {
 
   useFirebaseListener();
 
+  const handleLogout = async () => {
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+  };
+
   useEffect(() => {
     const Run = async () => {
       if (goToTotal === true) {
@@ -50,9 +55,12 @@ export default function Home() {
     };
 
     Run();
-
+    clearStorage && handleLogout();
     goToHome === true && goToTotal === false && router.push("/");
-  }, [goToHome, goToTotal]);
+  }, [goToHome, goToTotal, clearStorage]);
+
+  const AUTH_TOKEN_KEY = "authToken";
+  const AUTH_TOKEN_VALUE = "admin0987";
 
   return (
     <main className="relatve left-0 top-0 flex min-h-[100vh] w-screen flex-col justify-center gap-10 overflow-hidden">

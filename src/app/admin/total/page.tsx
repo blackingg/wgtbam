@@ -43,6 +43,13 @@ export default function Home() {
     setIsClient(true);
   }, []);
 
+  const AUTH_TOKEN_KEY = "authToken";
+  const AUTH_TOKEN_VALUE = "admin0987";
+
+  const handleLogout = async () => {
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+  };
+
   useFirebaseListener();
 
   return (
@@ -69,6 +76,7 @@ export default function Home() {
         <ConfirmationBtn
           onClick={async () => {
             await updateDataInFirebase(resetObj);
+            await handleLogout();
             router.push("/admin");
           }}
           btntext="Reset Quiz"

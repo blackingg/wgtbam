@@ -2,10 +2,9 @@ import { cn } from "@/utils";
 
 interface AnswerBoxProps extends React.HTMLAttributes<HTMLButtonElement> {
   option: string;
-  answer: string;
+  answer: string; // Now the answer will be "a", "b", "c", or "d"
   isBig?: boolean;
   disabled?: boolean;
-  // handleClick: () => void;
   handleClick: () => Promise<void>;
   selected: boolean;
   isConfirm: boolean;
@@ -29,7 +28,7 @@ export const AnswerBox = ({
   className,
   className2,
 }: AnswerBoxProps) => {
-  const isCorrect = option === answer;
+  const isCorrect = option.charAt(0).toLowerCase() === answer;
 
   const isConfirmed =
     selected === true &&
@@ -59,31 +58,23 @@ export const AnswerBox = ({
     <button
       onClick={handleClick}
       className={cn(
-        "w-full shadow-xl bg-[#EAB95A] shadow-[#EAB95A] angle border-y-[3px] border-[#EAB95A] px-[3.5px] rounded-full flex justify-center items-center z-20 font-montserrat tablet:font-semibold font-normal tablet:text-2xl text-xs text-center",
-        className
+        "angle z-20 flex w-full items-center justify-center rounded-full border-y-[3px] border-[#EAB95A] bg-[#EAB95A] px-[3.5px] text-center font-montserrat text-xs font-normal shadow-xl shadow-[#EAB95A] tablet:text-2xl tablet:font-semibold",
+        className,
       )}
       disabled={disabled}
     >
       <span
         className={cn(
-          `
-        ${isConfirmed && "bg-[#26C36D]"}
-
-        ${ConfirmNWrong && "bg-[#EB1212]"}
-
-        ${NotConfirmed && "bg-[#F9A61D]"} 
-
-        ${NotRevealed && "bg-[#F9A61D]"} 
-        ${
-          !selected &&
-          "bg-gradient-to-b from-[#6F006E] via-[#8A0089] to-[#6F006E]"
-        } angle shadow-inner w-full h-full text-white flex justify-center items-center md:min-h-[75px] lg:min-h-full py-2 ${
-            isBig ? " ipad:py-6" : " ipad:py-4"
-          } rounded-full min-h-[2rem] ipad:min-h-[4rem]`,
-          className2
+          ` ${isConfirmed && "bg-[#26C36D]"} ${ConfirmNWrong && "bg-[#EB1212]"} ${NotConfirmed && "bg-[#F9A61D]"} ${NotRevealed && "bg-[#F9A61D]"} ${
+            !selected &&
+            "bg-gradient-to-b from-[#6F006E] via-[#8A0089] to-[#6F006E]"
+          } angle flex h-full w-full items-center justify-center py-2 text-white shadow-inner md:min-h-[75px] lg:min-h-full ${
+            isBig ? "ipad:py-6" : "ipad:py-4"
+          } min-h-[2rem] rounded-full ipad:min-h-[4rem]`,
+          className2,
         )}
       >
-        <span className=" max-w-[60%] flex justify-center items-center">
+        <span className="flex max-w-[60%] items-center justify-center">
           {option}
         </span>
       </span>

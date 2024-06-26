@@ -1,15 +1,13 @@
-import { State } from "@/zustand/store";
+import { State, useQuestionStore } from "@/zustand/store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { toast } from "react-toastify";
 
-export const handleQuestionUpdate = async ({
-  revealCorrectAnswer,
+export const HandleQuestionUpdate = async ({revealCorrectAnswer,
   isConfirmed,
   selectedAnswer,
   finallyIsCorrectAns,
   showCheckpoint,
   realQuestAns,
-  currentChallengeIndex,
   prizeLevel,
   showRevealCorrect,
   router,
@@ -24,15 +22,15 @@ export const handleQuestionUpdate = async ({
   finallyIsCorrectAns: boolean;
   showCheckpoint: boolean;
   realQuestAns: string;
-  currentChallengeIndex: number;
   prizeLevel: number;
   showRevealCorrect: string;
   router: AppRouterInstance;
   updateDataInFirebase: (data: Partial<State>) => Promise<void>;
   user: string;
   continueChallenge: boolean;
-  openPrize: boolean;
-}) => {
+  openPrize: boolean}) => {
+  
+
   try {
     if (
       revealCorrectAnswer &&
@@ -44,27 +42,25 @@ export const handleQuestionUpdate = async ({
         openPrize: true,
       });
 
-      if (currentChallengeIndex >= 14) {
-        await updateDataInFirebase({
-          // openPrize: true,
-          prizeLevel: prizeLevel,
-        });
+      if (prizeLevel >= 15) {
+        // await updateDataInFirebase({
+        //   prizeLevel: prizeLevel,
+        // });
 
         router.push(user === "admin" ? "/admin/total" : "/total");
       }
       if (
-        (currentChallengeIndex === 4 &&
+        (prizeLevel === 5 &&
           showCheckpoint === false &&
           continueChallenge === false) ||
-        (currentChallengeIndex === 9 &&
+        (prizeLevel === 10 &&
           showCheckpoint === false &&
           continueChallenge === false) ||
-        (currentChallengeIndex >= 14 &&
+        (prizeLevel >= 15 &&
           showCheckpoint === false &&
           continueChallenge === false)
       ) {
         await updateDataInFirebase({
-          // openPrize: true,
           showCheckpoint: true,
           prizeLevel: prizeLevel,
         });

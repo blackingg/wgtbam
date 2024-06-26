@@ -1,10 +1,7 @@
 import { useQuestionStore } from '@/zustand/store';
 
 export const AllUsedStateGetter = () => {
-  const allQuestions = useQuestionStore((state) => state.allQuestions);
-  const currentChallengeIndex = useQuestionStore(
-    (state) => state.currentChallengeIndex
-  );
+ 
   const usedFifty = useQuestionStore((state) => state.usedFifty);
   const usedPhone = useQuestionStore((state) => state.usedPhone);
   const usedAudience = useQuestionStore((state) => state.usedAudience);
@@ -25,7 +22,6 @@ export const AllUsedStateGetter = () => {
     (state) => state.showRevealCorrect
   );
   const showCheckpoint = useQuestionStore((state) => state.showCheckpoint);
-  const goToNextQuestion = useQuestionStore((state) => state.goToNextQuestion);
 
   const updateDataInFirebase = useQuestionStore(
     (state) => state.updateDataInFirebase
@@ -35,8 +31,6 @@ export const AllUsedStateGetter = () => {
   );
   return (
     {
-        allQuestions,
-        currentChallengeIndex,
         usedFifty,
         usedPhone,
         usedAudience,
@@ -51,7 +45,6 @@ export const AllUsedStateGetter = () => {
         revealCorrectAnswer,
         showRevealCorrect,
         showCheckpoint,
-        goToNextQuestion,
         updateDataInFirebase,
         updateDataInStore,
     }

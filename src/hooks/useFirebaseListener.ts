@@ -16,8 +16,8 @@ export const useFirebaseListener = () => {
       const newData: typeof stateToSave = await snapshot.val();
 
       const {
-        setAllQuestions,
-        setCurrentChallengeIndex,
+        // setAllQuestions,
+        // setCurrentChallengeIndex,
         setUsedFifty,
         setUsedPhone,
         setUsedAudience,
@@ -31,8 +31,8 @@ export const useFirebaseListener = () => {
         setFinallyUserLevel,
         setRevealCorrectAnswer,
         setShowRevealCorrect,
-        setGoToNextQuestion,
-        setQuestionArr,
+        // setGoToNextQuestion,
+        // setQuestionArr,
         updateDataInFirebase,
         updateDataInStore,
         setGoToHome,
@@ -40,6 +40,7 @@ export const useFirebaseListener = () => {
         setLetsPlay,
         setGoToTotal,
         setContinueChallenge,
+        getQuestionsFromServer,
         ...stateToSave
       } = useQuestionStore.getState();
 

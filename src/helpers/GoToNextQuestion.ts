@@ -1,46 +1,48 @@
-import { State } from "@/zustand/store";
+import { State, useQuestionStore } from "@/zustand/store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { toast } from "react-toastify";
 
 export const GoToNextQuestH = ({
-  goToNextQuestion,
   selectedAnswer,
   realRightAnswer,
-  currentChallengeIndex,
-  router,
   updateDataInFirebase,
+  router,
+  getQuestionsFromServer
 }: {
-  goToNextQuestion: boolean;
   selectedAnswer: string;
   realRightAnswer: string;
-  currentChallengeIndex: number;
-  router: AppRouterInstance;
   updateDataInFirebase: (data: Partial<State>) => Promise<void>;
+  router: AppRouterInstance;
+  getQuestionsFromServer: () => Promise<void>
 }) => {
+ 
+  
   const RunNext = async () => {
     try {
-      if (goToNextQuestion === false && selectedAnswer === realRightAnswer) {
-        const newIndex = currentChallengeIndex + 1;
+      if ( selectedAnswer === realRightAnswer) {
+        // const newIndex = currentChallengeIndex + 1;
 
         await updateDataInFirebase({
-          currentChallengeIndex: newIndex,
+          // currentChallengeIndex: newIndex,
           selectedAnswer: "",
           revealCorrectAnswer: false,
           isConfirmed: false,
           isAnswered: false,
-          goToNextQuestion: true,
+          // goToNextQuestion: true,
           showRevealCorrect: "",
           continueChallenge: false,
         });
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        getQuestionsFromServer();
 
-        await updateDataInFirebase({
-          goToNextQuestion: false,
-        });
-      }
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      if (selectedAnswer !== realRightAnswer) {
+        // await updateDataInFirebase({
+        //   goToNextQuestion: false,
+        // });
+
+
+      } else if (selectedAnswer !== realRightAnswer) {
         await updateDataInFirebase({
           goToTotal: true,
           prizeLevel: 0,

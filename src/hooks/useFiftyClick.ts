@@ -1,32 +1,38 @@
 import { handleFiftyFifty } from "@/helpers";
-import { Question } from "@/types";
+import { State, useQuestionStore } from "@/zustand/store";
 
-interface FiftyClickProps {
-    allQuestions: Question[];
-    currentChallengeIndex: number;
+interface Options {
+  a: string;
+  b: string;
+  c: string;
+  d: string;
 }
 
-  export const useFiftyClick = ({allQuestions, currentChallengeIndex}: FiftyClickProps) => {
-    const { updatedOptions, challengeIndex } = handleFiftyFifty(
-      allQuestions,
-      currentChallengeIndex
-    );
+interface QuestionData {
+  answer: string;
+  difficulty_level: string;
+  id: number;
+  options: Options;
+  // qid: string;
+  // qtype: string;
+  question: string;
+  // status: string;
+}
 
-    const newData = {
-      allQuestions: allQuestions.map((question, index) => {
-        if (index === challengeIndex) {
-          return {
-            ...question,
-            option1: updatedOptions[0] || "",
-            option2: updatedOptions[1] || "",
-            option3: updatedOptions[2] || "",
-            option4: updatedOptions[3] || "",
-          };
-        }
-        return question;
-      }),
-      usedFifty: true,
-    };
+export const useFiftyClick = ({options, answer, updateDataInFirebase}:
+  {options: Options | null, answer: string | null, updateDataInFirebase:  (data: Partial<State>) => Promise<void>}
+ ) => {
+  
 
-    return newData;
+  if (!options || !answer) return;
+
+  const updatedOptions = handleFiftyFifty(options, answer);
+
+  const newData: Partial<State> = {
+    options: updatedOptions,
+    usedFifty: true,
   };
+
+  // updateDataInStore(newData);
+  return newData
+};
