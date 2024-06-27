@@ -137,7 +137,7 @@ export default function Home() {
   useFirebaseListener();
 
   if (openPrize) {
-    return <PrizeModal />;
+    return <PrizeModal openPrize={openPrize} />;
   }
 
   return showCheckpoint === true ? (
@@ -148,7 +148,7 @@ export default function Home() {
         style={{ backgroundImage: `url(${"/Images/purplebg.png"})` }}
         className="relative flex min-h-[100vh] min-w-full flex-col justify-center gap-3 bg-cover py-4 largerdesktop:gap-10"
       >
-        <div className="text-5xl font-medium text-white">ans: C</div>
+        <div className="text-5xl font-medium text-white">ans: {answer}</div>
         <div className="relative h-full w-full">
           <div className="mx-auto flex h-full max-h-[150px] w-full max-w-[150px] items-center justify-center tablet:max-h-[250px] tablet:max-w-[250px]">
             <MillionareLogo />

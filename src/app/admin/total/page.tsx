@@ -38,17 +38,21 @@ export default function Home() {
     }, 3000);
   };
 
-  useEffect(() => {
-    stopConfetti();
-    setIsClient(true);
-  }, []);
-
   const AUTH_TOKEN_KEY = "authToken";
   const AUTH_TOKEN_VALUE = "admin0987";
 
   const handleLogout = async () => {
     localStorage.removeItem(AUTH_TOKEN_KEY);
   };
+
+  useEffect(() => {
+    stopConfetti();
+    setIsClient(true);
+    const Run = async () => {
+      await handleLogout();
+    };
+    Run();
+  }, []);
 
   useFirebaseListener();
 
@@ -76,7 +80,7 @@ export default function Home() {
         <ConfirmationBtn
           onClick={async () => {
             await updateDataInFirebase(resetObj);
-            await handleLogout();
+            // await handleLogout();
             router.push("/admin");
           }}
           btntext="Reset Quiz"

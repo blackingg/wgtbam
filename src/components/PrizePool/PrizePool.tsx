@@ -2,7 +2,7 @@ import { values } from "@/utils";
 import { Fragment } from "react";
 import Image from "next/image";
 import { useQuestionStore } from "@/zustand/store";
-import { AskAudienceBtn, FiftyFiftyButton, PhoneFriendBtn } from "../Button";
+import { FiftyFiftyButton, PhoneFriendBtn } from "../Button";
 
 // interface PrizePoolProps {
 //   prizeLevel: number;
@@ -14,7 +14,7 @@ import { AskAudienceBtn, FiftyFiftyButton, PhoneFriendBtn } from "../Button";
 export const PrizePool = () => {
   const usedFifty = useQuestionStore((state) => state.usedFifty);
   const usedPhone = useQuestionStore((state) => state.usedPhone);
-  const usedAudience = useQuestionStore((state) => state.usedAudience);
+  // const usedAudience = useQuestionStore((state) => state.usedAudience);
   const prizeLevel = useQuestionStore((state) => state.prizeLevel);
 
   return (
@@ -57,10 +57,10 @@ export const PrizePool = () => {
           className={`${usedFifty && `bg-[#EB1212]`}`}
         />
         <PhoneFriendBtn disabled className={`${usedPhone && `bg-[#EB1212]`}`} />
-        <AskAudienceBtn
+        {/* <AskAudienceBtn
           disabled
           className={`${usedAudience && `bg-[#EB1212]`}`}
-        />
+        /> */}
       </div>
     </Fragment>
   );

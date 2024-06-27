@@ -46,7 +46,7 @@ export const useFirebaseListener = () => {
 
       if (newData && !isEqual(newData, stateToSave)) {
         updateDataInStore(newData);
-        console.log("From firebase", newData);
+        // console.log("From firebase", newData);
       }
     };
 

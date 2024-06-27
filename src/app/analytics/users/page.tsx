@@ -27,11 +27,11 @@ const UsersAnalytics = () => {
           fetchset: ["name", "phone"],
         },
       );
-      console.log("reddrer", response);
+      // console.log("reddrer", response);
 
       setParticipants(response.data.queryset);
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       toast.error("Failed to fetch participants");
     }
   };
@@ -50,7 +50,7 @@ const UsersAnalytics = () => {
       );
       setAttendees(response.data.queryset);
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       toast.error("Failed to fetch attendees");
     }
   };

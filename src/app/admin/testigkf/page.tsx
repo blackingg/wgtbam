@@ -18,9 +18,9 @@ const Eltestio = () => {
         },
       );
       // setParticipants(response.data.queryset);
-      console.log("questions", response.data);
+      // console.log("questions", response.data);
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       toast.error("Failed to fetch questions");
     }
   };

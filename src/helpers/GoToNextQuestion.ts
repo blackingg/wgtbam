@@ -52,7 +52,7 @@ export const GoToNextQuestH = ({
         router.push("/admin/total");
       }
     } catch (error) {
-      console.log("We encountered an error ", error);
+      // console.log("We encountered an error ", error);
       toast.error("Network error");
     }
   };

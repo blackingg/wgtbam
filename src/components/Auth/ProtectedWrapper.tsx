@@ -45,7 +45,7 @@ const AuthModal: FC<AuthModalProps> = ({ setIsAuthenticated }) => {
       setIsAuthenticated(true);
     }
 
-    console.log("hehe", inpVal);
+    // console.log("hehe", inpVal);
   };
 
   const isClient = useIsClient();

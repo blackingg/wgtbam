@@ -55,10 +55,10 @@ export const HandleQuestionUpdate = async ({revealCorrectAnswer,
           continueChallenge === false) ||
         (prizeLevel === 10 &&
           showCheckpoint === false &&
-          continueChallenge === false) ||
-        (prizeLevel >= 15 &&
-          showCheckpoint === false &&
-          continueChallenge === false)
+          continueChallenge === false) // ||
+        // (prizeLevel >= 15 &&
+        //   showCheckpoint === false &&
+        //   continueChallenge === false)
       ) {
         await updateDataInFirebase({
           showCheckpoint: true,
@@ -80,7 +80,7 @@ export const HandleQuestionUpdate = async ({revealCorrectAnswer,
       });
     }
   } catch (error) {
-    console.log("We encountered an error", error);
+    // console.log("We encountered an error", error);
     toast.error("Network error");
   }
 };

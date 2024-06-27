@@ -5,9 +5,7 @@ import { BackgroundImage } from "../common";
 import { PrizePool } from "../PrizePool";
 // import { useShallow } from "zustand/react/shallow";
 
-export const PrizeModal = () => {
-  const openPrize = useQuestionStore((state) => state.openPrize);
-
+export const PrizeModal = ({ openPrize }: { openPrize: boolean }) => {
   // const updateDataInFirebase = useQuestionStore(
   //   useShallow((state) => state.updateDataInFirebase)
   // );

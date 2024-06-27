@@ -50,6 +50,7 @@ export type State = {
   selectedAnswer: string;
   isCorrect: boolean;
   clearStorage: boolean;
+  showPhoneTimer: boolean;
 };
 
 export type Action = {
@@ -74,6 +75,7 @@ export type Action = {
   setIsConfirmed: (confirmed: boolean) => void;
   setIsCorrect: (correct: boolean) => void;
   setClearStorage: (clear: boolean) => void;
+  setShowPhoneTimer: (show: boolean) => void;
 
   updateDataInFirebase: (data: Partial<State>) => Promise<void>;
   updateDataInStore: (data: Partial<State>) => void;
@@ -104,21 +106,25 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   selectedAnswer: "",
   isCorrect: false,
   clearStorage: false,
+   showPhoneTimer: false,
 
   getQuestionsFromServer: async () => {
     return new Promise(async (resolve, reject) => {
       try {
+         const prizeLevel = get().prizeLevel;
+
         const response = await axios.post(
           "https://oneklass2.oauife.edu.ng/api/wgtbam/fetchquestion",
           {
             fetchpair: {
               // qtype: "currentaffairs",
-              // difficulty: "2",
+              // difficulty_level: "3",
+              difficulty_level: prizeLevel < 5 ? "2" : "3",
             },
             adminpass: "admin0987",
           },
         );
-        console.log("questions", response.data);
+        // console.log("questions", response.data);
 
         const questionData = {
           answer: response.data.queryset[0].answer,
@@ -164,6 +170,7 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
           setSelectedAnswer,
           setShowRevealCorrect,
           setClearStorage,
+          setShowPhoneTimer,
           ...stateToSave
         } = newData;
 
@@ -173,14 +180,14 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
           .then(() => resolve())
           .catch((error: any) => reject(error));
       } catch (error) {
-        console.log("firebase error, ", error);
+        // console.log("firebase error, ", error);
         
         reject(error);
       }
 
         resolve();
       } catch (error) {
-        console.log("error", error);
+        // console.log("error", error);
         toast.error("Failed to fetch questions");
         reject(error);
       }
@@ -206,6 +213,7 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   setShowRevealCorrect: (reveal) => set({ showRevealCorrect: reveal }),
   setIsCorrect: (correct) => set({ isCorrect: correct }),
   setClearStorage: (clear) => set({ clearStorage: clear }),
+  setShowPhoneTimer: (show) => set({ showPhoneTimer: show }),
 
   updateDataInFirebase: async (data) => {
     return new Promise((resolve, reject) => {
@@ -237,6 +245,7 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
           setSelectedAnswer,
           setShowRevealCorrect,
           setClearStorage,
+          setShowPhoneTimer,
           ...stateToSave
         } = newData;
 
@@ -277,6 +286,7 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
       setSelectedAnswer,
       setShowRevealCorrect,
       setClearStorage,
+      setShowPhoneTimer,
       ...stateToSave
     } = newData;
 
