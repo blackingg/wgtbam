@@ -61,7 +61,7 @@ const AuthModal: FC<AuthModalProps> = ({ setIsAuthenticated }) => {
             <label htmlFor="authmodalinput">Enter Authorization Token</label>
             <div className="relative mt-1">
               <input
-                type="text"
+                type="password"
                 id="authmodalinput"
                 className="input-glassl input-gradientl h-[45px] w-full rounded-lg border-[1px] border-white/80 bg-white/10 pl-[16px] shadow-md backdrop-blur-sm placeholder:font-poppins placeholder:text-white/50 lg:h-[45px]"
                 placeholder="Enter token"
