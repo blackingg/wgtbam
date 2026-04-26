@@ -1,5 +1,5 @@
 "use client";
-import { fetchUsers } from "@/server/actions";
+import { fetchUsers, fetchAllUsers } from "@/server/actions";
 import { useEffect, useState } from "react";
 
 interface UserRow {
@@ -13,7 +13,7 @@ export default function UsersAnalytics() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchUsers("participant")
+    fetchAllUsers()
       .then(({ data, error }) => {
         if (error) { setError(error); return; }
         setUsers(data);

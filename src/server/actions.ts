@@ -100,3 +100,14 @@ export async function fetchUsers(
 
   return { data: data ?? [], error: null };
 }
+
+
+export async function fetchAllUsers() {
+  const { data, error } = await supabase
+    .from("users")
+    .select("name, phone, reg_type, email, created_at")
+    .order("created_at", { ascending: false });
+
+  if (error) return { data: [], error: error.message };
+  return { data: data ?? [], error: null };
+}
