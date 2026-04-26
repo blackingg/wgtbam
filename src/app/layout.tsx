@@ -1,4 +1,4 @@
-import { ReactQueryClientWrapper } from "@/utils";
+import { ReactQueryClientWrapper } from "@/utils/QueryClient";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";

@@ -3,7 +3,6 @@ import {
   ChallengeSkeleton,
   Lifelines,
   MillionareLogo,
-  ProtectedWrapper,
   UserPrizeModal,
 } from "@/components";
 import { HandleQuestAnswer, HandleQuestionUpdate } from "@/helpers";
@@ -13,55 +12,33 @@ import { useQuestionStore } from "@/zustand/store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Loading from "../loading";
-import { useShallow } from "zustand/react/shallow";
 
-export default function Home() {
-  const userRole = "player";
+export default function ChallengePage() {
   const router = useRouter();
-  let currentuserlevel: number = 0;
+  const userRole = "player";
 
-  const goToTotal = useQuestionStore((state) => state.goToTotal);
-  const usedFifty = useQuestionStore((state) => state.usedFifty);
-  const usedPhone = useQuestionStore((state) => state.usedPhone);
-  const usedAudience = useQuestionStore((state) => state.usedAudience);
-  const isAnswered = useQuestionStore((state) => state.isAnswered);
-  const prizeLevel = useQuestionStore((state) => state.prizeLevel);
-  const selectedAnswer = useQuestionStore((state) => state.selectedAnswer);
-  const openPrize = useQuestionStore((state) => state.openPrize);
-  const isConfirmed = useQuestionStore((state) => state.isConfirmed);
-  const finallyIsCorrectAns = useQuestionStore(
-    (state) => state.finallyIsCorrectAns,
-  );
-  const revealCorrectAnswer = useQuestionStore(
-    (state) => state.revealCorrectAnswer,
-  );
-  const showRevealCorrect = useQuestionStore(
-    (state) => state.showRevealCorrect,
-  );
-  const showCheckpoint = useQuestionStore((state) => state.showCheckpoint);
-  const continueChallenge = useQuestionStore(
-    (state) => state.continueChallenge,
-  );
-  // const updateDataInFirebase = useQuestionStore(
-  //   useShallow((state) => state.updateDataInFirebase),
-  // );
-
-  const updateDataInFirebase = useQuestionStore(
-    (state) => state.updateDataInFirebase,
-  );
-
-  const answer = useQuestionStore((state) => state.answer);
-  const options = useQuestionStore((state) => state.options);
-  const question = useQuestionStore((state) => state.question);
+  const goToTotal = useQuestionStore((s) => s.goToTotal);
+  const usedFifty = useQuestionStore((s) => s.usedFifty);
+  const usedPhone = useQuestionStore((s) => s.usedPhone);
+  const usedAudience = useQuestionStore((s) => s.usedAudience);
+  const isAnswered = useQuestionStore((s) => s.isAnswered);
+  const prizeLevel = useQuestionStore((s) => s.prizeLevel);
+  const selectedAnswer = useQuestionStore((s) => s.selectedAnswer);
+  const openPrize = useQuestionStore((s) => s.openPrize);
+  const isConfirmed = useQuestionStore((s) => s.isConfirmed);
+  const finallyIsCorrectAns = useQuestionStore((s) => s.finallyIsCorrectAns);
+  const revealCorrectAnswer = useQuestionStore((s) => s.revealCorrectAnswer);
+  const showRevealCorrect = useQuestionStore((s) => s.showRevealCorrect);
+  const showCheckpoint = useQuestionStore((s) => s.showCheckpoint);
+  const continueChallenge = useQuestionStore((s) => s.continueChallenge);
+  const updateDataInFirebase = useQuestionStore((s) => s.updateDataInFirebase);
+  const answer = useQuestionStore((s) => s.answer);
+  const options = useQuestionStore((s) => s.options);
+  const question = useQuestionStore((s) => s.question);
 
   const HandleFiftyFiftyClick = async () => {
-    const halfedAnswers = useFiftyClick({
-      options,
-      answer,
-      updateDataInFirebase,
-    });
-
-    halfedAnswers !== undefined && (await updateDataInFirebase(halfedAnswers));
+    const halfedAnswers = useFiftyClick({ options, answer, updateDataInFirebase });
+    if (halfedAnswers) await updateDataInFirebase(halfedAnswers);
   };
 
   const handleAnswerClick = HandleQuestAnswer({
@@ -88,65 +65,51 @@ export default function Home() {
         continueChallenge,
         openPrize,
       });
-      if (showCheckpoint) {
-        router.push("/checkpoint");
-      }
+      if (showCheckpoint) router.push("/checkpoint");
     } else {
       router.push("/total");
     }
-  }, [
-    revealCorrectAnswer,
-    isConfirmed,
-    selectedAnswer,
-    finallyIsCorrectAns,
-    showCheckpoint,
-    goToTotal,
-  ]);
+  }, [revealCorrectAnswer, isConfirmed, selectedAnswer, finallyIsCorrectAns, showCheckpoint, goToTotal]);
 
   useFirebaseListener();
 
-  if (openPrize) {
-    return <UserPrizeModal openPrize={openPrize} />;
-  }
+  if (openPrize) return <UserPrizeModal openPrize={openPrize} />;
 
-  return showCheckpoint === true ? (
+  return showCheckpoint ? (
     <Loading />
   ) : (
-    <ProtectedWrapper>
-      <main
-        style={{ backgroundImage: `url(${"/Images/purplebg.png"})` }}
-        className="relatve flex min-h-[100vh] min-w-full flex-col justify-center gap-3 bg-cover pt-4 largerdesktop:gap-10"
-      >
-        <div className="relative h-full w-full">
-          <div className="mx-auto flex h-full max-h-[150px] w-full max-w-[150px] items-center justify-center tablet:max-h-[250px] tablet:max-w-[250px]">
-            <MillionareLogo />
-            <Lifelines
-              usedFifty={usedFifty}
-              usedPhone={usedPhone}
-              usedAudience={usedAudience}
-              isAnswered={isAnswered}
-              handleFiftyFiftyClick={HandleFiftyFiftyClick}
-            />
-          </div>
-        </div>
-        {question !== null && answer !== null && options !== null && (
-          <ChallengeSkeleton
-            question={question}
-            option1={options?.a}
-            option2={options?.b}
-            option3={options?.c}
-            option4={options?.d}
-            answer={answer}
-            handleAnswerClick={handleAnswerClick}
-            selectedAnswer={selectedAnswer}
-            isConfirm={isConfirmed}
-            revealedCorrect={revealCorrectAnswer}
-            actualCorrectAns={finallyIsCorrectAns}
-            showRevealCorrect={showRevealCorrect}
+    <main
+      style={{ backgroundImage: `url("/Images/purplebg.png")` }}
+      className="relative flex min-h-[100vh] min-w-full flex-col justify-center gap-3 bg-cover pt-4 largerdesktop:gap-10"
+    >
+      <div className="relative h-full w-full">
+        <div className="mx-auto flex h-full max-h-[150px] w-full max-w-[150px] items-center justify-center tablet:max-h-[250px] tablet:max-w-[250px]">
+          <MillionareLogo />
+          <Lifelines
+            usedFifty={usedFifty}
+            usedPhone={usedPhone}
+            usedAudience={usedAudience}
+            isAnswered={isAnswered}
+            handleFiftyFiftyClick={HandleFiftyFiftyClick}
           />
-        )}
-        {/* {openPrize && <PrizeModal />} */}
-      </main>
-    </ProtectedWrapper>
+        </div>
+      </div>
+      {question !== null && answer !== null && options !== null && (
+        <ChallengeSkeleton
+          question={question}
+          option1={options.a}
+          option2={options.b}
+          option3={options.c}
+          option4={options.d}
+          answer={answer}
+          handleAnswerClick={handleAnswerClick}
+          selectedAnswer={selectedAnswer}
+          isConfirm={isConfirmed}
+          revealedCorrect={revealCorrectAnswer}
+          actualCorrectAns={finallyIsCorrectAns}
+          showRevealCorrect={showRevealCorrect}
+        />
+      )}
+    </main>
   );
 }

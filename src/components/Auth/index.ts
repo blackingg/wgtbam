@@ -1,1 +1,1 @@
-export * from "./ProtectedWrapper"
+export { default as ProtectedWrapper } from "./ProtectedWrapper";

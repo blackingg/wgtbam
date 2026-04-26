@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export const GoToChallengeOrTotal = ({
+export const useGoToChallengeOrTotal = ({
   goToTotal,
   continueChallenge,
   user = "player",

@@ -1,138 +1,92 @@
 "use client";
-
-import { Fragment, useState } from "react";
-import { CustomizableBtn } from "./Buttons";
-import { DefaultInput } from "./Inputs";
-import { InputsArr, Required } from "@/utils";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { AltModal } from "../Modal/DefaultModal";
-import { finalUserData, User } from "@/types";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { DefaultButton, DefaultInput } from "@/components";
 import { registerUser } from "@/server/actions";
+import { finalUserData } from "@/types";
+import { InputsArr, Required } from "@/utils";
+import { Fragment, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { User } from "@/types";
 
 export const RegisterationForm = ({ role }: { role: string }) => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
+    reset,
   } = useForm<User>();
 
-  const [regSuccessful, setRegSuccessful] = useState(false);
-
-  const { mutateAsync, isPending, data, isSuccess } = useMutation({
-    mutationFn: registerUser,
-  });
-
-  const router = useRouter();
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const onSubmit: SubmitHandler<User> = async (data: User) => {
-    setIsOpen(true);
-
-    const newData: finalUserData = {
-      name: data.sname,
-      email: data.email,
-      department: data.dept,
-      faculty: data.faculty,
-      phone: `${data.phoneNo}`,
-      reg_type: role,
-    };
-    // console.log(newData, "hekko");
-
+  const onSubmit: SubmitHandler<User> = async (data) => {
+    setLoading(true);
     try {
-      const response = await mutateAsync(newData);
-      // console.log(response, "response");
+      const payload: finalUserData = {
+        name: data.sname,
+        email: data.email,
+        faculty: data.faculty,
+        department: data.dept,
+        phone: String(data.phoneNo),
+        reg_type: role,
+      };
 
-      if (response.passed === true) {
-        toast.dismiss();
-        toast.success("Registration successful!");
-        setRegSuccessful(true);
-      } else {
-        toast.dismiss();
-        response.error.email
-          ? toast.error(response.error.email)
-          : toast.error("Failed to register");
+      const { passed, error } = await registerUser(payload);
+
+      if (!passed && error) {
+        Object.entries(error).forEach(([field, msg]) => {
+          if (field === "email") {
+            setError("email", { message: msg });
+          } else {
+            toast.error(msg);
+          }
+        });
+        return;
       }
-    } catch (error: any) {
-      toast.dismiss();
-      toast.error(`${error.message}`);
-      console.error("An error occurred", error);
+
+      setSuccess(true);
+      reset();
+      toast.success("Registration successful!");
+    } catch (err) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (success) {
+    return (
+      <div className="mt-8 flex flex-col items-center gap-4 text-center">
+        <div className="text-5xl">🎉</div>
+        <h2 className="font-montserrat text-xl font-bold">You're registered!</h2>
+        <p className="text-white/70 text-sm">Good luck at the event.</p>
+      </div>
+    );
+  }
+
   return (
-    <>
-      <form className="mt-[24px] w-full" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-2">
-          {InputsArr.map((input, index) => (
-            <Fragment key={index}>
-              <DefaultInput
-                label={input.label}
-                label2={input.label2}
-                Errorlabel={
-                  errors[input.name] && <Required thisField={input.label} />
-                }
-                Icon={input.Icon}
-                {...register(input.name, { required: true })}
-              />
-            </Fragment>
-          ))}
-          <div className="mt-4">
-            <CustomizableBtn
-              BtnContent={
-                isPending ? (
-                  <Image
-                    width={30}
-                    height={30}
-                    alt="img"
-                    src="/Images/loading-circle.svg"
-                    className="h-full w-auto"
-                    draggable={false}
-                  />
-                ) : (
-                  "Register"
+    <form className="mt-[24px] w-full" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-3">
+        {InputsArr.map((input, index) => (
+          <Fragment key={index}>
+            <DefaultInput
+              label={input.label}
+              label2={input.label2}
+              Errorlabel={
+                errors[input.name] && (
+                  <Required thisField={errors[input.name]?.message ?? input.label} />
                 )
               }
-              disabled={isPending}
-              className="h-[60px] disabled:bg-gray-500"
+              Icon={input.Icon}
+              {...register(input.name, { required: true })}
             />
-          </div>
+          </Fragment>
+        ))}
+        <div className="mt-6">
+          <DefaultButton text={loading ? "Registering..." : "Register"} disabled={loading} />
         </div>
-      </form>
-      {regSuccessful && (
-        <AltModal
-          closeAction={() => {
-            router.refresh();
-            setRegSuccessful(false);
-          }}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          Image={
-            <Image
-              width={150}
-              height={150}
-              alt="img"
-              src="/Images/succestick.svg"
-              className="h-auto w-full max-w-[100px] lg:max-w-[150px]"
-              draggable={false}
-            />
-          }
-          label="Registration successful!"
-          Text={
-            <div className="flex flex-col gap-6">
-              <p className="text-center font-poppins text-base font-normal">
-                Thank you for registering for this event. Please check your
-                email for more details and further instructions.
-              </p>
-            </div>
-          }
-          ButtonLabel="Done"
-        />
-      )}
-    </>
+      </div>
+    </form>
   );
 };

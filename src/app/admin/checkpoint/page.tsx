@@ -1,64 +1,34 @@
 "use client";
-import {
-  BackgroundImage,
-  ClickableMillionareBox,
-  MillionareLogo,
-} from "@/components";
-import { GoToChallengeOrTotal } from "@/helpers";
-import {
-  useFirebaseListener,
-  useGoToQuestion,
-  useWithdrawMoney,
-} from "@/hooks";
+import { BackgroundImage, ClickableMillionareBox, MillionareLogo } from "@/components";
+import { useGoToChallengeOrTotal } from "@/helpers";
+import { useFirebaseListener, useGoToQuestion, useWithdrawMoney } from "@/hooks";
 import { useQuestionStore } from "@/zustand/store";
 import Loading from "../loading";
 
-const CheckpointAdmin = () =>
-  // { searchParams }: { searchParams: { prizeLevel: string } }
+export default function AdminCheckpoint() {
+  const goToTotal = useQuestionStore((s) => s.goToTotal);
+  const continueChallenge = useQuestionStore((s) => s.continueChallenge);
+  const prizeLevel = useQuestionStore((s) => s.prizeLevel);
 
-  {
-    // const numPrizeLevel = parseInt(searchParams.prizeLevel, 10);
+  const GoToQuestion = useGoToQuestion({ route: "/admin/challenge" });
+  const WithdrawMoney = useWithdrawMoney({ numPrizeLevel: prizeLevel, route: "/admin/total" });
 
-    const goToTotal = useQuestionStore((state) => state.goToTotal);
-    const continueChallenge = useQuestionStore(
-      (state) => state.continueChallenge,
-    );
-    const prizeLevel = useQuestionStore((state) => state.prizeLevel);
-    const GoToQuestion = useGoToQuestion({ route: "/admin/challenge" });
-    const WithdrawMoney = useWithdrawMoney({
-      numPrizeLevel: prizeLevel,
-      route: "/admin/total",
-    });
+  useGoToChallengeOrTotal({ goToTotal, continueChallenge, user: "admin" });
+  useFirebaseListener();
 
-    GoToChallengeOrTotal({ goToTotal, continueChallenge, user: "admin" });
+  if (goToTotal || continueChallenge) return <Loading />;
 
-    useFirebaseListener();
-
-    if (goToTotal === true || continueChallenge === true) {
-      return <Loading />;
-    }
-
-    return (
-      <main className="relatve left-0 top-0 flex min-h-[100vh] w-screen flex-col justify-center gap-y-10 overflow-hidden">
-        <BackgroundImage />
-
-        <MillionareLogo />
-
-        <h1 className="text-center font-montserrat text-xl font-semibold text-white/90 tablet:text-3xl ipad:text-[40px]">
-          Checkpoint Confirmation
-        </h1>
-        <section className="flex w-full flex-col items-center gap-10">
-          <ClickableMillionareBox
-            text="Withdraw Prize Money"
-            onClick={WithdrawMoney}
-          />
-          <ClickableMillionareBox
-            text="Continue Playing"
-            onClick={GoToQuestion}
-          />
-        </section>
-      </main>
-    );
-  };
-
-export default CheckpointAdmin;
+  return (
+    <main className="relative left-0 top-0 flex min-h-[100vh] w-screen flex-col justify-center gap-y-10 overflow-hidden">
+      <BackgroundImage />
+      <MillionareLogo />
+      <h1 className="text-center font-montserrat text-xl font-semibold text-white/90 tablet:text-3xl ipad:text-[40px]">
+        Checkpoint Confirmation
+      </h1>
+      <section className="flex w-full flex-col items-center gap-10">
+        <ClickableMillionareBox text="Withdraw Prize Money" onClick={WithdrawMoney} />
+        <ClickableMillionareBox text="Continue Playing" onClick={GoToQuestion} />
+      </section>
+    </main>
+  );
+}

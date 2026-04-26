@@ -1,8 +1,7 @@
 "use client";
 import { database } from "@/firebase";
-import axios from "axios";
-//@ts-ignore
-import { ref, set as FirebaseSet, set } from "firebase/database";
+import { fetchQuestion } from "@/server/actions";
+import { ref, set as FirebaseSet } from "firebase/database";
 import { toast } from "react-toastify";
 import { create } from "zustand";
 
@@ -11,18 +10,6 @@ interface Options {
   b: string;
   c: string;
   d: string;
-}
-
-// Define the shape of the main data
-interface QuestionData {
-  answer: string;
-  difficulty_level: string;
-  id: number;
-  options: Options;
-  // qid: string;
-  // qtype: string;
-  question: string;
-  // status: string;
 }
 
 export type State = {
@@ -81,6 +68,37 @@ export type Action = {
   updateDataInStore: (data: Partial<State>) => void;
 };
 
+// Strip action functions before saving to Firebase
+const stripActions = (state: State & Action): State => {
+  const {
+    getQuestionsFromServer,
+    updateDataInFirebase,
+    updateDataInStore,
+    setUsedFifty,
+    setUsedPhone,
+    setUsedAudience,
+    setIsAnswered,
+    setGoToHome,
+    setShowCheckpoint,
+    setLetsPlay,
+    setGoToTotal,
+    setContinueChallenge,
+    setOpenPrize,
+    setPrizeLevel,
+    setFinallyIsCorrectAns,
+    setFinallyUserLevel,
+    setIsConfirmed,
+    setIsCorrect,
+    setRevealCorrectAnswer,
+    setSelectedAnswer,
+    setShowRevealCorrect,
+    setClearStorage,
+    setShowPhoneTimer,
+    ...stateOnly
+  } = state;
+  return stateOnly;
+};
+
 export const useQuestionStore = create<State & Action>()((set, get) => ({
   answer: null,
   difficulty_level: null,
@@ -106,89 +124,42 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   selectedAnswer: "",
   isCorrect: false,
   clearStorage: false,
-   showPhoneTimer: false,
+  showPhoneTimer: false,
 
+  // ─── Fetch a question from Supabase then push full state to Firebase ──────
   getQuestionsFromServer: async () => {
     return new Promise(async (resolve, reject) => {
       try {
-         const prizeLevel = get().prizeLevel;
+        const prizeLevel = get().prizeLevel;
+        const difficulty_level = prizeLevel < 5 ? 2 : 3;
 
-        const response = await axios.post(
-          "https://oneklass2.oauife.edu.ng/api/wgtbam/fetchquestion",
-          {
-            fetchpair: {
-              // qtype: "currentaffairs",
-              // difficulty_level: "3",
-              difficulty_level: prizeLevel < 5 ? "2" : "3",
-            },
-            adminpass: "admin0987",
-          },
-        );
-        // console.log("questions", response.data);
+        const { data: question, error } = await fetchQuestion(difficulty_level);
 
-        const questionData = {
-          answer: response.data.queryset[0].answer,
-          difficulty_level: response.data.queryset[0].difficulty_level,
-          id: response.data.queryset[0].id,
-          options: response.data.queryset[0].options,
-          question: response.data.queryset[0].question,
+        if (error || !question) {
+          toast.error("Failed to fetch question");
+          reject(new Error(error ?? "No question returned"));
+          return;
         }
 
-        set({
-          answer: response.data.queryset[0].answer,
-          difficulty_level: response.data.queryset[0].difficulty_level,
-          id: response.data.queryset[0].id,
-          options: response.data.queryset[0].options,
-          question: response.data.queryset[0].question,
-        });
+        const questionData = {
+          answer: question.answer,
+          difficulty_level: question.difficulty_level,
+          id: question.id,
+          options: question.options,
+          question: question.question,
+        };
 
-        try {
+        set(questionData);
+
+        // Push the updated full state to Firebase so the player screen syncs
         const dbRef = ref(database, "questionStore");
-        const currentState = get();
-        const newData = { ...currentState, ...questionData };
+        const stateToSave = stripActions({ ...get() } as State & Action);
 
-        const {
-          setUsedFifty,
-          setUsedPhone,
-          setUsedAudience,
-          setIsAnswered,
-          setGoToHome,
-          setShowCheckpoint,
-          setLetsPlay,
-          setGoToTotal,
-          setContinueChallenge,
-          getQuestionsFromServer,
-          updateDataInFirebase,
-          updateDataInStore,
-          setOpenPrize,
-          setPrizeLevel,
-          setFinallyIsCorrectAns,
-          setFinallyUserLevel,
-          setIsConfirmed,
-          setIsCorrect,
-          setRevealCorrectAnswer,
-          setSelectedAnswer,
-          setShowRevealCorrect,
-          setClearStorage,
-          setShowPhoneTimer,
-          ...stateToSave
-        } = newData;
-
-        set(stateToSave);
-
-        FirebaseSet(dbRef, stateToSave)
+        FirebaseSet(dbRef, { ...stateToSave, ...questionData })
           .then(() => resolve())
-          .catch((error: any) => reject(error));
+          .catch((err) => reject(err));
       } catch (error) {
-        // console.log("firebase error, ", error);
-        
-        reject(error);
-      }
-
-        resolve();
-      } catch (error) {
-        // console.log("error", error);
-        toast.error("Failed to fetch questions");
+        toast.error("Failed to fetch question");
         reject(error);
       }
     });
@@ -215,81 +186,28 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   setClearStorage: (clear) => set({ clearStorage: clear }),
   setShowPhoneTimer: (show) => set({ showPhoneTimer: show }),
 
+  // ─── Write a partial state update to both Zustand and Firebase ────────────
   updateDataInFirebase: async (data) => {
     return new Promise((resolve, reject) => {
       try {
-        const dbRef = ref(database, "questionStore");
         const currentState = get();
-        const newData = { ...currentState, ...data };
+        const merged = { ...currentState, ...data };
+        set(data);
 
-        const {
-          setUsedFifty,
-          setUsedPhone,
-          setUsedAudience,
-          setIsAnswered,
-          setGoToHome,
-          setShowCheckpoint,
-          setLetsPlay,
-          setGoToTotal,
-          setContinueChallenge,
-          getQuestionsFromServer,
-          updateDataInFirebase,
-          updateDataInStore,
-          setOpenPrize,
-          setPrizeLevel,
-          setFinallyIsCorrectAns,
-          setFinallyUserLevel,
-          setIsConfirmed,
-          setIsCorrect,
-          setRevealCorrectAnswer,
-          setSelectedAnswer,
-          setShowRevealCorrect,
-          setClearStorage,
-          setShowPhoneTimer,
-          ...stateToSave
-        } = newData;
-
-        set(stateToSave);
+        const dbRef = ref(database, "questionStore");
+        const stateToSave = stripActions(merged as State & Action);
 
         FirebaseSet(dbRef, stateToSave)
           .then(() => resolve())
-          .catch((error: any) => reject(error));
+          .catch((err) => reject(err));
       } catch (error) {
         reject(error);
       }
     });
   },
+
+  // ─── Update Zustand only (no Firebase write) ──────────────────────────────
   updateDataInStore: (data) => {
-    const currentState = get();
-    const newData = { ...currentState, ...data };
-
-    const {
-      setUsedFifty,
-      setUsedPhone,
-      setUsedAudience,
-      setIsAnswered,
-      setGoToHome,
-      setShowCheckpoint,
-      setLetsPlay,
-      setGoToTotal,
-      setContinueChallenge,
-      getQuestionsFromServer,
-      updateDataInFirebase,
-      updateDataInStore,
-      setOpenPrize,
-      setPrizeLevel,
-      setFinallyIsCorrectAns,
-      setFinallyUserLevel,
-      setIsConfirmed,
-      setIsCorrect,
-      setRevealCorrectAnswer,
-      setSelectedAnswer,
-      setShowRevealCorrect,
-      setClearStorage,
-      setShowPhoneTimer,
-      ...stateToSave
-    } = newData;
-
-    set(stateToSave);
+    set(data);
   },
 }));

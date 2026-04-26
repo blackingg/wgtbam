@@ -1,121 +1,56 @@
 "use client";
-
-import axios from "axios";
+import { fetchUsers } from "@/server/actions";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 
-interface User {
+interface UserRow {
   name: string;
-  // department: string;
-  // reg_type: string;
-  phone: string;
+  phone: string | null;
 }
 
-const UsersAnalytics = () => {
-  const [participants, setParticipants] = useState<User[]>([]);
-  const [attendees, setAttendees] = useState<User[]>([]);
-
-  const fetchParticipants = async () => {
-    try {
-      const response = await axios.post(
-        "https://oneklass2.oauife.edu.ng/api/wgtbam/fetchuser",
-        {
-          fetchpair: {
-            reg_type: "participant",
-          },
-          // fetchset: ["name", "department", "reg_type"],
-          fetchset: ["name", "phone"],
-        },
-      );
-      // console.log("reddrer", response);
-
-      setParticipants(response.data.queryset);
-    } catch (error) {
-      // console.log("error", error);
-      toast.error("Failed to fetch participants");
-    }
-  };
-
-  const fetchAttendees = async () => {
-    try {
-      const response = await axios.post(
-        "https://oneklass2.oauife.edu.ng/api/wgtbam/fetchuser",
-
-        {
-          fetchpair: {
-            reg_type: "attendee",
-          },
-          fetchset: ["name", "department", "reg_type"],
-        },
-      );
-      setAttendees(response.data.queryset);
-    } catch (error) {
-      // console.log("error", error);
-      toast.error("Failed to fetch attendees");
-    }
-  };
+export default function UsersAnalytics() {
+  const [users, setUsers] = useState<UserRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchParticipants();
-    fetchAttendees();
-    // fetchQuestions();
+    fetchUsers("participant")
+      .then(({ data, error }) => {
+        if (error) { setError(error); return; }
+        setUsers(data);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
-    <div className="space-y-4 p-8 text-base capitalize">
-      <h1 className="underline underline-offset-2">Analytics</h1>
-      <p>
-        participants: <b>{participants.length}</b>
-      </p>
-      <p>
-        attendees: <b>{attendees.length}</b>
-      </p>
-      <p>
-        Total: <b>{participants.length + attendees.length}</b>
-      </p>
-
-      {/* {participants.length > 1 && <CSVDownloadButton persons={participants} />} */}
+    <div className="purplebg min-h-screen p-8 text-white">
+      <h1 className="mb-6 font-montserrat text-3xl font-bold">Registered Participants</h1>
+      {loading && <p className="text-white/60">Loading...</p>}
+      {error && <p className="text-red-400">{error}</p>}
+      {!loading && !error && users.length === 0 && (
+        <p className="text-white/60">No participants registered yet.</p>
+      )}
+      {!loading && users.length > 0 && (
+        <div className="overflow-x-auto rounded-xl border border-white/20">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-white/10">
+              <tr>
+                <th className="px-4 py-3 font-semibold">#</th>
+                <th className="px-4 py-3 font-semibold">Name</th>
+                <th className="px-4 py-3 font-semibold">Phone</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((u, i) => (
+                <tr key={i} className="border-t border-white/10 hover:bg-white/5">
+                  <td className="px-4 py-3 text-white/50">{i + 1}</td>
+                  <td className="px-4 py-3">{u.name}</td>
+                  <td className="px-4 py-3 text-white/70">{u.phone ?? "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
-};
-export default UsersAnalytics;
-
-// interface Person {
-//   name: string;
-//   phone: string;
-// }
-
-// const convertToCSV = (data: Person[]) => {
-//   const header = ["Name", "Phone Number"];
-//   // const rows = data.map((person) => [person.name, person.phone]);
-//   const rows = data.map((person) => [person.name, `'${person.phone}`]);
-
-//   const csvContent = [
-//     header.join(","),
-//     ...rows.map((row) => row.join(",")),
-//   ].join("\n");
-
-//   return csvContent;
-// };
-
-// const downloadCSV = (csvContent: string, fileName: string) => {
-//   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-//   const link = document.createElement("a");
-//   const url = URL.createObjectURL(blob);
-
-//   link.setAttribute("href", url);
-//   link.setAttribute("download", fileName);
-//   link.style.visibility = "hidden";
-//   document.body.appendChild(link);
-//   link.click();
-//   document.body.removeChild(link);
-// };
-
-// const CSVDownloadButton: React.FC<{ persons: any }> = ({ persons }) => {
-//   const handleDownload = () => {
-//     const csvContent = convertToCSV(persons);
-//     downloadCSV(csvContent, "participants.csv");
-//   };
-
-//   return <button onClick={handleDownload}>Download CSV</button>;
-// };
+}
