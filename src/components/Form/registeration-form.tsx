@@ -1,5 +1,6 @@
 "use client";
-import { DefaultButton, DefaultInput } from "@/components";
+import { DefaultButton } from "@/components/Form/Buttons/DefaultButton";
+import { DefaultInput } from "@/components/Form/Inputs/DefaultInput";
 import { registerUser } from "@/server/actions";
 import { finalUserData } from "@/types";
 import { InputsArr, Required } from "@/utils";
@@ -59,7 +60,7 @@ export const RegisterationForm = ({ role }: { role: string }) => {
     return (
       <div className="mt-8 flex flex-col items-center gap-4 text-center">
         <div className="text-5xl">🎉</div>
-        <h2 className="font-montserrat text-xl font-bold">You're registered!</h2>
+        <h2 className="font-montserrat text-xl font-bold">You&apos;re registered!</h2>
         <p className="text-white/70 text-sm">Good luck at the event.</p>
       </div>
     );

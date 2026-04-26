@@ -402,3 +402,4 @@ FodyWeavers.xsd
 package-lock.json
 .env
 .env.local
+.vercel
