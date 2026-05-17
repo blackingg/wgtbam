@@ -3,19 +3,15 @@
 import { RegAsWhat, RegisterationForm } from "@/components";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+
+// Deadline format: YYYY-MM-DDTHH:MM:SS e.g. "2026-06-01T23:59:59"
+const DEADLINE = process.env.NEXT_PUBLIC_REGISTRATION_DEADLINE;
+const isClosed = DEADLINE ? new Date() > new Date(DEADLINE) : false;
 
 const RegistrationUser = () => {
   const [role, setRole] = useState("attendee");
   const [isRole, setIsRole] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    if (role === "participant") {
-      toast.error("Participant registration is closed");
-      setRole("attendee");
-    }
-  }, [role]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -32,6 +28,20 @@ const RegistrationUser = () => {
             width={200}
             height={200}
           />
+        </div>
+      </div>
+    );
+  }
+
+  if (isClosed) {
+    return (
+      <div className="purplebg flex min-h-screen w-full items-center justify-center px-[5%] text-white">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <Image src="/Images/logo.png" width={150} height={150} alt="Logo" className="h-auto w-[150px]" />
+          <h1 className="font-montserrat text-3xl font-bold">Registration Closed</h1>
+          <p className="text-white/60 text-base max-w-sm">
+            The registration deadline has passed. See you at the event!
+          </p>
         </div>
       </div>
     );
@@ -64,7 +74,6 @@ const RegistrationUser = () => {
             <h2 className="w-full font-montserrat text-base font-medium tablet:text-lg">
               OAU Who Gets To Be A Millionare
             </h2>
-
             <p className="w-full font-poppins text-sm font-normal text-white/90">
               Register Now! And stand a chance to be a millionaire!
             </p>

@@ -38,11 +38,12 @@ export type State = {
   isCorrect: boolean;
   clearStorage: boolean;
   showPhoneTimer: boolean;
+  // Tracks question IDs used in the current game — resets on Reset Quiz
+  usedQuestionIds: number[];
 };
 
 export type Action = {
   getQuestionsFromServer: () => Promise<void>;
-
   setUsedFifty: (value: boolean) => void;
   setUsedPhone: (value: boolean) => void;
   setUsedAudience: (value: boolean) => void;
@@ -63,7 +64,6 @@ export type Action = {
   setIsCorrect: (correct: boolean) => void;
   setClearStorage: (clear: boolean) => void;
   setShowPhoneTimer: (show: boolean) => void;
-
   updateDataInFirebase: (data: Partial<State>) => Promise<void>;
   updateDataInStore: (data: Partial<State>) => void;
 };
@@ -125,15 +125,20 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
   isCorrect: false,
   clearStorage: false,
   showPhoneTimer: false,
+  usedQuestionIds: [],
 
   // ─── Fetch a question from Supabase then push full state to Firebase ──────
   getQuestionsFromServer: async () => {
     return new Promise(async (resolve, reject) => {
       try {
         const prizeLevel = get().prizeLevel;
+        const usedQuestionIds = get().usedQuestionIds;
         const difficulty_level = prizeLevel < 5 ? 2 : 3;
 
-        const { data: question, error } = await fetchQuestion(difficulty_level);
+        const { data: question, error } = await fetchQuestion(
+          difficulty_level,
+          usedQuestionIds
+        );
 
         if (error || !question) {
           toast.error("Failed to fetch question");
@@ -147,6 +152,8 @@ export const useQuestionStore = create<State & Action>()((set, get) => ({
           id: question.id,
           options: question.options,
           question: question.question,
+          // Add this question's ID to the used list
+          usedQuestionIds: [...usedQuestionIds, question.id],
         };
 
         set(questionData);

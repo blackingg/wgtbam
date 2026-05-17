@@ -29,7 +29,7 @@ export const RegAsWhat = ({
     <div className="purplebg fixed left-0 top-0 z-[999] flex h-[100vh] w-screen items-center justify-center bg-black/50 px-[5%] backdrop-blur-sm">
       <form
         className="relative z-[99999] flex w-full max-w-[500px] flex-col items-center justify-center rounded-3xl border border-white bg-gradient-to-br from-white/10 to-white/0 px-5 py-8 shadow-md backdrop-blur-md"
-        // action={handleRegAs}
+      // action={handleRegAs}
       >
         <div className="flex w-full flex-col gap-3 text-white">
           <h2 className="w-full font-montserrat text-2xl font-semibold tablet:text-xl">
@@ -55,7 +55,6 @@ export const RegAsWhat = ({
               name="participant"
               value="participant"
               checked={role === "participant"}
-              disabled={true}
               readOnly
               className="h-[24px] w-[24px] rounded-lg bg-white/10 pl-[16px] placeholder:font-poppins placeholder:text-white/50"
             />

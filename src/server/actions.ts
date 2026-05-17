@@ -21,46 +21,61 @@ export interface RegisterUserInput {
 }
 
 // ─── fetchQuestion ─────────────────────────────────────────────────────────────
-// Replaces: POST /api/wgtbam/fetchquestion
-// Fetches one random question at the given difficulty level.
-// difficulty_level: 2 = easy (prize levels 1-4), 3 = hard (prize levels 5-15)
+// Fetches a random question at the given difficulty level, excluding any
+// question IDs already used in this game session.
 export async function fetchQuestion(
-  difficulty_level: number
+  difficulty_level: number,
+  usedQuestionIds: number[] = []
 ): Promise<{ data: QuestionData | null; error: string | null }> {
-  const { data, error } = await supabase
+  let query = supabase
     .from("questions")
     .select("*")
     .eq("difficulty_level", difficulty_level);
+
+  // Exclude already-used questions so repeats can't happen
+  if (usedQuestionIds.length > 0) {
+    query = query.not("id", "in", `(${usedQuestionIds.join(",")})`);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     return { data: null, error: error.message };
   }
 
   if (!data || data.length === 0) {
-    return { data: null, error: "No questions found for this difficulty level" };
+    // All questions at this level exhausted — fallback to full pool
+    const { data: fallback, error: fallbackError } = await supabase
+      .from("questions")
+      .select("*")
+      .eq("difficulty_level", difficulty_level);
+
+    if (fallbackError || !fallback || fallback.length === 0) {
+      return { data: null, error: "No questions found for this difficulty level" };
+    }
+
+    const raw: DbQuestion = fallback[Math.floor(Math.random() * fallback.length)];
+    return { data: mapQuestion(raw), error: null };
   }
 
-  // Pick a random question from the result set
   const raw: DbQuestion = data[Math.floor(Math.random() * data.length)];
-
-  const question: QuestionData = {
-    id: raw.id,
-    question: raw.question,
-    options: {
-      a: raw.option_a,
-      b: raw.option_b,
-      c: raw.option_c,
-      d: raw.option_d,
-    },
-    answer: raw.answer,
-    difficulty_level: String(raw.difficulty_level),
-  };
-
-  return { data: question, error: null };
+  return { data: mapQuestion(raw), error: null };
 }
 
+const mapQuestion = (raw: DbQuestion): QuestionData => ({
+  id: raw.id,
+  question: raw.question,
+  options: {
+    a: raw.option_a,
+    b: raw.option_b,
+    c: raw.option_c,
+    d: raw.option_d,
+  },
+  answer: raw.answer,
+  difficulty_level: String(raw.difficulty_level),
+});
+
 // ─── registerUser ──────────────────────────────────────────────────────────────
-// Replaces: POST /api/wgtbam/createuser
 export async function registerUser(
   input: RegisterUserInput
 ): Promise<{ passed: boolean; error: Record<string, string> | null }> {
@@ -74,7 +89,6 @@ export async function registerUser(
   });
 
   if (error) {
-    // Supabase returns a unique violation code when email already exists
     if (error.code === "23505") {
       return { passed: false, error: { email: "This email is already registered." } };
     }
@@ -84,29 +98,13 @@ export async function registerUser(
   return { passed: true, error: null };
 }
 
-// ─── fetchUsers ────────────────────────────────────────────────────────────────
-// Replaces: POST /api/wgtbam/fetchuser
-export async function fetchUsers(
-  reg_type: "participant" | "attendee"
-): Promise<{ data: { name: string; phone: string | null }[]; error: string | null }> {
-  const { data, error } = await supabase
-    .from("users")
-    .select("name, phone")
-    .eq("reg_type", reg_type);
-
-  if (error) {
-    return { data: [], error: error.message };
-  }
-
-  return { data: data ?? [], error: null };
-}
-
-
+// ─── fetchAllUsers ─────────────────────────────────────────────────────────────
 export async function fetchAllUsers() {
   const { data, error } = await supabase
     .from("users")
     .select("name, email, phone, faculty, department, reg_type, created_at")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(5000);
 
   if (error) return { data: [], error: error.message };
   return { data: data ?? [], error: null };
