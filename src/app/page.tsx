@@ -31,7 +31,11 @@ export default function Home() {
   return (
     <main className="relatve left-0 top-0 flex min-h-[100vh] w-screen flex-col items-center justify-center gap-y-10 overflow-hidden">
       <BackgroundImage />
-      <MillionareLogo />
+      <MillionareLogo
+        width={350}
+        height={350}
+        className="max-w-[240px] tablet:max-w-[360px] max-h-[240px] tablet:max-h-[360px]"
+      />
       <ClickableMillionareBox
         text="Lets Play!"
         onClick={async () => {
